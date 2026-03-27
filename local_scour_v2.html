@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>국부세굴심 검토 — v2.0</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--bg4:#1c2128;
+  --bd:#30363d;--bd2:#484f58;
+  --tx:#e6edf3;--mt:#8b949e;--dm:#6e7681;
+  --ok:#3fb950;--ng:#f85149;--wn:#e3a008;--ac:#58a6ff;
+  --c1:#7c8de0;--c2:#00c8b0;--c3:#f0a500;--c4:#e06c7c;
+  --csu:#58a6ff;--neil:#3fb950;--lau:#e3a008;--froe:#e06c7c;
+  --max:#ff6e4a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:13px;line-height:1.5;overflow:hidden;}
+code{font-family:'JetBrains Mono',monospace;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:4px;}
+
+/* ── HEADER ── */
+.hdr{background:var(--bg2);border-bottom:1px solid var(--bd);padding:10px 18px;display:flex;align-items:center;gap:14px;flex-shrink:0;height:52px;}
+.logo{width:32px;height:32px;background:linear-gradient(135deg,#ff6e4a,#e06c7c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;color:#fff;flex-shrink:0;}
+.hdr-t h1{font-size:14px;font-weight:700;letter-spacing:-.3px;}
+.hdr-t p{font-size:10px;color:var(--mt);font-family:'JetBrains Mono',monospace;}
+.hdr-inf{margin-left:auto;display:flex;gap:10px;}
+.hf{display:flex;flex-direction:column;gap:2px;}
+.hf label{font-size:10px;color:var(--mt);letter-spacing:.4px;text-transform:uppercase;}
+.hf input{background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:12px;font-family:'Noto Sans KR',sans-serif;padding:4px 8px;width:140px;outline:none;}
+.hf input:focus{border-color:var(--ac);}
+.ver-badge{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--max);background:rgba(255,110,74,.1);border:1px solid rgba(255,110,74,.3);padding:3px 9px;border-radius:10px;flex-shrink:0;}
+
+/* ── LAYOUT ── */
+.app{display:flex;height:calc(100vh - 52px);}
+
+/* ── LEFT INPUT PANEL ── */
+.lp{width:310px;background:var(--bg2);border-right:1px solid var(--bd);overflow-y:auto;flex-shrink:0;padding-bottom:20px;}
+.sec-hd{font-size:10px;color:var(--mt);text-transform:uppercase;letter-spacing:.7px;padding:14px 14px 6px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:6px;}
+.sec-hd:first-child{border-top:none;}
+.sec-dot{width:6px;height:6px;border-radius:50%;}
+.ip-grid{padding:0 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ip-grid.g1{grid-template-columns:1fr;}
+.ip-grid.g3{grid-template-columns:1fr 1fr 1fr;}
+.f{display:flex;flex-direction:column;gap:3px;}
+.f.fw{grid-column:span 2;}
+.f.fw3{grid-column:span 3;}
+.f label{font-size:11px;color:var(--mt);display:flex;justify-content:space-between;}
+.f label .un{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(139,148,158,.45);}
+.f input,.f select{background:var(--bg3);border:1px solid var(--bd);border-radius:5px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:13px;padding:5px 8px;outline:none;transition:border-color .15s;width:100%;}
+.f input:focus,.f select:focus{border-color:var(--ac);background:var(--bg4);}
+.f select{font-family:'Noto Sans KR',sans-serif;font-size:12px;cursor:pointer;}
+.f select option{background:var(--bg3);}
+.f input.auto{opacity:.8;cursor:not-allowed;}
+.f input.auto.ok{border-color:var(--ok);color:var(--ok);background:rgba(63,185,80,.05);}
+.f input.auto.warn{border-color:var(--wn);color:var(--wn);background:rgba(227,160,8,.05);}
+.f input.err{border-color:var(--ng)!important;animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+.note{font-size:10px;color:var(--dm);font-family:'JetBrains Mono',monospace;line-height:1.7;padding:7px 10px;background:rgba(255,255,255,.02);border-radius:4px;border-left:2px solid var(--bd2);margin:6px 12px 0;}
+.note span{color:var(--tx);}
+.note .ng{color:var(--ng);font-weight:600;}
+.note .ok{color:var(--ok);font-weight:600;}
+
+.method-row{display:flex;gap:6px;padding:0 12px;flex-wrap:wrap;}
+.mb{flex:1;min-width:70px;padding:6px 4px;text-align:center;border-radius:5px;border:1px solid var(--bd);background:var(--bg3);cursor:pointer;transition:all .15s;}
+.mb:hover{border-color:var(--bd2);}
+.mb.on{border-width:1.5px;}
+.mb.m-max.on{border-color:var(--max);background:rgba(255,110,74,.08);color:var(--max);}
+.mb.m-avg.on{border-color:var(--wn);background:rgba(227,160,8,.06);color:var(--wn);}
+.mb.m-csu.on{border-color:var(--csu);background:rgba(88,166,255,.06);color:var(--csu);}
+.mb-lb{font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;}
+.mb-sub{font-size:9px;color:var(--dm);margin-top:2px;}
+
+/* ── RIGHT RESULTS PANEL ── */
+.rp{flex:1;overflow-y:auto;padding:16px 18px 24px;background:var(--bg);}
+
+/* Top stat row */
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;}
+.stat{background:var(--bg2);border:1px solid var(--bd);border-radius:7px;padding:10px 12px;position:relative;overflow:hidden;}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.stat.s-csu::before{background:var(--csu);}
+.stat.s-neil::before{background:var(--neil);}
+.stat.s-lau::before{background:var(--lau);}
+.stat.s-froe::before{background:var(--froe);}
+.stat.s-fin::before{background:var(--max);}
+.stat-lb{font-size:10px;color:var(--mt);margin-bottom:4px;}
+.stat-v{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;}
+.stat-v.csu{color:var(--csu);}
+.stat-v.neil{color:var(--neil);}
+.stat-v.lau{color:var(--lau);}
+.stat-v.froe{color:var(--froe);}
+.stat-v.fin{color:var(--max);}
+.stat-u{font-size:10px;color:var(--mt);}
+.stat-tag{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;margin-top:4px;font-family:'JetBrains Mono',monospace;font-weight:600;}
+.tag-max{background:rgba(255,110,74,.15);color:var(--max);}
+.tag-std{background:rgba(88,166,255,.1);color:var(--ac);}
+.tag-warn{background:rgba(227,160,8,.1);color:var(--wn);}
+
+/* Cards */
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:12px;}
+.card-hd{padding:9px 13px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.015);}
+.card-dot{width:7px;height:7px;border-radius:50%;}
+.card-hd h3{font-size:12px;font-weight:600;flex:1;}
+.card-hd .badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;}
+.badge-live{background:rgba(248,81,73,.12);color:#f85149;border:1px solid rgba(248,81,73,.2);}
+.badge-clear{background:rgba(88,166,255,.12);color:#58a6ff;border:1px solid rgba(88,166,255,.2);}
+.card-b{padding:12px 13px;}
+
+/* Formula table */
+.ftbl{width:100%;border-collapse:collapse;}
+.ftbl th{background:var(--bg3);border:1px solid var(--bd);padding:6px 10px;font-size:11px;color:var(--mt);font-weight:500;text-align:center;}
+.ftbl td{border:1px solid var(--bd);padding:7px 10px;font-size:12px;vertical-align:middle;}
+.ftbl tr.csu-row td{background:rgba(88,166,255,.03);}
+.ftbl tr.neil-row td{background:rgba(63,185,80,.03);}
+.ftbl tr.lau-row td{background:rgba(227,160,8,.03);}
+.ftbl tr.froe-row td{background:rgba(224,108,124,.03);}
+.ftbl tr:hover td{filter:brightness(1.08);}
+.fn{font-family:'JetBrains Mono',monospace;}
+.fv{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;text-align:right;}
+.fv.csu{color:var(--csu);}
+.fv.neil{color:var(--neil);}
+.fv.lau{color:var(--lau);}
+.fv.froe{color:var(--froe);}
+.fv.is-max{font-size:19px;text-decoration:underline;text-decoration-color:rgba(255,110,74,.5);}
+.f-max-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px;background:rgba(255,110,74,.15);color:var(--max);}
+.formula-str{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dm);}
+
+/* Result rows */
+.ri{display:flex;align-items:center;padding:6px 0;border-bottom:1px solid rgba(48,54,61,.4);}
+.ri:last-child{border-bottom:none;}
+.rl{flex:1;font-size:12px;color:var(--mt);}
+.rf{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(110,118,129,.6);text-align:center;width:120px;}
+.rv{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;text-align:right;min-width:90px;}
+.rv.big{font-size:18px;}
+.rv.ac{color:var(--ac);}
+.rv.ok{color:var(--ok);}
+.rv.ng{color:var(--ng);}
+.rv.wn{color:var(--wn);}
+.rv.max{color:var(--max);}
+
+/* Judgment */
+.jbox{border-radius:10px;padding:16px 20px;border:2px solid;margin:10px 0;display:flex;align-items:center;gap:16px;}
+.jbox.ok{background:rgba(63,185,80,.06);border-color:var(--ok);}
+.jbox.ng{background:rgba(248,81,73,.06);border-color:var(--ng);}
+.jbox.wn{background:rgba(227,160,8,.06);border-color:var(--wn);}
+.ji{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;flex-shrink:0;}
+.jbox.ok .ji{background:rgba(63,185,80,.15);color:var(--ok);}
+.jbox.ng .ji{background:rgba(248,81,73,.15);color:var(--ng);}
+.jbox.wn .ji{background:rgba(227,160,8,.15);color:var(--wn);}
+.jt{font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:4px;}
+.jbox.ok .jt{color:var(--ok);}
+.jbox.ng .jt{color:var(--ng);}
+.jbox.wn .jt{color:var(--wn);}
+.jm{font-size:11px;color:var(--mt);line-height:1.7;}
+
+/* Chk table */
+.ctbl{width:100%;border-collapse:collapse;font-size:12px;}
+.ctbl th{background:var(--bg3);border:1px solid var(--bd);padding:6px 10px;color:var(--mt);font-weight:500;text-align:center;}
+.ctbl td{border:1px solid var(--bd);padding:7px 10px;text-align:center;font-family:'JetBrains Mono',monospace;}
+.ctbl td.ok{color:var(--ok);font-weight:600;}
+.ctbl td.ng{color:var(--ng);font-weight:600;}
+.ctbl td.wn{color:var(--wn);font-weight:600;}
+.ctbl tr.five-yr td{background:rgba(248,81,73,.03);}
+
+/* EL diagram */
+.el-diag{background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:12px;margin-top:10px;}
+.el-diag svg{width:100%;height:auto;display:block;}
+
+/* Warning bar */
+.wbar{background:rgba(227,160,8,.08);border:1px solid rgba(227,160,8,.25);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--wn);margin:8px 0;display:flex;gap:8px;align-items:flex-start;}
+.wbar-icon{flex-shrink:0;font-size:13px;}
+
+.dvdr{border:none;border-top:1px solid var(--bd);margin:10px 0;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mt8{margin-top:8px;}
+
+/* ── 수식 렌더링 ── */
+.math{display:inline-flex;align-items:center;gap:2px;font-family:'JetBrains Mono',monospace;font-size:11px;flex-wrap:wrap;line-height:1.8;}
+.mfrac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;gap:0;}
+.mfrac .mnum{border-bottom:1px solid currentColor;padding:0 3px;line-height:1.4;text-align:center;font-size:11px;}
+.mfrac .mden{padding:0 3px;line-height:1.4;text-align:center;font-size:11px;}
+.mpow{vertical-align:super;font-size:9px;line-height:1;}
+.msub{vertical-align:sub;font-size:9px;line-height:1;}
+.msqrt{display:inline-flex;align-items:flex-end;vertical-align:middle;margin:0 1px;}
+.msqrt .msym{font-size:16px;line-height:1;margin-right:1px;font-weight:300;}
+.msqrt .mrad{border-top:1px solid currentColor;padding:1px 3px;font-size:11px;line-height:1.5;}
+.mval{color:var(--tx);}
+.mop{color:var(--dm);margin:0 2px;}
+.mgrp{display:inline-flex;align-items:center;}
+.mparen{font-size:18px;line-height:1;color:var(--mt);font-weight:300;}
+.ftbl td.formula-cell{padding:6px 10px;vertical-align:middle;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="logo">LS</div>
+  <div class="hdr-t">
+    <h1>국부세굴심 검토 (Local Scour at Piers)</h1>
+    <p>CSU · Neill · Laursen · Froehlich — 4개 공식 통합 · HEC-18 / 하천설계기준 / 도로교설계기준(2016)</p>
+  </div>
+  <div class="hdr-inf">
+    <div class="hf"><label>교량명</label><input id="bridgeName" type="text" placeholder="○○교" oninput="calc()"></div>
+    <div class="hf"><label>교각 번호</label><input id="pierNo" type="text" placeholder="P5-1" oninput="calc()"></div>
+    <div class="hf"><label>검토자</label><input id="engName" type="text" placeholder="홍길동" oninput="calc()"></div>
+    <div class="hf"><label>검토일</label><input id="chkDate" type="date" oninput="calc()"></div>
+  </div>
+  <div class="ver-badge">v2.0</div>
+</div>
+
+<div class="app">
+
+<!-- ── LEFT INPUT PANEL ── -->
+<div class="lp">
+
+  <!-- 수리 입력 -->
+  <div class="sec-hd"><div class="sec-dot" style="background:var(--ac)"></div>수리 입력</div>
+  <div class="ip-grid">
+    <div class="f"><label>수심 (y) <span class="un">m</span></label><input type="number" id="y" value="9.75" step="0.01" oninput="calc()"></div>
+    <div class="f"><label>접근유속 (V) <span class="un">m/s</span></label><input type="number" id="V" value="2.88" step="0.01" oninput="calc()"></div>
+    <div class="f"><label>수면폭 (W) <span class="un">m</span></label><input type="number" id="W" value="506" step="1" oninput="calc()"></div>
+    <div class="f"><label>통수단면적 (A) <span class="un">m²</span></label><input type="number" id="A" value="4933.5" step="1" oninput="calc()"></div>
+    <div class="f"><label>Froude수 (Fr) <span class="un">자동</span></label><input type="number" id="Fr_out" class="auto" readonly tabindex="-1"></div>
+    <div class="f"><label>흐름 조건 <span class="un">자동</span></label><input type="text" id="cond_out" class="auto" readonly tabindex="-1"></div>
+  </div>
+
+  <!-- 교각 제원 -->
+  <div class="sec-hd"><div class="sec-dot" style="background:var(--c3)"></div>교각 제원</div>
+  <div class="ip-grid">
+    <div class="f"><label>교각폭 (b) <span class="un">m</span></label><input type="number" id="b" value="3.0" step="0.1" oninput="calc()"></div>
+    <div class="f"><label>교각길이 (L) <span class="un">m</span></label><input type="number" id="L" value="25.0" step="0.5" oninput="calc()"></div>
+    <div class="f"><label>흐름사각도 (θ) <span class="un">°</span></label><input type="number" id="theta" value="0" step="1" min="0" max="90" oninput="calc()"></div>
+    <div class="f"><label>투영교각폭 (b') <span class="un">m 자동</span></label><input type="number" id="bp_out" class="auto ok" readonly tabindex="-1"></div>
+  </div>
+  <div class="note"><span>b' = b·cosθ + L·sinθ</span> — 흐름직각방향 투영폭<br>CSU·Froehlich 공식에 b' 자동 적용 (PDF기준 준수)</div>
+
+  <!-- 하상재료 -->
+  <div class="sec-hd"><div class="sec-dot" style="background:var(--c2)"></div>하상재료</div>
+  <div class="ip-grid">
+    <div class="f"><label>평균입경 D₅₀ <span class="un">mm</span></label><input type="number" id="D50" value="1.0" step="0.1" min="0.01" oninput="calc()"></div>
+    <div class="f"><label>임계유속 (Vc) <span class="un">m/s 자동</span></label><input type="number" id="Vc_out" class="auto" readonly tabindex="-1"></div>
+  </div>
+  <div class="note"><span class="ng">⚠ D₅₀ = 0 입력 불가</span> — Froehlich 공식 붕괴 방지<br>Vc = 6.19 · y^(1/6) · (D₅₀/1000)^(1/3)</div>
+
+  <!-- K 계수 -->
+  <div class="sec-hd"><div class="sec-dot" style="background:var(--csu)"></div>CSU 계수 선택</div>
+  <div class="ip-grid g1">
+    <div class="f">
+      <label>K₁ — 교각 선두 형상</label>
+      <select id="K1" onchange="calc()">
+        <option value="1.0" selected>원형 / 반원형 → K₁ = 1.0</option>
+        <option value="0.9">삼각형 (60°~75°) → K₁ = 0.9</option>
+        <option value="0.8">렌즈형 / 유선형 → K₁ = 0.8</option>
+        <option value="1.1">직사각형 → K₁ = 1.1</option>
+        <option value="1.3">정사각형 → K₁ = 1.3</option>
+      </select>
+    </div>
+    <div class="f">
+      <label>K₃ — 하상 상태</label>
+      <select id="K3" onchange="calc()">
+        <option value="1.1" selected>평탄하상 / 소규모 사구 → K₃ = 1.1</option>
+        <option value="1.2">중규모 사구 (0.6m ≤ H &lt; 3m) → K₃ = 1.2</option>
+        <option value="1.3">대규모 사구 (H ≥ 3m) → K₃ = 1.3</option>
+        <option value="0.9">반사구 (임계유속 이상) → K₃ = 0.9</option>
+      </select>
+    </div>
+    <div class="f">
+      <label>K₄ — 세립토 보정 <span class="un">수동</span></label>
+      <input type="number" id="K4" value="1.0" step="0.01" min="0.4" max="1.0" oninput="calc()">
+    </div>
+    <div class="f">
+      <label>K₂ (사각도 자동 계산) <span class="un">자동</span></label>
+      <input type="number" id="K2_out" class="auto ok" readonly tabindex="-1">
+    </div>
+  </div>
+
+  <!-- Froehlich f계수 -->
+  <div class="sec-hd"><div class="sec-dot" style="background:var(--froe)"></div>Froehlich 형상계수 (f)</div>
+  <div class="ip-grid g1">
+    <div class="f">
+      <select id="f_froe" onchange="calc()">
+        <option value="0.7">f = 0.7 — 날카로운 교각 (sharp nose)</option>
+        <option value="1.0" selected>f = 1.0 — 원형 교각 (round / cylinder)</option>
+        <option value="1.3">f = 1.3 — 사각형 교각 (square)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 최종 적용 방법 -->
+  <div class="sec-hd"><div class="sec-dot" style="background:var(--max)"></div>최종 세굴심 적용 방식</div>
+  <div class="method-row">
+    <div class="mb m-max on" id="mb-max" onclick="setMethod('max')">
+      <div class="mb-lb">최대값</div>
+      <div class="mb-sub">기준 부합 ✓</div>
+    </div>
+    <div class="mb m-csu" id="mb-csu" onclick="setMethod('csu')">
+      <div class="mb-lb">CSU 단독</div>
+      <div class="mb-sub">HEC-18 기본</div>
+    </div>
+    <div class="mb m-avg" id="mb-avg" onclick="setMethod('avg')">
+      <div class="mb-lb">평균값</div>
+      <div class="mb-sub">⚠ 비표준</div>
+    </div>
+  </div>
+  <div id="avg-warn" class="wbar" style="display:none;">
+    <span class="wbar-icon">⚠</span>
+    <span>평균값 방식은 HEC-18 및 하천설계기준 비부합.<br>여유가 적은 현장에서 OK→NG 역전 위험. 비교 참고용으로만 사용.</span>
+  </div>
+
+  <!-- 기초 제원 -->
+  <div class="sec-hd"><div class="sec-dot" style="background:var(--ng)"></div>기초 제원 (EL. m)</div>
+  <div class="ip-grid">
+    <div class="f fw"><label>기초 형식</label>
+      <select id="found_type" onchange="calc()">
+        <option value="footing">직접기초 (기초푸팅)</option>
+        <option value="pile">말뚝기초</option>
+        <option value="well">우물통기초</option>
+      </select>
+    </div>
+    <div class="f"><label>현재 하상고 EL.0 <span class="un">m</span></label><input type="number" id="EL0" value="-7.89" step="0.01" oninput="calc()"></div>
+    <div class="f"><label>기초푸팅 상면 EL.1a <span class="un">m</span></label><input type="number" id="EL1a" value="-47.50" step="0.01" oninput="calc()"></div>
+    <div class="f"><label>기초푸팅 저면 EL.1 <span class="un">m</span></label><input type="number" id="EL1" value="-50.50" step="0.01" oninput="calc()"></div>
+    <div class="f"><label>지반고 (말뚝선단) EL.2 <span class="un">m</span></label><input type="number" id="EL2" value="-60.90" step="0.01" oninput="calc()"></div>
+    <div class="f"><label>YS = h1 (자동) <span class="un">m</span></label><input type="number" id="YS_out" class="auto ok" readonly tabindex="-1"></div>
+    <div class="f"><label>h = 기초높이 (자동) <span class="un">m</span></label><input type="number" id="h_out" class="auto" readonly tabindex="-1"></div>
+  </div>
+
+
+</div><!-- /lp -->
+
+<!-- ── RIGHT RESULTS PANEL ── -->
+<div class="rp">
+
+  <!-- Top stat row: 4 formulas + final -->
+  <div class="stat-row">
+    <div class="stat s-csu">
+      <div class="stat-lb">① CSU 공식</div>
+      <div class="stat-v csu" id="sv-csu">—</div>
+      <div class="stat-u">m</div>
+      <div><span class="stat-tag tag-std">HEC-18 기본</span></div>
+    </div>
+    <div class="stat s-neil">
+      <div class="stat-lb">② Neill 공식</div>
+      <div class="stat-v neil" id="sv-neil">—</div>
+      <div class="stat-u">m</div>
+    </div>
+    <div class="stat s-lau">
+      <div class="stat-lb">③ Laursen 공식</div>
+      <div class="stat-v lau" id="sv-lau">—</div>
+      <div class="stat-u">m</div>
+    </div>
+    <div class="stat s-froe">
+      <div class="stat-lb">④ Froehlich 공식</div>
+      <div class="stat-v froe" id="sv-froe">—</div>
+      <div class="stat-u">m</div>
+    </div>
+    <div class="stat s-fin">
+      <div class="stat-lb" id="fin-lb">최종 적용 (최대값)</div>
+      <div class="stat-v fin" id="sv-fin">—</div>
+      <div class="stat-u">m</div>
+      <div><span class="stat-tag tag-max" id="fin-tag">MAX</span></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <!-- LEFT: 수리계산 + 공식 상세 -->
+    <div>
+      <!-- 수리 계산 결과 -->
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-dot" style="background:var(--ac)"></div>
+          <h3>수리 계산 결과</h3>
+          <span class="badge" id="cond-badge">—</span>
+        </div>
+        <div class="card-b">
+          <div class="ri"><span class="rl">접근유속 (V)</span><span class="rv ac" id="r-V">—</span></div>
+          <div class="ri"><span class="rl">수심 (y)</span><span class="rv ac" id="r-y">—</span></div>
+          <div class="ri"><span class="rl">Froude수 (Fr = V/√gy)</span><span class="rv ac" id="r-Fr">—</span></div>
+          <div class="ri"><span class="rl">임계유속 (Vc)</span><span class="rv" id="r-Vc">—</span></div>
+          <div class="ri"><span class="rl">교각폭 (b)</span><span class="rv" id="r-b">—</span></div>
+          <div class="ri"><span class="rl">투영교각폭 (b' = b·cosθ + L·sinθ)</span><span class="rv ok" id="r-bp">—</span></div>
+          <div class="ri"><span class="rl">K₁ · K₂ · K₃ · K₄ 합산</span><span class="rv wn" id="r-Kall">—</span></div>
+          <div class="ri"><span class="rl">a/y = b'/y 비율</span><span class="rv" id="r-ratio">—</span></div>
+        </div>
+      </div>
+
+      <!-- 4개 공식 상세 -->
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-dot" style="background:var(--max)"></div>
+          <h3>세굴심 산정결과 비교표</h3>
+        </div>
+        <div class="card-b" style="padding:0;">
+          <table class="ftbl">
+            <thead>
+              <tr>
+                <th style="width:26%">공식</th>
+                <th style="width:44%">적용식 (계산값)</th>
+                <th style="width:30%">세굴심 ds (m)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="csu-row">
+                <td><span style="color:var(--csu);font-weight:600;font-family:'JetBrains Mono',monospace;">① CSU</span><br><span class="formula-str">HEC-18 기본공식</span></td>
+                <td class="formula-cell" id="fstr-csu">—</td>
+                <td><span class="fv csu" id="fv-csu">—</span></td>
+              </tr>
+              <tr class="neil-row">
+                <td><span style="color:var(--neil);font-weight:600;font-family:'JetBrains Mono',monospace;">② Neill</span><br><span class="formula-str">1.5·b<sup>0.7</sup>·y<sup>0.3</sup></span></td>
+                <td class="formula-cell" id="fstr-neil">—</td>
+                <td><span class="fv neil" id="fv-neil">—</span></td>
+              </tr>
+              <tr class="lau-row">
+                <td><span style="color:var(--lau);font-weight:600;font-family:'JetBrains Mono',monospace;">③ Laursen</span><br><span class="formula-str">1.1·√(b·y)</span></td>
+                <td class="formula-cell" id="fstr-lau">—</td>
+                <td><span class="fv lau" id="fv-lau">—</span></td>
+              </tr>
+              <tr class="froe-row">
+                <td><span style="color:var(--froe);font-weight:600;font-family:'JetBrains Mono',monospace;">④ Froehlich</span><br><span class="formula-str">0.32·f·b'<sup>0.62</sup>·y<sup>0.46</sup>·Fr<sup>0.2</sup>·(b/D<sub>50</sub>)<sup>0.08</sup></span></td>
+                <td class="formula-cell" id="fstr-froe">—</td>
+                <td><span class="fv froe" id="fv-froe">—</span></td>
+              </tr>
+              <tr style="background:rgba(255,110,74,.04);">
+                <td colspan="2" style="font-weight:600;font-family:'JetBrains Mono',monospace;font-size:12px;">
+                  <span id="fin-method-label" style="color:var(--max);">▶ 최종 적용 ds (최대값)</span>
+                  <span style="color:var(--mt);font-size:10px;display:block;margin-top:2px;" id="avg-ref-row"></span>
+                </td>
+                <td><span class="fv" style="color:var(--max);font-size:20px;" id="fv-fin">—</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: 판정 -->
+    <div>
+      <!-- 기초 EL 체계 -->
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-dot" style="background:var(--ng)"></div>
+          <h3>기초 제원 (EL. 체계)</h3>
+        </div>
+        <div class="card-b">
+          <div class="ri"><span class="rl">현재 하상고 (EL.0)</span><span class="rv" id="r-EL0">—</span></div>
+          <div class="ri"><span class="rl">기초푸팅 상면 (EL.1a)</span><span class="rv" id="r-EL1a">—</span></div>
+          <div class="ri"><span class="rl">기초푸팅 저면 (EL.1)</span><span class="rv" id="r-EL1">—</span></div>
+          <div class="ri"><span class="rl">지반고 / 말뚝선단 (EL.2)</span><span class="rv" id="r-EL2">—</span></div>
+          <div class="dvdr"></div>
+          <div class="ri"><span class="rl">h = 기초높이 (|EL.1 − EL.2|)</span><span class="rv ac" id="r-h">—</span></div>
+          <div class="ri"><span class="rl">h1 = YS (|EL.0 − EL.1|)</span><span class="rv max" id="r-YS">—</span></div>
+          <div class="ri"><span class="rl">실제 가능 세굴심 (= h1 = YS)</span><span class="rv max" id="r-YS2">—</span></div>
+        </div>
+      </div>
+
+      <!-- 안전성 판정 -->
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-dot" style="background:var(--ng)"></div>
+          <h3>세굴심도 산정결과 및 안전성 판정</h3>
+        </div>
+        <div class="card-b">
+          <table class="ctbl">
+            <thead>
+              <tr>
+                <th>구분</th>
+                <th>세굴심도 ds (m)</th>
+                <th>YS = h1 (m)</th>
+                <th>판정</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align:left;color:var(--csu);font-family:'JetBrains Mono',monospace;">① CSU</td>
+                <td id="ct-csu">—</td><td id="ct-YS1" rowspan="5" style="vertical-align:middle;font-size:16px;font-weight:700;color:var(--max);">—</td><td id="cj-csu">—</td>
+              </tr>
+              <tr>
+                <td style="text-align:left;color:var(--neil);font-family:'JetBrains Mono',monospace;">② Neill</td>
+                <td id="ct-neil">—</td><td id="cj-neil">—</td>
+              </tr>
+              <tr>
+                <td style="text-align:left;color:var(--lau);font-family:'JetBrains Mono',monospace;">③ Laursen</td>
+                <td id="ct-lau">—</td><td id="cj-lau">—</td>
+              </tr>
+              <tr>
+                <td style="text-align:left;color:var(--froe);font-family:'JetBrains Mono',monospace;">④ Froehlich</td>
+                <td id="ct-froe">—</td><td id="cj-froe">—</td>
+              </tr>
+              <tr style="background:rgba(255,110,74,.04);">
+                <td style="text-align:left;color:var(--max);font-weight:700;font-family:'JetBrains Mono',monospace;" id="ct-fin-lb">▶ 최종 (MAX)</td>
+                <td id="ct-fin" style="color:var(--max);font-weight:700;font-size:15px;">—</td>
+                <td id="cj-fin" style="font-size:16px;font-weight:700;">—</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- 판정 박스 -->
+          <div class="jbox ok" id="jbox-100" style="margin-top:12px;">
+            <div class="ji" id="ji-100">OK</div>
+            <div>
+              <div class="jt" id="jt-100">세굴 안전성 — SAFE</div>
+              <div class="jm" id="jm-100">—</div>
+            </div>
+          </div>
+
+          <!-- 등급 판정 박스 -->
+          <div id="grade-box" style="margin-top:10px;border-radius:8px;padding:14px 16px;border:2px solid #484f58;background:rgba(255,255,255,.02);">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div id="grade-circle" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;flex-shrink:0;border:3px solid #484f58;">—</div>
+              <div style="flex:1;">
+                <div style="font-size:12px;color:var(--mt);margin-bottom:3px;">지반 및 세굴 상태 등급 <span style="font-family:'JetBrains Mono',monospace;font-size:10px;">[표 1.63 (3)]</span></div>
+                <div id="grade-state" style="font-size:13px;font-weight:600;margin-bottom:2px;">—</div>
+                <div id="grade-desc"  style="font-size:11px;color:var(--mt);line-height:1.6;">—</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                <div style="font-size:10px;color:var(--mt);">노출 비율</div>
+                <div id="grade-pct" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--max);">—</div>
+              </div>
+            </div>
+            <!-- 등급 바 -->
+            <div style="margin-top:10px;display:flex;gap:3px;height:8px;border-radius:4px;overflow:hidden;">
+              <div style="flex:1;background:#3fb950;" title="a등급"></div>
+              <div style="flex:1;background:#e3a008;" title="b등급"></div>
+              <div style="flex:1;background:#f0a500;" title="c등급"></div>
+              <div style="flex:1;background:#f85149;" title="d등급"></div>
+              <div style="flex:1;background:#8b2020;" title="e등급"></div>
+            </div>
+            <div style="display:flex;gap:3px;margin-top:3px;">
+              <div style="flex:1;text-align:center;font-size:9px;color:#3fb950;font-family:'JetBrains Mono',monospace;">a</div>
+              <div style="flex:1;text-align:center;font-size:9px;color:#e3a008;font-family:'JetBrains Mono',monospace;">b</div>
+              <div style="flex:1;text-align:center;font-size:9px;color:#f0a500;font-family:'JetBrains Mono',monospace;">c</div>
+              <div style="flex:1;text-align:center;font-size:9px;color:#f85149;font-family:'JetBrains Mono',monospace;">d</div>
+              <div style="flex:1;text-align:center;font-size:9px;color:#8b2020;font-family:'JetBrains Mono',monospace;">e</div>
+            </div>
+            <div id="grade-pointer-row" style="display:flex;gap:3px;height:10px;position:relative;margin-top:0;">
+              <div style="flex:1;"></div><div style="flex:1;"></div><div style="flex:1;"></div><div style="flex:1;"></div><div style="flex:1;"></div>
+              <div id="grade-ptr" style="position:absolute;top:0;font-size:10px;color:#fff;font-family:'JetBrains Mono',monospace;transform:translateX(-50%);transition:left .4s;">▲</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 기초형식별 단면 개념도 -->
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-dot" style="background:var(--dm)"></div>
+          <h3 id="diag-title">세굴 단면 개념도 — 직접기초</h3>
+        </div>
+        <div class="card-b" style="padding:8px;">
+          <div class="el-diag">
+            <!-- 직접기초 SVG -->
+            <svg viewBox="0 0 460 290" id="svg-footing" style="display:block;">
+              <defs>
+                <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#8b949e" stroke-width="1.5"/></marker>
+                <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#ff6e4a" stroke-width="1.5"/></marker>
+                <marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#3fb950" stroke-width="1.5"/></marker>
+                <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="5" stroke="#484f58" stroke-width="1.5"/>
+                </pattern>
+              </defs>
+
+              <!-- 흐름 화살표 -->
+              <line x1="30" y1="34" x2="160" y2="34" stroke="#8b949e" stroke-width="1" marker-end="url(#a1)"/>
+              <text x="88" y="29" text-anchor="middle" fill="#8b949e" font-size="8" font-family="JetBrains Mono">V →</text>
+
+              <!-- 수면 -->
+              <rect x="30" y="18" width="310" height="28" fill="rgba(88,166,255,.08)"/>
+              <line x1="30" y1="18" x2="340" y2="18" stroke="#58a6ff" stroke-width="1"/>
+              <text x="344" y="22" fill="#58a6ff" font-size="8" font-family="JetBrains Mono">W.L</text>
+
+              <!-- 교각 기둥 (직접기초) -->
+              <rect x="190" y="18" width="34" height="100" fill="#2d3748" stroke="#58a6ff" stroke-width="1" rx="1"/>
+              <!-- 해칭 패턴으로 콘크리트 표현 -->
+              <rect x="191" y="19" width="32" height="98" fill="url(#hatch)" opacity="0.3"/>
+              <text x="207" y="72" text-anchor="middle" fill="#8b949e" font-size="8" font-family="JetBrains Mono">교각</text>
+
+              <!-- 현재 하상 EL.0 -->
+              <line x1="30" y1="f_bed" x2="190" y2="f_bed" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="5 3" id="f-bed-l"/>
+              <line x1="224" y1="f_bed" x2="340" y2="f_bed" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="5 3" id="f-bed-r"/>
+              <text x="344" y="f_bed_t" fill="#8b949e" font-size="8" font-family="JetBrains Mono" id="f-lbl-EL0">EL.0</text>
+
+              <!-- 세굴 구간 채우기 -->
+              <rect x="30" y="0" width="160" height="0" fill="rgba(255,110,74,.1)" id="f-scour-l"/>
+              <rect x="224" y="0" width="116" height="0" fill="rgba(255,110,74,.1)" id="f-scour-r"/>
+
+              <!-- 세굴선 -->
+              <line x1="30" y1="0" x2="190" y2="0" stroke="#ff6e4a" stroke-width="2" id="f-scour-line-l"/>
+              <line x1="224" y1="0" x2="340" y2="0" stroke="#ff6e4a" stroke-width="2" id="f-scour-line-r"/>
+              <text x="344" y="0" fill="#ff6e4a" font-size="8" font-family="JetBrains Mono" id="f-lbl-scour">세굴선</text>
+
+              <!-- 세굴 화살표 -->
+              <line x1="55" y1="0" x2="55" y2="0" stroke="#ff6e4a" stroke-width="1.2" marker-end="url(#a2)" id="f-ds-arr"/>
+              <text x="62" y="0" fill="#ff6e4a" font-size="9" font-family="JetBrains Mono" id="f-lbl-ds">ds</text>
+
+              <!-- 기초 푸팅 (넓은 사각형) - EL.1a 상면 ~ EL.1 저면 -->
+              <rect x="168" y="0" width="78" height="0" fill="#374151" stroke="#6b7280" stroke-width="1.5" rx="1" id="f-footing"/>
+              <rect x="169" y="0" width="76" height="0" fill="url(#hatch)" opacity="0.4" id="f-footing-hatch"/>
+              <text x="207" y="0" text-anchor="middle" fill="#9ca3af" font-size="7" font-family="JetBrains Mono" id="f-footing-lbl">기초푸팅</text>
+
+              <!-- EL.1a 상면선 -->
+              <line x1="30" y1="0" x2="168" y2="0" stroke="#60a5fa" stroke-width="1" stroke-dasharray="3 2" id="f-EL1a-l"/>
+              <line x1="246" y1="0" x2="340" y2="0" stroke="#60a5fa" stroke-width="1" stroke-dasharray="3 2" id="f-EL1a-r"/>
+              <text x="344" y="0" fill="#60a5fa" font-size="8" font-family="JetBrains Mono" id="f-lbl-EL1a">EL.1a</text>
+
+              <!-- EL.1 저면선 -->
+              <line x1="30" y1="0" x2="168" y2="0" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="3 2" id="f-fnd-l"/>
+              <line x1="246" y1="0" x2="340" y2="0" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="3 2" id="f-fnd-r"/>
+              <text x="344" y="0" fill="#3fb950" font-size="8" font-family="JetBrains Mono" id="f-lbl-EL1">EL.1</text>
+
+              <!-- 지반 -->
+              <rect x="30" y="0" width="310" height="30" fill="rgba(139,148,158,.1)" id="f-ground-fill"/>
+              <line x1="30" y1="0" x2="340" y2="0" stroke="#6b7280" stroke-width="1.5" id="f-ground-line"/>
+              <text x="344" y="0" fill="#6e7681" font-size="8" font-family="JetBrains Mono" id="f-lbl-EL2">EL.2</text>
+
+              <!-- 등급 표시 영역 -->
+              <rect x="364" y="10" width="86" height="260" fill="rgba(255,255,255,.015)" stroke="#30363d" stroke-width="0.5" rx="4"/>
+              <text x="407" y="26" text-anchor="middle" fill="#6e7681" font-size="8" font-family="JetBrains Mono">등급 기준</text>
+
+              <!-- 등급 구간 바 (업데이트됨) -->
+              <rect x="370" y="30" width="14" height="0" fill="#3fb950" rx="1" id="f-grade-a-bar"/>
+              <rect x="370" y="0"  width="14" height="0" fill="#e3a008" rx="1" id="f-grade-b-bar"/>
+              <rect x="370" y="0"  width="14" height="0" fill="#f0a500" rx="1" id="f-grade-c-bar"/>
+              <rect x="370" y="0"  width="14" height="0" fill="#f85149" rx="1" id="f-grade-d-bar"/>
+              <rect x="370" y="0"  width="14" height="0" fill="#8b2020" rx="1" id="f-grade-e-bar"/>
+
+              <!-- 등급 텍스트 -->
+              <text x="390" y="0" fill="#3fb950" font-size="9" font-family="JetBrains Mono" font-weight="600" id="f-lbl-ga">a</text>
+              <text x="390" y="0" fill="#e3a008" font-size="9" font-family="JetBrains Mono" font-weight="600" id="f-lbl-gb">b</text>
+              <text x="390" y="0" fill="#f0a500" font-size="9" font-family="JetBrains Mono" font-weight="600" id="f-lbl-gc">c</text>
+              <text x="390" y="0" fill="#f85149" font-size="9" font-family="JetBrains Mono" font-weight="600" id="f-lbl-gd">d</text>
+              <text x="390" y="0" fill="#8b2020"  font-size="9" font-family="JetBrains Mono" font-weight="600" id="f-lbl-ge">e</text>
+
+              <!-- 현재 세굴선 포인터 -->
+              <line x1="368" y1="0" x2="384" y2="0" stroke="#ff6e4a" stroke-width="1.5" id="f-grade-ptr"/>
+              <text x="387" y="0" fill="#ff6e4a" font-size="8" font-family="JetBrains Mono" id="f-grade-ptr-lbl">ds</text>
+
+              <!-- 범례 -->
+              <line x1="34" y1="278" x2="54" y2="278" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <text x="58" y="281" fill="#8b949e" font-size="7" font-family="JetBrains Mono">현 하상(EL.0)</text>
+              <line x1="120" y1="278" x2="140" y2="278" stroke="#ff6e4a" stroke-width="2"/>
+              <text x="144" y="281" fill="#ff6e4a" font-size="7" font-family="JetBrains Mono">세굴선</text>
+              <line x1="185" y1="278" x2="205" y2="278" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="3 2"/>
+              <text x="209" y="281" fill="#60a5fa" font-size="7" font-family="JetBrains Mono">기초상면(EL.1a)</text>
+              <line x1="295" y1="278" x2="315" y2="278" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="3 2"/>
+              <text x="319" y="281" fill="#3fb950" font-size="7" font-family="JetBrains Mono">기초저면(EL.1)</text>
+            </svg>
+
+            <!-- 말뚝기초 SVG (기초형식 = pile일 때 표시) -->
+            <svg viewBox="0 0 460 290" id="svg-pile" style="display:none;">
+              <defs>
+                <marker id="p1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#8b949e" stroke-width="1.5"/></marker>
+                <marker id="p2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#ff6e4a" stroke-width="1.5"/></marker>
+                <marker id="p3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#3fb950" stroke-width="1.5"/></marker>
+                <pattern id="hatch2" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="5" stroke="#484f58" stroke-width="1.5"/>
+                </pattern>
+              </defs>
+
+              <!-- 흐름 화살표 -->
+              <line x1="30" y1="34" x2="160" y2="34" stroke="#8b949e" stroke-width="1" marker-end="url(#p1)"/>
+              <text x="88" y="29" text-anchor="middle" fill="#8b949e" font-size="8" font-family="JetBrains Mono">V →</text>
+
+              <!-- 수면 -->
+              <rect x="30" y="18" width="310" height="28" fill="rgba(88,166,255,.08)"/>
+              <line x1="30" y1="18" x2="340" y2="18" stroke="#58a6ff" stroke-width="1"/>
+              <text x="344" y="22" fill="#58a6ff" font-size="8" font-family="JetBrains Mono">W.L</text>
+
+              <!-- 교각 기둥 -->
+              <rect x="193" y="18" width="28" height="75" fill="#2d3748" stroke="#58a6ff" stroke-width="1" rx="1"/>
+              <rect x="194" y="19" width="26" height="73" fill="url(#hatch2)" opacity="0.3"/>
+              <text x="207" y="58" text-anchor="middle" fill="#8b949e" font-size="8" font-family="JetBrains Mono">교각</text>
+
+              <!-- 현재 하상 -->
+              <line x1="30" y1="0" x2="193" y2="0" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="5 3" id="p-bed-l"/>
+              <line x1="221" y1="0" x2="340" y2="0" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="5 3" id="p-bed-r"/>
+              <text x="344" y="0" fill="#8b949e" font-size="8" font-family="JetBrains Mono" id="p-lbl-EL0">EL.0</text>
+
+              <!-- 세굴 채우기 -->
+              <rect x="30" y="0" width="163" height="0" fill="rgba(255,110,74,.1)" id="p-scour-l"/>
+              <rect x="221" y="0" width="119" height="0" fill="rgba(255,110,74,.1)" id="p-scour-r"/>
+
+              <!-- 세굴선 -->
+              <line x1="30" y1="0" x2="193" y2="0" stroke="#ff6e4a" stroke-width="2" id="p-scour-line-l"/>
+              <line x1="221" y1="0" x2="340" y2="0" stroke="#ff6e4a" stroke-width="2" id="p-scour-line-r"/>
+              <text x="344" y="0" fill="#ff6e4a" font-size="8" font-family="JetBrains Mono" id="p-lbl-scour">세굴선</text>
+
+              <!-- 세굴 화살표 -->
+              <line x1="55" y1="0" x2="55" y2="0" stroke="#ff6e4a" stroke-width="1.2" marker-end="url(#p2)" id="p-ds-arr"/>
+              <text x="62" y="0" fill="#ff6e4a" font-size="9" font-family="JetBrains Mono" id="p-lbl-ds">ds</text>
+
+              <!-- 기초 캡 (pile cap) - EL.1a 상면 ~ EL.1 저면 -->
+              <rect x="168" y="0" width="78" height="0" fill="#374151" stroke="#6b7280" stroke-width="1.5" rx="1" id="p-pilecap"/>
+              <rect x="169" y="0" width="76" height="0" fill="url(#hatch2)" opacity="0.4" id="p-pilecap-hatch"/>
+              <text x="207" y="0" text-anchor="middle" fill="#9ca3af" font-size="7" font-family="JetBrains Mono" id="p-pilecap-lbl">Pile Cap</text>
+
+              <!-- EL.1a 상면선 -->
+              <line x1="30" y1="0" x2="168" y2="0" stroke="#60a5fa" stroke-width="1" stroke-dasharray="3 2" id="p-EL1a-l"/>
+              <line x1="246" y1="0" x2="340" y2="0" stroke="#60a5fa" stroke-width="1" stroke-dasharray="3 2" id="p-EL1a-r"/>
+              <text x="344" y="0" fill="#60a5fa" font-size="8" font-family="JetBrains Mono" id="p-lbl-EL1a">EL.1a</text>
+
+              <!-- 말뚝 3개 -->
+              <rect x="174" y="0" width="9" height="0" fill="#1f2937" stroke="#6b7280" stroke-width="1" id="p-pile-l"/>
+              <rect x="203" y="0" width="9" height="0" fill="#1f2937" stroke="#6b7280" stroke-width="1" id="p-pile-c"/>
+              <rect x="232" y="0" width="9" height="0" fill="#1f2937" stroke="#6b7280" stroke-width="1" id="p-pile-r"/>
+              <!-- 말뚝 선단 삼각형 -->
+              <polygon points="0,0 9,0 4.5,8" fill="#1f2937" stroke="#6b7280" stroke-width="1" id="p-tip-l"/>
+              <polygon points="0,0 9,0 4.5,8" fill="#1f2937" stroke="#6b7280" stroke-width="1" id="p-tip-c"/>
+              <polygon points="0,0 9,0 4.5,8" fill="#1f2937" stroke="#6b7280" stroke-width="1" id="p-tip-r"/>
+
+              <!-- EL.1 저면선 (pile cap 저면) -->
+              <line x1="30" y1="0" x2="168" y2="0" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="3 2" id="p-fnd-l"/>
+              <line x1="246" y1="0" x2="340" y2="0" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="3 2" id="p-fnd-r"/>
+              <text x="344" y="0" fill="#3fb950" font-size="8" font-family="JetBrains Mono" id="p-lbl-EL1">EL.1</text>
+
+              <!-- 지반 -->
+              <rect x="30" y="0" width="310" height="30" fill="rgba(139,148,158,.1)" id="p-ground-fill"/>
+              <line x1="30" y1="0" x2="340" y2="0" stroke="#6b7280" stroke-width="1.5" id="p-ground-line"/>
+              <text x="344" y="0" fill="#6e7681" font-size="8" font-family="JetBrains Mono" id="p-lbl-EL2">EL.2</text>
+
+              <!-- 등급 바 영역 -->
+              <rect x="364" y="10" width="86" height="260" fill="rgba(255,255,255,.015)" stroke="#30363d" stroke-width="0.5" rx="4"/>
+              <text x="407" y="26" text-anchor="middle" fill="#6e7681" font-size="8" font-family="JetBrains Mono">등급 기준</text>
+              <rect x="370" y="30" width="14" height="0" fill="#3fb950" rx="1" id="p-grade-a-bar"/>
+              <rect x="370" y="0"  width="14" height="0" fill="#e3a008" rx="1" id="p-grade-b-bar"/>
+              <rect x="370" y="0"  width="14" height="0" fill="#f0a500" rx="1" id="p-grade-c-bar"/>
+              <rect x="370" y="0"  width="14" height="0" fill="#f85149" rx="1" id="p-grade-d-bar"/>
+              <rect x="370" y="0"  width="14" height="0" fill="#8b2020" rx="1" id="p-grade-e-bar"/>
+              <text x="390" y="0" fill="#3fb950" font-size="9" font-family="JetBrains Mono" font-weight="600" id="p-lbl-ga">a</text>
+              <text x="390" y="0" fill="#e3a008" font-size="9" font-family="JetBrains Mono" font-weight="600" id="p-lbl-gb">b</text>
+              <text x="390" y="0" fill="#f0a500" font-size="9" font-family="JetBrains Mono" font-weight="600" id="p-lbl-gc">c</text>
+              <text x="390" y="0" fill="#f85149" font-size="9" font-family="JetBrains Mono" font-weight="600" id="p-lbl-gd">d</text>
+              <text x="390" y="0" fill="#8b2020"  font-size="9" font-family="JetBrains Mono" font-weight="600" id="p-lbl-ge">e</text>
+              <line x1="368" y1="0" x2="384" y2="0" stroke="#ff6e4a" stroke-width="1.5" id="p-grade-ptr"/>
+              <text x="387" y="0" fill="#ff6e4a" font-size="8" font-family="JetBrains Mono" id="p-grade-ptr-lbl">ds</text>
+
+              <!-- 범례 -->
+              <line x1="34" y1="278" x2="54" y2="278" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <text x="58" y="281" fill="#8b949e" font-size="7" font-family="JetBrains Mono">현 하상(EL.0)</text>
+              <line x1="120" y1="278" x2="140" y2="278" stroke="#ff6e4a" stroke-width="2"/>
+              <text x="144" y="281" fill="#ff6e4a" font-size="7" font-family="JetBrains Mono">세굴선</text>
+              <line x1="185" y1="278" x2="205" y2="278" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="3 2"/>
+              <text x="209" y="281" fill="#60a5fa" font-size="7" font-family="JetBrains Mono">Pile Cap 상면</text>
+              <line x1="295" y1="278" x2="315" y2="278" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="3 2"/>
+              <text x="319" y="281" fill="#3fb950" font-size="7" font-family="JetBrains Mono">Pile Cap 저면</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /grid2 -->
+
+</div><!-- /rp -->
+</div><!-- /app -->
+
+<script>
+const g = 9.81;
+let method = 'max';
+
+function setMethod(m) {
+  method = m;
+  ['max','avg','csu'].forEach(k => {
+    document.getElementById('mb-'+k).classList.toggle('on', k===m);
+  });
+  document.getElementById('avg-warn').style.display = (m==='avg') ? 'flex' : 'none';
+  calc();
+}
+
+function n(id){ return parseFloat(document.getElementById(id).value)||0; }
+function s(id){ return document.getElementById(id).value; }
+function fmt(v,d=3){ return isNaN(v)||!isFinite(v)?'—':v.toFixed(d); }
+function setEl(id,txt){ const e=document.getElementById(id); if(e)e.textContent=txt; }
+function setVal(id,val,d=3){ const e=document.getElementById(id); if(e)e.value=fmt(val,d); }
+function colorClass(ok){ return ok?'ok':'ng'; }
+
+function calc(){
+  // ── 입력값 수집 ──
+  const y   = Math.max(n('y'), 0.01);
+  const V   = n('V');
+  const b   = Math.max(n('b'), 0.01);
+  const L   = Math.max(n('L'), 0.01);
+  const th  = n('theta');
+  const D50mm = Math.max(n('D50'), 0.001); // mm, minimum 0.001mm
+  const K1  = parseFloat(s('K1'));
+  const K3  = parseFloat(s('K3'));
+  const K4  = n('K4') || 1.0;
+  const f   = parseFloat(s('f_froe'));
+  const EL0 = n('EL0'); const EL1a = n('EL1a');
+  const EL1 = n('EL1'); const EL2  = n('EL2');
+
+  const thRad = th * Math.PI / 180;
+  const D50m  = D50mm / 1000; // m 단위 변환
+
+  // ── 수리 계산 ──
+  const Fr = V / Math.sqrt(g * y);
+  const bp = b * Math.cos(thRad) + L * Math.sin(thRad); // 투영교각폭
+  const Vc = 6.19 * Math.pow(y, 1/6) * Math.pow(D50m, 1/3);
+  const isLiveBed = V >= Vc;
+
+  // K₂ (사각도 보정, CSU에서는 b'에 흡수되지만 K₂도 별도 표시)
+  const K2 = Math.pow(Math.cos(thRad) + (L/b) * Math.sin(thRad), 0.65);
+
+  // ── 4개 공식 계산 ──
+  // ① CSU: b' 사용, K₂는 b'에 흡수
+  const csu = 2.0 * K1 * K3 * K4 * y * Math.pow(bp/y, 0.65) * Math.pow(Fr, 0.43);
+
+  // ② Neill: b(명목교각폭) 사용
+  const neil = 1.5 * Math.pow(b, 0.7) * Math.pow(y, 0.3);
+
+  // ③ Laursen: 1.1 × √(b×y)
+  const lau = 1.1 * Math.sqrt(b * y);
+
+  // ④ Froehlich: b' 사용, D50 m단위
+  const froe = 0.32 * f * Math.pow(bp, 0.62) * Math.pow(y, 0.46) * Math.pow(Fr, 0.20) * Math.pow(b/D50m, 0.08);
+
+  const avg = (csu+neil+lau+froe)/4;
+  const maxDs = Math.max(csu, neil, lau, froe);
+  const finDs = method==='max' ? maxDs : method==='avg' ? avg : csu;
+
+  // ── 기초 제원 ──
+  const h1 = EL0 - EL1;        // YS: 현재하상 ~ 기초저면 (실제 가능세굴심)
+  const h  = Math.abs(EL1a - EL1); // 기초 높이 (상면~저면)
+  const scourEL = EL0 - finDs;  // 세굴 후 하상 표고
+  const isOK100 = finDs <= h1;
+
+  // ── 등급 산정 [표 1.63 (3)] ──
+  // 세굴선이 기초 상면(EL.1a) 위에 있으면 a
+  // 기초 내부 침투 비율 = (EL.1a - 세굴선EL) / (EL.1a - EL.1) × 100
+  const scourIntoFnd = EL1a - scourEL; // 세굴선이 기초상면보다 얼마나 아래인가 (양수=침투)
+  const fndHeight    = Math.max(EL1a - EL1, 0.01); // 기초 높이
+  const penetPct     = (scourIntoFnd / fndHeight) * 100; // 침투 백분율
+
+  let grade, gradeColor, gradeState, gradeDesc, gradePctDisp;
+  if (penetPct <= 0) {
+    grade='a'; gradeColor='#3fb950';
+    gradeState='기초상단보다 위 (0%)';
+    gradeDesc='세굴심도가 기초 상단보다 높음 — 기초 미노출, 안전';
+    gradePctDisp='0%';
+  } else if (penetPct <= 30) {
+    grade='b'; gradeColor='#e3a008';
+    gradeState=`기초 상단 일부 노출 (${penetPct.toFixed(1)}%)`;
+    gradeDesc='세굴심도가 기초 또는 말뚝 사이에 위치 — 관찰 필요';
+    gradePctDisp=penetPct.toFixed(1)+'%';
+  } else if (penetPct <= 70) {
+    grade='c'; gradeColor='#f0a500';
+    gradeState=`기초 깊이 내 (${penetPct.toFixed(1)}%)`;
+    gradeDesc='기초 또는 말뚝 깊이 내 — 정밀 점검 필요';
+    gradePctDisp=penetPct.toFixed(1)+'%';
+  } else if (penetPct <= 100) {
+    grade='d'; gradeColor='#f85149';
+    gradeState=`기초 하단 일부 노출 (${penetPct.toFixed(1)}%)`;
+    gradeDesc='기초 또는 말뚝 하단 노출 — 긴급 보강 검토';
+    gradePctDisp=penetPct.toFixed(1)+'%';
+  } else {
+    grade='e'; gradeColor='#8b2020';
+    gradeState=`기초 하단보다 아래 (${penetPct.toFixed(1)}%)`;
+    gradeDesc='세굴심도가 기초 또는 말뚝 하단보다 낮음 — 붕괴 위험';
+    gradePctDisp=penetPct.toFixed(1)+'%';
+  }
+
+  // ── 출력: 수리 ──
+  setVal('Fr_out', Fr, 4);
+  document.getElementById('Fr_out').className = 'auto ' + (Fr < 1 ? 'ok' : 'warn');
+  document.getElementById('cond_out').value = isLiveBed ? 'Live-bed (V≥Vc)' : 'Clear-water (V<Vc)';
+  document.getElementById('cond_out').className = 'auto ' + (isLiveBed ? 'warn' : 'ok');
+  setVal('bp_out', bp, 3);
+  setVal('Vc_out', Vc, 3);
+  setVal('K2_out', K2, 3);
+  setVal('YS_out', h1, 2);
+  setVal('h_out', h, 2);
+
+  // 결과 상단 stat
+  setEl('sv-csu',  fmt(csu,3));
+  setEl('sv-neil', fmt(neil,3));
+  setEl('sv-lau',  fmt(lau,3));
+  setEl('sv-froe', fmt(froe,3));
+  setEl('sv-fin',  fmt(finDs,3));
+
+  const methodLabels={max:'최대값',avg:'평균값',csu:'CSU 단독'};
+  const tagLabels={max:'MAX',avg:'AVG',csu:'CSU'};
+  setEl('fin-lb', '최종 적용 ('+methodLabels[method]+')');
+  document.getElementById('fin-tag').textContent = tagLabels[method];
+  document.getElementById('fin-tag').className = 'stat-tag ' + (method==='avg'?'tag-warn':'tag-max');
+
+  // 수리 결과 rows
+  setEl('r-V',  fmt(V,2)+' m/s');
+  setEl('r-y',  fmt(y,2)+' m');
+  setEl('r-Fr', fmt(Fr,4));
+  setEl('r-Vc', fmt(Vc,3)+' m/s');
+  setEl('r-b',  fmt(b,2)+' m');
+  setEl('r-bp', fmt(bp,3)+' m  (θ='+th+'°)');
+  setEl('r-Kall', 'K₁='+fmt(K1,2)+'  K₂='+fmt(K2,3)+'  K₃='+fmt(K3,2)+'  K₄='+fmt(K4,2));
+  setEl('r-ratio', fmt(bp/y,3)+'  (b\'/y)');
+
+  // 흐름 조건 배지
+  const cb = document.getElementById('cond-badge');
+  cb.className = 'badge ' + (isLiveBed ? 'badge-live' : 'badge-clear');
+  cb.textContent = isLiveBed ? '⚡ Live-bed  V('+fmt(V,2)+') ≥ Vc('+fmt(Vc,3)+')' : '💧 Clear-water  V('+fmt(V,2)+') < Vc('+fmt(Vc,3)+')';
+
+  // ── 분수식 HTML 공식 생성 헬퍼 ──
+  const frac = (n,d) =>
+    `<span class="mfrac"><span class="mnum">${n}</span><span class="mden">${d}</span></span>`;
+  const sup  = (b,e) => `${b}<span class="mpow">${e}</span>`;
+  const sqrt = (inner) =>
+    `<span class="msqrt"><span class="msym">√</span><span class="mrad">${inner}</span></span>`;
+  const op   = (s) => `<span class="mop">${s}</span>`;
+  const val  = (v,d=2) => `<span class="mval">${fmt(v,d)}</span>`;
+
+  const csuHtml = `<span class="math">${val(2.0,1)}${op('×')}${val(K1,2)}${op('×')}${val(K2,3)}${op('×')}${val(K3,2)}${op('×')}${val(K4,2)}${op('×')}${val(y,2)}${op('×')}${sup(frac(val(bp,3),val(y,2)),'0.65')}${op('×')}${sup(val(Fr,4),'0.43')}</span>`;
+  const neilHtml= `<span class="math">${val(1.5,1)}${op('×')}${sup(val(b,2),'0.7')}${op('×')}${sup(val(y,2),'0.3')}</span>`;
+  const lauHtml = `<span class="math">${val(1.1,1)}${op('×')}${sqrt(val(b,2)+op('×')+val(y,2))}</span>`;
+  const D50disp = D50mm >= 1 ? fmt(D50mm,1)+'mm' : fmt(D50mm,3)+'mm';
+  const froeHtml= `<span class="math">${val(0.32,2)}${op('×')}${val(f,1)}${op('×')}${sup(val(bp,3),'0.62')}${op('×')}${sup(val(y,2),'0.46')}${op('×')}${sup(val(Fr,4),'0.20')}${op('×')}${sup(frac('b','D<span class="msub">50</span>'),'0.08')}<span style="font-size:10px;color:var(--dm);margin-left:3px;">(${val(b,2)}/${D50disp})</span></span>`;
+  document.getElementById('fstr-csu').innerHTML  = csuHtml;
+  document.getElementById('fstr-neil').innerHTML = neilHtml;
+  document.getElementById('fstr-lau').innerHTML  = lauHtml;
+  document.getElementById('fstr-froe').innerHTML = froeHtml;
+
+  // 세굴심 값 (최대 강조)
+  const vals = [csu, neil, lau, froe];
+  const ids  = ['fv-csu','fv-neil','fv-lau','fv-froe'];
+  const cls  = ['csu','neil','lau','froe'];
+  ids.forEach((id,i)=>{
+    const el = document.getElementById(id);
+    const isMax = Math.abs(vals[i]-maxDs)<0.0001;
+    el.className = 'fv '+cls[i]+(isMax?' is-max':'');
+    el.innerHTML = fmt(vals[i],3)+'<span style="font-size:10px;opacity:.6"> m</span>'+(isMax?'<span class="f-max-badge">MAX</span>':'');
+  });
+  setEl('fv-fin', fmt(finDs,3)+' m');
+
+  const avgRef = document.getElementById('avg-ref-row');
+  if(method!=='avg'){
+    avgRef.textContent = '참고 평균: '+fmt(avg,3)+'m  |  기준: 최대값 '+fmt(maxDs,3)+'m';
+  } else {
+    avgRef.textContent = '⚠ 비표준 방식 — 최대값: '+fmt(maxDs,3)+'m  (+'+fmt(maxDs-avg,3)+'m)';
+    avgRef.style.color = '#e3a008';
+  }
+  setEl('fin-method-label', '▶ 최종 적용 ds ('+methodLabels[method]+')');
+  document.getElementById('fin-method-label').style.color = method==='avg' ? 'var(--wn)' : 'var(--max)';
+
+  // 기초 EL 표
+  setEl('r-EL0',  'EL. '+fmt(EL0,2)+' m');
+  setEl('r-EL1a', 'EL. '+fmt(EL1a,2)+' m');
+  setEl('r-EL1',  'EL. '+fmt(EL1,2)+' m');
+  setEl('r-EL2',  'EL. '+fmt(EL2,2)+' m');
+  setEl('r-h',    fmt(h,2)+' m');
+  setEl('r-YS',   fmt(h1,2)+' m  =  EL.0('+fmt(EL0,2)+') − EL.1('+fmt(EL1,2)+')');
+  setEl('r-YS2',  fmt(h1,2)+' m');
+
+  // 비교표
+  ['csu','neil','lau','froe'].forEach((k,i)=>{
+    const ds = vals[i];
+    setEl('ct-'+k, fmt(ds,3));
+    const el = document.getElementById('cj-'+k);
+    el.textContent = ds<=h1 ? 'OK ✓' : 'NG ✗';
+    el.className = ds<=h1 ? 'ok' : 'ng';
+  });
+  setEl('ct-YS1', fmt(h1,2)+' m');
+  setEl('ct-fin', fmt(finDs,3));
+  const cjfin = document.getElementById('cj-fin');
+  cjfin.textContent = isOK100 ? 'OK ✓' : 'NG ✗';
+  cjfin.className = isOK100 ? 'ok' : 'ng';
+  document.getElementById('ct-fin-lb').textContent = '▶ 최종 ('+methodLabels[method]+')';
+
+  // 판정 박스
+  const jbox100 = document.getElementById('jbox-100');
+  jbox100.className = 'jbox ' + (isOK100 ? 'ok' : 'ng');
+  setEl('ji-100', isOK100 ? 'OK' : 'NG');
+  setEl('jt-100', '세굴 안전성 — ' + (isOK100 ? 'SAFE ✓' : 'N.G. ✗'));
+  setEl('jm-100',
+    isOK100
+    ? `ds(${fmt(finDs,3)}m) ≤ YS·h1(${fmt(h1,2)}m) → 기초저면(EL.${fmt(EL1,2)})이 세굴선(EL.${fmt(scourEL,2)}) 아래 → 안전`
+    : `ds(${fmt(finDs,3)}m) > YS·h1(${fmt(h1,2)}m) → 기초저면(EL.${fmt(EL1,2)})이 세굴선(EL.${fmt(scourEL,2)}) 위 → 보강 필요!`
+  );
+
+  // ── 등급 박스 업데이트 ──
+  const gc = document.getElementById('grade-circle');
+  gc.textContent = grade.toUpperCase();
+  gc.style.borderColor = gradeColor;
+  gc.style.color = gradeColor;
+  gc.style.background = gradeColor+'18';
+  document.getElementById('grade-box').style.borderColor = gradeColor;
+  setEl('grade-state', gradeState);
+  document.getElementById('grade-state').style.color = gradeColor;
+  setEl('grade-desc',  gradeDesc);
+  setEl('grade-pct',   gradePctDisp);
+  document.getElementById('grade-pct').style.color = gradeColor;
+
+  // 포인터 위치 (5등분 바)
+  const gradeOrder = ['a','b','c','d','e'];
+  const gi = gradeOrder.indexOf(grade);
+  const ptrPct = (gi * 20 + 10) + '%';
+  document.getElementById('grade-ptr').style.left = ptrPct;
+
+  // ── 단면 SVG 업데이트 ──
+  const foundType = s('found_type');
+  document.getElementById('diag-title').textContent =
+    '세굴 단면 개념도 — ' + (foundType==='pile' ? '말뚝기초' : foundType==='well' ? '우물통기초' : '직접기초');
+  const isFooting = foundType !== 'pile';
+  document.getElementById('svg-footing').style.display = isFooting ? 'block' : 'none';
+  document.getElementById('svg-pile').style.display    = isFooting ? 'none'  : 'block';
+
+  if(isFooting) updateSvgFooting(EL0, EL1a, EL1, EL2, finDs, scourEL, penetPct, fndHeight, grade, gradeColor);
+  else          updateSvgPile   (EL0, EL1a, EL1, EL2, finDs, scourEL, penetPct, fndHeight, grade, gradeColor);
+}
+
+// ── SVG 공통 헬퍼 ──
+function svgSet(id, attrs){ const e=document.getElementById(id); if(!e)return; Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v)); }
+function svgTxt(id, txt)  { const e=document.getElementById(id); if(!e)return; e.textContent=txt; }
+
+function updateSvgFooting(EL0, EL1a, EL1, EL2, ds, scourEL, penetPct, fndH, grade, gColor){
+  // Y좌표 매핑: EL0=46, EL2=255 (고정 상단 마진)
+  const svgEL0=46, svgEL2=255;
+  const range = Math.max(EL0-EL2, 5);
+  const toY = el => svgEL0 + (EL0-el)/range*(svgEL2-svgEL0);
+
+  const bedY   = svgEL0;                // EL.0 = 수면 아래 하상 고정
+  const scourY = Math.min(toY(scourEL), toY(EL1)-2);
+  const EL1aY  = toY(EL1a);
+  const EL1Y   = toY(EL1);
+  const EL2Y   = Math.min(toY(EL2), 260);
+  const footH  = Math.max(EL1Y - EL1aY, 6);
+
+  // 수면
+  svgSet('f-bed-l', {y1:bedY, y2:bedY}); svgSet('f-bed-r', {y1:bedY, y2:bedY});
+  svgSet('f-lbl-EL0', {y:bedY+4}); svgTxt('f-lbl-EL0', 'EL.0 = '+EL0.toFixed(2));
+
+  // 세굴 채우기
+  svgSet('f-scour-l', {y:bedY, height:Math.max(scourY-bedY,0)});
+  svgSet('f-scour-r', {y:bedY, height:Math.max(scourY-bedY,0)});
+
+  // 세굴선
+  svgSet('f-scour-line-l', {y1:scourY, y2:scourY, stroke:gColor});
+  svgSet('f-scour-line-r', {y1:scourY, y2:scourY, stroke:gColor});
+  svgSet('f-lbl-scour', {y:scourY+3}); svgTxt('f-lbl-scour', `세굴선 ds=${ds.toFixed(2)}m`);
+  document.getElementById('f-lbl-scour').style.fill = gColor;
+
+  // ds 화살표
+  svgSet('f-ds-arr', {y1:bedY+2, y2:Math.max(scourY-2, bedY+4)});
+  svgSet('f-lbl-ds', {y:(bedY+scourY)/2+3}); svgTxt('f-lbl-ds', `ds=${ds.toFixed(2)}m`);
+
+  // 기초 푸팅
+  svgSet('f-footing',       {y:EL1aY, height:footH});
+  svgSet('f-footing-hatch', {y:EL1aY, height:footH});
+  svgSet('f-footing-lbl',   {y:EL1aY+footH/2+3}); svgTxt('f-footing-lbl','기초푸팅');
+
+  // EL.1a 상면
+  svgSet('f-EL1a-l', {y1:EL1aY, y2:EL1aY}); svgSet('f-EL1a-r', {y1:EL1aY, y2:EL1aY});
+  svgSet('f-lbl-EL1a', {y:EL1aY-2}); svgTxt('f-lbl-EL1a', 'EL.1a = '+EL1a.toFixed(2));
+
+  // EL.1 저면
+  svgSet('f-fnd-l', {y1:EL1Y, y2:EL1Y}); svgSet('f-fnd-r', {y1:EL1Y, y2:EL1Y});
+  svgSet('f-lbl-EL1', {y:EL1Y+8}); svgTxt('f-lbl-EL1', 'EL.1 = '+EL1.toFixed(2));
+
+  // 지반
+  svgSet('f-ground-fill',  {y:EL2Y, height:Math.max(260-EL2Y,0)});
+  svgSet('f-ground-line',  {y1:EL2Y, y2:EL2Y});
+  svgSet('f-lbl-EL2', {y:EL2Y+8}); svgTxt('f-lbl-EL2', 'EL.2 = '+EL2.toFixed(2));
+
+  // ── 등급 바 (우측) ──
+  // a구간: bedY ~ EL1aY (기초 상면 위)
+  // b~d구간: EL1aY ~ EL1Y (기초 높이를 3등분)
+  // e구간: EL1Y ~ EL2Y
+  const aH  = Math.max(EL1aY - bedY, 2);
+  const bdH = Math.max((EL1Y - EL1aY) * 0.30, 2);
+  const cH  = Math.max((EL1Y - EL1aY) * 0.40, 2);
+  const dH  = Math.max((EL1Y - EL1aY) * 0.30, 2);
+  const eH  = Math.max(EL2Y - EL1Y, 2);
+
+  svgSet('f-grade-a-bar', {y:bedY,               height:aH});
+  svgSet('f-grade-b-bar', {y:EL1aY,              height:bdH});
+  svgSet('f-grade-c-bar', {y:EL1aY+bdH,          height:cH});
+  svgSet('f-grade-d-bar', {y:EL1aY+bdH+cH,       height:dH});
+  svgSet('f-grade-e-bar', {y:EL1Y,               height:eH});
+
+  svgSet('f-lbl-ga', {y:bedY+aH/2+3});
+  svgSet('f-lbl-gb', {y:EL1aY+bdH/2+3});
+  svgSet('f-lbl-gc', {y:EL1aY+bdH+cH/2+3});
+  svgSet('f-lbl-gd', {y:EL1aY+bdH+cH+dH/2+3});
+  svgSet('f-lbl-ge', {y:EL1Y+eH/2+3});
+
+  // 포인터 (세굴선)
+  svgSet('f-grade-ptr',     {y1:scourY, y2:scourY, stroke:gColor});
+  svgSet('f-grade-ptr-lbl', {y:scourY-2}); svgTxt('f-grade-ptr-lbl', grade.toUpperCase());
+  document.getElementById('f-grade-ptr-lbl').style.fill = gColor;
+}
+
+function updateSvgPile(EL0, EL1a, EL1, EL2, ds, scourEL, penetPct, fndH, grade, gColor){
+  const svgEL0=46, svgEL2=255;
+  const range = Math.max(EL0-EL2, 5);
+  const toY = el => svgEL0 + (EL0-el)/range*(svgEL2-svgEL0);
+
+  const bedY  = svgEL0;
+  const scourY= Math.min(toY(scourEL), toY(EL1)-2);
+  const EL1aY = toY(EL1a);
+  const EL1Y  = toY(EL1);
+  const EL2Y  = Math.min(toY(EL2), 260);
+  const capH  = Math.max(EL1Y - EL1aY, 6);
+  const pileH = Math.max(EL2Y - EL1Y, 10);
+
+  // 하상
+  svgSet('p-bed-l', {y1:bedY, y2:bedY}); svgSet('p-bed-r', {y1:bedY, y2:bedY});
+  svgSet('p-lbl-EL0', {y:bedY+4}); svgTxt('p-lbl-EL0', 'EL.0 = '+EL0.toFixed(2));
+
+  // 세굴
+  svgSet('p-scour-l', {y:bedY, height:Math.max(scourY-bedY,0)});
+  svgSet('p-scour-r', {y:bedY, height:Math.max(scourY-bedY,0)});
+  svgSet('p-scour-line-l', {y1:scourY, y2:scourY, stroke:gColor});
+  svgSet('p-scour-line-r', {y1:scourY, y2:scourY, stroke:gColor});
+  svgSet('p-lbl-scour', {y:scourY+3}); svgTxt('p-lbl-scour', `세굴선 ds=${ds.toFixed(2)}m`);
+  document.getElementById('p-lbl-scour').style.fill = gColor;
+  svgSet('p-ds-arr', {y1:bedY+2, y2:Math.max(scourY-2,bedY+4)});
+  svgSet('p-lbl-ds', {y:(bedY+scourY)/2+3}); svgTxt('p-lbl-ds', `ds=${ds.toFixed(2)}m`);
+
+  // Pile cap
+  svgSet('p-pilecap',       {y:EL1aY, height:capH});
+  svgSet('p-pilecap-hatch', {y:EL1aY, height:capH});
+  svgSet('p-pilecap-lbl',   {y:EL1aY+capH/2+3}); svgTxt('p-pilecap-lbl','Pile Cap');
+  svgSet('p-EL1a-l', {y1:EL1aY, y2:EL1aY}); svgSet('p-EL1a-r', {y1:EL1aY, y2:EL1aY});
+  svgSet('p-lbl-EL1a', {y:EL1aY-2}); svgTxt('p-lbl-EL1a', 'EL.1a = '+EL1a.toFixed(2));
+
+  // 말뚝 3개 (cap 저면~EL2)
+  svgSet('p-pile-l', {y:EL1Y, height:pileH});
+  svgSet('p-pile-c', {y:EL1Y, height:pileH});
+  svgSet('p-pile-r', {y:EL1Y, height:pileH});
+  // 선단 삼각형
+  const tipY = EL1Y + pileH;
+  ['p-tip-l','p-tip-c','p-tip-r'].forEach((id,i)=>{
+    const xBase = [174, 203, 232][i];
+    document.getElementById(id).setAttribute('points',
+      `${xBase},${tipY} ${xBase+9},${tipY} ${xBase+4.5},${tipY+8}`);
+  });
+
+  // EL.1 저면
+  svgSet('p-fnd-l', {y1:EL1Y, y2:EL1Y}); svgSet('p-fnd-r', {y1:EL1Y, y2:EL1Y});
+  svgSet('p-lbl-EL1', {y:EL1Y+8}); svgTxt('p-lbl-EL1', 'EL.1 = '+EL1.toFixed(2));
+
+  // 지반
+  svgSet('p-ground-fill',  {y:EL2Y, height:Math.max(260-EL2Y,0)});
+  svgSet('p-ground-line',  {y1:EL2Y, y2:EL2Y});
+  svgSet('p-lbl-EL2', {y:EL2Y+8}); svgTxt('p-lbl-EL2', 'EL.2 = '+EL2.toFixed(2));
+
+  // 등급 바
+  const aH  = Math.max(EL1aY - bedY, 2);
+  const bdH = Math.max((EL1Y - EL1aY) * 0.30, 2);
+  const cH  = Math.max((EL1Y - EL1aY) * 0.40, 2);
+  const dH  = Math.max((EL1Y - EL1aY) * 0.30, 2);
+  const eH  = Math.max(EL2Y - EL1Y, 2);
+  svgSet('p-grade-a-bar', {y:bedY,          height:aH});
+  svgSet('p-grade-b-bar', {y:EL1aY,         height:bdH});
+  svgSet('p-grade-c-bar', {y:EL1aY+bdH,     height:cH});
+  svgSet('p-grade-d-bar', {y:EL1aY+bdH+cH,  height:dH});
+  svgSet('p-grade-e-bar', {y:EL1Y,          height:eH});
+  svgSet('p-lbl-ga', {y:bedY+aH/2+3});
+  svgSet('p-lbl-gb', {y:EL1aY+bdH/2+3});
+  svgSet('p-lbl-gc', {y:EL1aY+bdH+cH/2+3});
+  svgSet('p-lbl-gd', {y:EL1aY+bdH+cH+dH/2+3});
+  svgSet('p-lbl-ge', {y:EL1Y+eH/2+3});
+  svgSet('p-grade-ptr',     {y1:scourY, y2:scourY, stroke:gColor});
+  svgSet('p-grade-ptr-lbl', {y:scourY-2}); svgTxt('p-grade-ptr-lbl', grade.toUpperCase());
+  document.getElementById('p-grade-ptr-lbl').style.fill = gColor;
+}
+
+// 날짜 설정 + 초기 계산
+document.getElementById('chkDate').valueAsDate = new Date();
+calc();
+</script>
+</body>
+</html>

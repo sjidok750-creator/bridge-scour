@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>교각 세굴 자동계산 툴 v1.0</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--bd:#30363d;--bd2:#484f58;--tx:#e6edf3;--mt:#8b949e;--ok:#3fb950;--ng:#f85149;--wn:#e3a008;--c-lt:#7c8de0;--c-ct:#00c8b0;--c-lo:#f0a500;--c-to:#f85149;--ac:#58a6ff;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:13px;line-height:1.5;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:4px;}
+
+/* ── HEADER ── */
+.hdr{background:var(--bg2);border-bottom:1px solid var(--bd);padding:12px 20px;display:flex;align-items:center;gap:16px;flex-shrink:0;}
+.hdr-logo{width:36px;height:36px;background:linear-gradient(135deg,#00c8b0,#58a6ff);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;color:#0d1117;letter-spacing:-1px;flex-shrink:0;}
+.hdr-title h1{font-size:14px;font-weight:700;letter-spacing:-0.3px;}
+.hdr-title p{font-size:10px;color:var(--mt);font-family:'JetBrains Mono',monospace;}
+.hdr-fields{margin-left:auto;display:flex;gap:10px;align-items:flex-end;}
+.hf{display:flex;flex-direction:column;gap:3px;}
+.hf label{font-size:10px;color:var(--mt);text-transform:uppercase;letter-spacing:0.5px;}
+.hf input{background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:12px;padding:5px 9px;width:160px;outline:none;}
+.hf input:focus{border-color:var(--ac);}
+.hdr-ver{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--c-ct);background:rgba(0,200,176,0.1);border:1px solid rgba(0,200,176,0.25);padding:3px 9px;border-radius:10px;flex-shrink:0;}
+
+/* ── LAYOUT ── */
+.app{display:flex;height:calc(100vh - 61px);}
+
+/* ── SIDEBAR ── */
+.sb{width:195px;background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;padding:14px 0;}
+.sb-sec{font-size:10px;color:var(--mt);text-transform:uppercase;letter-spacing:0.7px;padding:0 14px 8px;}
+.tb{width:100%;background:none;border:none;padding:9px 14px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:9px;color:var(--mt);font-family:'Noto Sans KR',sans-serif;font-size:12px;border-left:2px solid transparent;transition:all .15s;}
+.tb:hover{background:var(--bg3);color:var(--tx);}
+.tb.on{border-left-width:2px;}
+.tb.on.t1{border-left-color:var(--c-lt);color:var(--c-lt);background:rgba(124,141,224,.08);}
+.tb.on.t2{border-left-color:var(--c-ct);color:var(--c-ct);background:rgba(0,200,176,.08);}
+.tb.on.t3{border-left-color:var(--c-lo);color:var(--c-lo);background:rgba(240,165,0,.08);}
+.tb.on.t4{border-left-color:var(--c-to);color:var(--c-to);background:rgba(248,81,73,.08);}
+.tn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tl{line-height:1.3;flex:1;}
+.tl em{display:block;font-size:10px;opacity:.65;font-style:normal;}
+.tbadge{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--bg3);color:var(--mt);min-width:48px;text-align:right;}
+.tbadge.bv{color:var(--ac);background:rgba(88,166,255,.1);}
+.tbadge.bng{color:var(--ng);background:rgba(248,81,73,.1);}
+.tbadge.bok{color:var(--ok);background:rgba(63,185,80,.1);}
+
+.sb-sum{margin-top:auto;padding:14px;border-top:1px solid var(--bd);}
+.ss-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;}
+.ss-lb{font-size:11px;color:var(--mt);}
+.ss-vl{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--ac);}
+.ss-vl.tot{font-size:15px;color:var(--wn);}
+.ss-div{border:none;border-top:1px solid var(--bd);margin:7px 0;}
+.sb-bar{margin-top:8px;}
+.sb-bar-track{height:8px;background:var(--bg3);border-radius:4px;display:flex;overflow:hidden;}
+.bb-lt{background:var(--c-lt);}
+.bb-ct{background:var(--c-ct);}
+.bb-lo{background:var(--c-lo);}
+
+/* ── CONTENT ── */
+.main{flex:1;overflow-y:auto;padding:20px 24px;background:var(--bg);}
+.pane{display:none;}.pane.on{display:block;}
+
+/* Panel header */
+.ph{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;}
+.pb{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;flex-shrink:0;}
+.pb.p1{background:rgba(124,141,224,.15);color:var(--c-lt);}
+.pb.p2{background:rgba(0,200,176,.15);color:var(--c-ct);}
+.pb.p3{background:rgba(240,165,0,.15);color:var(--c-lo);}
+.pb.p4{background:rgba(248,81,73,.15);color:var(--c-to);}
+.pt h2{font-size:17px;font-weight:700;letter-spacing:-.3px;margin-bottom:3px;}
+.pt p{font-size:11px;color:var(--mt);line-height:1.6;}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.grid.g3{grid-template-columns:1fr 1fr 1fr;}
+
+/* Card */
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;overflow:hidden;}
+.ch{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.02);}
+.ch-dot{width:7px;height:7px;border-radius:50%;}
+.ch h3{font-size:12px;font-weight:600;letter-spacing:.2px;}
+.cb{padding:14px;}
+
+/* Fields */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fg.fg3{grid-template-columns:1fr 1fr 1fr;}
+.fg.fg1{grid-template-columns:1fr;}
+.f{display:flex;flex-direction:column;gap:4px;}
+.f.fw{grid-column:span 2;}
+.f label{font-size:11px;color:var(--mt);display:flex;justify-content:space-between;align-items:center;}
+.f label .un{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(139,148,158,.55);font-style:italic;}
+.f input,.f select{background:var(--bg3);border:1px solid var(--bd);border-radius:5px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:13px;padding:6px 10px;outline:none;transition:border-color .15s;width:100%;}
+.f input:focus,.f select:focus{border-color:var(--ac);background:#1c2128;}
+.f select{font-family:'Noto Sans KR',sans-serif;font-size:12px;cursor:pointer;}
+.f select option{background:var(--bg3);}
+
+/* Results */
+.ri{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(48,54,61,.5);}
+.ri:last-child{border-bottom:none;}
+.rl{font-size:12px;color:var(--mt);flex:1;}
+.rf{font-size:10px;color:rgba(139,148,158,.4);font-family:'JetBrains Mono',monospace;text-align:center;flex:1;}
+.rv{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--ac);text-align:right;min-width:80px;}
+.rv.big{font-size:18px;color:var(--wn);}
+.rv.ok{color:var(--ok);}
+.rv.ng{color:var(--ng);}
+.rv.lt{color:var(--c-lt);}
+.rv.ct{color:var(--c-ct);}
+.rv.lo{color:var(--c-lo);}
+
+/* Condition tag */
+.ctag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:10px;font-size:12px;font-weight:600;margin:8px 0;}
+.ctag.live{background:rgba(248,81,73,.12);color:#f85149;border:1px solid rgba(248,81,73,.25);}
+.ctag.clear{background:rgba(88,166,255,.12);color:#58a6ff;border:1px solid rgba(88,166,255,.25);}
+.ctag-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+/* K-factors */
+.kf{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0;}
+.ki{background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:8px;text-align:center;}
+.kn{font-size:10px;color:var(--mt);margin-bottom:3px;}
+.kv{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--wn);}
+.kl{font-size:10px;color:var(--mt);margin-top:2px;}
+
+/* Formula note */
+.fnote{background:var(--bg3);border:1px solid var(--bd);border-left:3px solid var(--ac);border-radius:0 5px 5px 0;padding:9px 13px;font-size:11px;color:var(--mt);font-family:'JetBrains Mono',monospace;line-height:1.9;margin:10px 0;}
+.fnote span{color:var(--tx);}
+
+/* Judgment box */
+.jbox{border-radius:10px;padding:18px;text-align:center;margin:12px 0;border:2px solid;}
+.jbox.ok{background:rgba(63,185,80,.07);border-color:var(--ok);}
+.jbox.ng{background:rgba(248,81,73,.07);border-color:var(--ng);}
+.js{font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:5px;}
+.jbox.ok .js{color:var(--ok);}
+.jbox.ng .js{color:var(--ng);}
+.jm{font-size:12px;color:var(--mt);line-height:1.7;}
+
+/* Info cards (summary) */
+.igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0;}
+.ic{background:var(--bg3);border:1px solid var(--bd);border-radius:7px;padding:12px;text-align:center;}
+.icl{font-size:11px;color:var(--mt);margin-bottom:5px;}
+.icv{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;}
+.icu{font-size:10px;color:var(--mt);margin-top:2px;}
+
+/* Cross-section SVG */
+.cs-wrap{background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:14px;margin-top:10px;}
+.cs-wrap svg{width:100%;height:auto;}
+
+/* Ref table */
+.rtbl{width:100%;border-collapse:collapse;font-size:11px;margin:8px 0;}
+.rtbl th{background:var(--bg3);border:1px solid var(--bd);padding:5px 9px;color:var(--mt);font-weight:500;text-align:center;}
+.rtbl td{border:1px solid var(--bd);padding:5px 9px;text-align:center;}
+.rtbl tr:hover td{background:rgba(255,255,255,.02);}
+.rtbl .hl{color:var(--wn);font-weight:600;}
+
+.sec{margin-top:14px;}
+.dvdr{border:none;border-top:1px solid var(--bd);margin:12px 0;}
+.hint{font-size:11px;color:var(--mt);padding:6px 10px;background:rgba(88,166,255,.05);border-radius:4px;border:1px solid rgba(88,166,255,.1);margin:8px 0;}
+.span2{grid-column:span 2;}
+.span3{grid-column:span 3;}
+
+/* Margin badge */
+.mgn{display:inline-block;padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;}
+.mgn.ok{background:rgba(63,185,80,.15);color:var(--ok);}
+.mgn.ng{background:rgba(248,81,73,.15);color:var(--ng);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-logo">SC</div>
+  <div class="hdr-title">
+    <h1>교각 세굴 자동계산 툴</h1>
+    <p>HEC-18 / 하천설계기준 / 도로교설계기준 준용</p>
+  </div>
+  <div class="hdr-fields">
+    <div class="hf"><label>교량명</label><input id="bridgeName" type="text" placeholder="예) ○○교" oninput="calcAll()"></div>
+    <div class="hf"><label>검토자</label><input id="engName" type="text" placeholder="홍길동" oninput="calcAll()"></div>
+    <div class="hf"><label>검토일</label><input id="chkDate" type="date" oninput="calcAll()"></div>
+  </div>
+  <div class="hdr-ver">v1.0</div>
+</div>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<div class="sb">
+  <div class="sb-sec">세굴 검토 단계</div>
+  <button class="tb t1 on" onclick="showTab(1)">
+    <div class="tn">①</div>
+    <div class="tl">장기세굴<em>하상변동 분석</em></div>
+    <div class="tbadge bv" id="b1">0.00m</div>
+  </button>
+  <button class="tb t2" onclick="showTab(2)">
+    <div class="tn">②</div>
+    <div class="tl">수축세굴<em>Live-bed / Clear-water</em></div>
+    <div class="tbadge bv" id="b2">0.00m</div>
+  </button>
+  <button class="tb t3" onclick="showTab(3)">
+    <div class="tn">③</div>
+    <div class="tl">국부세굴<em>CSU 공식</em></div>
+    <div class="tbadge bv" id="b3">0.00m</div>
+  </button>
+  <button class="tb t4" onclick="showTab(4)">
+    <div class="tn">④</div>
+    <div class="tl">총세굴 판정<em>기초 안전성</em></div>
+    <div class="tbadge" id="b4">-</div>
+  </button>
+
+  <div class="sb-sum">
+    <div class="ss-row"><span class="ss-lb">① 장기세굴</span><span class="ss-vl" id="s1">0.00 m</span></div>
+    <div class="ss-row"><span class="ss-lb">② 수축세굴</span><span class="ss-vl" id="s2">0.00 m</span></div>
+    <div class="ss-row"><span class="ss-lb">③ 국부세굴</span><span class="ss-vl" id="s3">0.00 m</span></div>
+    <div class="ss-div"></div>
+    <div class="ss-row"><span class="ss-lb">Σ 총세굴심</span><span class="ss-vl tot" id="s4">0.00 m</span></div>
+    <div class="sb-bar">
+      <div class="sb-bar-track">
+        <div class="bb-lt" id="bar1" style="width:0%"></div>
+        <div class="bb-ct" id="bar2" style="width:0%"></div>
+        <div class="bb-lo" id="bar3" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+<!-- ─── TAB 1: 장기세굴 ─── -->
+<div class="pane on" id="p1">
+  <div class="ph">
+    <div class="pb p1">①</div>
+    <div class="pt">
+      <h2>장기세굴 (Long-term Scour)</h2>
+      <p>과거 하상측량 자료의 하상고 변화 추세로 장기세굴심을 산정합니다.<br>
+         <strong style="color:var(--c-lt)">장기세굴심 = 과거 하상고(기준) − 현재 하상고</strong> — 하상이 낮아진 만큼이 세굴심입니다.<br>
+         측량자료가 없는 경우 HEC-6 모형 또는 직접입력 방식을 선택하세요.</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ch"><div class="ch-dot" style="background:var(--c-lt)"></div><h3>입력 데이터</h3></div>
+      <div class="cb">
+        <div class="fg fg1">
+          <div class="f">
+            <label>장기세굴 산정방법 <span class="un">선택</span></label>
+            <select id="lt_method" onchange="onLtMethodChange()">
+              <option value="measured">하상변동 측량 추세분석 (자동계산)</option>
+              <option value="hec6">HEC-6 수치모형 결과 (직접입력)</option>
+              <option value="blench">Blench 공식 적용 (직접입력)</option>
+              <option value="manual">기타 (직접입력)</option>
+            </select>
+          </div>
+
+          <!-- 측량 추세분석일 때: 과거·현재 하상고 입력 → 자동계산 -->
+          <div id="lt_survey_block">
+            <div class="fg fg1" style="margin-top:8px;">
+              <div class="f">
+                <label>과거 하상고 (기준시점) <span class="un">EL. m</span></label>
+                <input type="number" id="lt_bed_past" value="9.50" step="0.01" oninput="calcAll()">
+              </div>
+              <div class="f">
+                <label>현재 하상고 (최근 측량) <span class="un">EL. m</span></label>
+                <input type="number" id="lt_bed_now" value="9.00" step="0.01" oninput="calcAll()">
+              </div>
+              <div class="f">
+                <label>산정 장기세굴심 (ys,lt) <span class="un">m — 자동계산</span></label>
+                <input type="number" id="ys_lt_auto" readonly tabindex="-1"
+                  style="opacity:.7;background:rgba(124,141,224,.08);border-color:var(--c-lt);color:var(--c-lt);font-weight:600;cursor:not-allowed;">
+              </div>
+            </div>
+            <div class="fnote">
+              <span>계산식:</span> ys,lt = 과거 하상고 − 현재 하상고<br>
+              <span>예시:</span> 과거 EL. 9.50m − 현재 EL. 9.00m = <span>0.50m</span> 장기세굴<br>
+              <span>주의:</span> 결과가 음수(하상 상승)이면 0으로 처리합니다
+            </div>
+          </div>
+
+          <!-- HEC-6 / Blench / 직접입력일 때: 직접 입력 -->
+          <div id="lt_manual_block" style="display:none;margin-top:8px;">
+            <div class="fg fg1">
+              <div class="f">
+                <label>산정 장기세굴심 (ys,lt) <span class="un">m — 직접입력</span></label>
+                <input type="number" id="ys_lt_manual" value="0.50" step="0.01" oninput="calcAll()">
+              </div>
+            </div>
+            <div class="fnote">
+              <span>HEC-6 / Blench 공식</span> 등 별도 분석 결과를 직접 입력하세요.<br>
+              <span>권고:</span> 교량 계획기간(100년) 동안의 하상저하 누적량 적용
+            </div>
+          </div>
+        </div>
+
+        <div class="hint">📐 적용 지침: 하천설계기준 3.3.3 / FHWA HEC-18 Ch.3 — 과거 최심 하상고(또는 HEC-6 예측 하상고)와 현재 하상고의 차이를 보수적으로 적용합니다.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><div class="ch-dot" style="background:var(--c-lt)"></div><h3>산정 결과</h3></div>
+      <div class="cb">
+        <div class="ri"><span class="rl">산정방법</span><span class="rv" id="lt_method_r" style="font-size:12px;font-family:'Noto Sans KR',sans-serif;">측량추세분석</span></div>
+        <div class="ri" id="lt_row_past" ><span class="rl">과거 하상고 (기준)</span><span class="rf">EL.</span><span class="rv" id="lt_r_past">EL. 9.50 m</span></div>
+        <div class="ri" id="lt_row_now"  ><span class="rl">현재 하상고</span><span class="rf">EL.</span><span class="rv" id="lt_r_now">EL. 9.00 m</span></div>
+        <div class="ri"><span class="rl">계산식</span><span class="rv" id="lt_formula" style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--mt);">9.50 − 9.00</span></div>
+        <div class="dvdr"></div>
+        <div class="ri"><span class="rl" style="font-weight:600">적용 장기세굴심 (ys,lt)</span><span class="rf">자동산정</span><span class="rv lt big" id="lt_result">0.50 m</span></div>
+
+        <div class="dvdr"></div>
+        <div class="cs-wrap">
+          <svg viewBox="0 0 360 155" xmlns="http://www.w3.org/2000/svg" id="svg_lt">
+            <text x="180" y="14" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono">장기세굴 개념도</text>
+            <!-- water -->
+            <rect x="40" y="25" width="280" height="35" fill="rgba(88,166,255,0.12)" rx="2"/>
+            <text x="180" y="45" text-anchor="middle" fill="#58a6ff" font-size="9" font-family="JetBrains Mono">수면 (Water Surface)</text>
+            <!-- past bed (reference) -->
+            <line x1="40" y1="63" x2="320" y2="63" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="325" y="66" fill="#f0a500" font-size="8" font-family="JetBrains Mono">과거하상</text>
+            <!-- current bed -->
+            <line x1="40" y1="85" x2="320" y2="85" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <text x="325" y="88" fill="#8b949e" font-size="8" font-family="JetBrains Mono">현 하상</text>
+            <!-- scoured bed (after long-term) -->
+            <line x1="40" y1="112" x2="320" y2="112" stroke="#7c8de0" stroke-width="2"/>
+            <text x="325" y="115" fill="#7c8de0" font-size="8" font-family="JetBrains Mono">세굴기준</text>
+            <!-- arrow: past to current (measured degradation) -->
+            <defs><marker id="arrlt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#7c8de0" stroke-width="1.5"/></marker></defs>
+            <line x1="90" y1="65" x2="90" y2="110" stroke="#7c8de0" stroke-width="1.2" marker-end="url(#arrlt)"/>
+            <text x="98" y="91" fill="#7c8de0" font-size="10" font-family="JetBrains Mono" id="lt_svg_d">ys,lt</text>
+            <!-- zone fill -->
+            <rect x="40" y="63" width="280" height="49" fill="rgba(124,141,224,0.1)"/>
+            <!-- labels inside -->
+            <text x="180" y="79" text-anchor="middle" fill="rgba(240,165,0,.5)" font-size="8" font-family="JetBrains Mono">↓ 이미 발생한 하상저하</text>
+            <text x="180" y="140" text-anchor="middle" fill="rgba(124,141,224,0.55)" font-size="8" font-family="JetBrains Mono">← 장기세굴 적용범위 →</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TAB 2: 수축세굴 ─── -->
+<div class="pane" id="p2">
+  <div class="ph">
+    <div class="pb p2">②</div>
+    <div class="pt">
+      <h2>수축세굴 (Contraction Scour)</h2>
+      <p>교량부에서의 하도 수축에 의한 세굴. 임계유속(Vc) 비교로 Live-bed / Clear-water 조건을 자동 판별하여 HEC-18 공식을 적용합니다.</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <div class="ch"><div class="ch-dot" style="background:var(--c-ct)"></div><h3>수리 입력 데이터</h3></div>
+        <div class="cb">
+          <div class="fg">
+            <div class="f"><label>접근부 본류 유량 (Q₁) <span class="un">m³/s</span></label><input type="number" id="Q1" value="500" step="1" oninput="calcAll()"></div>
+            <div class="f"><label>교량부 통과 유량 (Q₂) <span class="un">m³/s</span></label><input type="number" id="Q2" value="480" step="1" oninput="calcAll()"></div>
+            <div class="f"><label>접근부 하폭 (W₁) <span class="un">m</span></label><input type="number" id="W1" value="100" step="0.5" oninput="calcAll()"></div>
+            <div class="f"><label>교량부 하폭 (W₂) <span class="un">m</span></label><input type="number" id="W2" value="70" step="0.5" oninput="calcAll()"></div>
+            <div class="f"><label>접근부 평균수심 (y₁) <span class="un">m</span></label><input type="number" id="y1_c" value="3.0" step="0.1" oninput="calcAll()"></div>
+            <div class="f"><label>수축부 기존수심 (y₀) <span class="un">m</span></label><input type="number" id="y0_c" value="2.5" step="0.1" oninput="calcAll()"></div>
+            <div class="f"><label>접근부 평균유속 (V₁) <span class="un">m/s</span></label><input type="number" id="V1_c" value="1.8" step="0.1" oninput="calcAll()"></div>
+            <div class="f"><label>하상재료 D₅₀ <span class="un">mm</span></label><input type="number" id="D50_c" value="1.0" step="0.1" oninput="calcAll()"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card sec">
+        <div class="ch"><div class="ch-dot" style="background:var(--c-ct)"></div><h3>이송 모드 (k₁) 선택</h3></div>
+        <div class="cb">
+          <div class="f">
+            <label>유사이송 모드 (k₁) — Live-bed 조건 시 적용</label>
+            <select id="k1_sel" onchange="calcAll()">
+              <option value="0.59">k₁ = 0.59 (주로 소류사 이송, V*/ω &lt; 0.5)</option>
+              <option value="0.64" selected>k₁ = 0.64 (혼합 이송, 0.5 ≤ V*/ω &lt; 2.0)</option>
+              <option value="0.69">k₁ = 0.69 (주로 부유사 이송, V*/ω ≥ 2.0)</option>
+            </select>
+          </div>
+          <div class="fnote">
+            <span>Live-bed:</span> y₂ = y₁ × (Q₂/Q₁)^(6/7) × (W₁/W₂)^k₁<br>
+            <span>Clear-water:</span> y₂ = [Q₂² / (Ku² × Dm^(1/3) × W₂²)]^(3/7)<br>
+            <span>Ku</span> = 0.025 (SI), <span>Dm</span> = 1.25 × D₅₀ (m)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="ch"><div class="ch-dot" style="background:var(--c-ct)"></div><h3>산정 결과</h3></div>
+        <div class="cb">
+          <div class="ri"><span class="rl">임계유속 (Vc)</span><span class="rf">6.19·y₁^(1/6)·D₅₀^(1/3)</span><span class="rv" id="ct_Vc">0.00 m/s</span></div>
+          <div class="ri"><span class="rl">접근부 유속 (V₁)</span><span class="rf">입력값</span><span class="rv" id="ct_V1">0.00 m/s</span></div>
+          <div style="margin:6px 0;" id="ct_condwrap">
+            <div class="ctag live" id="ct_cond">● Live-bed</div>
+          </div>
+          <div class="dvdr"></div>
+          <div class="ri"><span class="rl">수축부 평형수심 (y₂)</span><span class="rf">공식 적용</span><span class="rv ct" id="ct_y2">0.00 m</span></div>
+          <div class="ri"><span class="rl">기존 수축부 수심 (y₀)</span><span class="rf">입력값</span><span class="rv" id="ct_y0">0.00 m</span></div>
+          <div class="ri"><span class="rl">수축세굴심</span><span class="rf">ys,contr = y₂ - y₀</span><span class="rv ct big" id="ct_result">0.00 m</span></div>
+
+          <div class="cs-wrap sec">
+            <svg viewBox="0 0 360 150" xmlns="http://www.w3.org/2000/svg" id="svg_ct">
+              <defs><marker id="arrct" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#00c8b0" stroke-width="1.5"/></marker></defs>
+              <text x="180" y="14" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono">수축세굴 단면 개념도</text>
+              <!-- water surface -->
+              <line x1="30" y1="28" x2="330" y2="28" stroke="#58a6ff" stroke-width="1" stroke-dasharray="3 2"/>
+              <text x="335" y="31" fill="#58a6ff" font-size="8" font-family="JetBrains Mono">W.S</text>
+              <!-- approach section left -->
+              <rect x="30" y="28" width="100" height="60" fill="rgba(88,166,255,.08)" rx="0"/>
+              <text x="80" y="62" text-anchor="middle" fill="#8b949e" font-size="9" font-family="JetBrains Mono">접근부</text>
+              <text x="80" y="74" text-anchor="middle" fill="#8b949e" font-size="8" font-family="JetBrains Mono" id="ct_svgW1">W₁=100m</text>
+              <!-- bridge section -->
+              <rect x="145" y="28" width="70" height="75" fill="rgba(0,200,176,.08)" rx="0"/>
+              <text x="180" y="62" text-anchor="middle" fill="#00c8b0" font-size="9" font-family="JetBrains Mono">교량부</text>
+              <text x="180" y="74" text-anchor="middle" fill="#00c8b0" font-size="8" font-family="JetBrains Mono" id="ct_svgW2">W₂=70m</text>
+              <!-- abutment -->
+              <rect x="130" y="20" width="15" height="50" fill="#484f58" rx="2"/>
+              <rect x="215" y="20" width="15" height="50" fill="#484f58" rx="2"/>
+              <!-- beds -->
+              <line x1="30" y1="88" x2="130" y2="88" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <line x1="215" y1="88" x2="330" y2="88" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <!-- y0 existing contracted bed -->
+              <line x1="145" y1="88" x2="215" y2="88" stroke="#484f58" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <!-- y2 scoured contracted bed -->
+              <line x1="145" y1="103" x2="215" y2="103" stroke="#00c8b0" stroke-width="2"/>
+              <!-- arrow for scour -->
+              <line x1="180" y1="90" x2="180" y2="101" stroke="#00c8b0" stroke-width="1" marker-end="url(#arrct)"/>
+              <text x="220" y="97" fill="#00c8b0" font-size="9" font-family="JetBrains Mono" id="ct_svgD">ys=?</text>
+              <!-- fill -->
+              <rect x="145" y="103" width="70" height="20" fill="rgba(0,200,176,.12)"/>
+              <text x="180" y="120" text-anchor="middle" fill="rgba(0,200,176,.6)" font-size="8" font-family="JetBrains Mono">수축세굴</text>
+              <!-- labels -->
+              <text x="30" y="145" fill="#8b949e" font-size="8" font-family="JetBrains Mono">--- 현 하상  ─ 세굴 후 하상</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TAB 3: 국부세굴 ─── -->
+<div class="pane" id="p3">
+  <div class="ph">
+    <div class="pb p3">③</div>
+    <div class="pt">
+      <h2>국부세굴 (Local Scour at Piers) — CSU 공식</h2>
+      <p>교각 형상·흐름 사각도·하상 상태를 반영한 K 계수를 자동 계산합니다. FHWA HEC-18 CSU(Colorado State Univ.) 공식 기반.</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <div class="ch"><div class="ch-dot" style="background:var(--c-lo)"></div><h3>교각 제원 및 수리량</h3></div>
+        <div class="cb">
+          <div class="fg">
+            <div class="f"><label>교각 폭 (a) <span class="un">m</span></label><input type="number" id="a_pier" value="1.5" step="0.1" oninput="calcAll()"></div>
+            <div class="f"><label>교각 길이 (L) <span class="un">m</span></label><input type="number" id="L_pier" value="8.0" step="0.5" oninput="calcAll()"></div>
+            <div class="f"><label>교각 전면 수심 (y₁) <span class="un">m</span></label><input type="number" id="y1_l" value="3.5" step="0.1" oninput="calcAll()"></div>
+            <div class="f"><label>접근 유속 (V₁) <span class="un">m/s</span></label><input type="number" id="V1_l" value="2.0" step="0.1" oninput="calcAll()"></div>
+            <div class="f"><label>흐름 사각도 (θ) <span class="un">°</span></label><input type="number" id="theta" value="0" step="1" oninput="calcAll()"></div>
+            <div class="f"><label>하상재료 D₅₀ <span class="un">mm</span></label><input type="number" id="D50_l" value="1.0" step="0.1" oninput="calcAll()"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card sec">
+        <div class="ch"><div class="ch-dot" style="background:var(--c-lo)"></div><h3>K 계수 선택</h3></div>
+        <div class="cb">
+          <div class="fg fg1">
+            <div class="f">
+              <label>K₁ — 교각 선두 형상</label>
+              <select id="K1_sel" onchange="calcAll()">
+                <option value="1.0" selected>원형 / 반원형 선두 → K₁ = 1.0</option>
+                <option value="1.1">직사각형 선두 → K₁ = 1.1</option>
+                <option value="0.9">삼각형 선두 (60°~75°) → K₁ = 0.9</option>
+                <option value="0.8">렌즈형 / 유선형 선두 → K₁ = 0.8</option>
+                <option value="1.3">정사각형 선두 → K₁ = 1.3</option>
+              </select>
+            </div>
+            <div class="f">
+              <label>K₃ — 하상 상태</label>
+              <select id="K3_sel" onchange="calcAll()">
+                <option value="1.1" selected>평탄하상 / 반사구 → K₃ = 1.1</option>
+                <option value="1.1">소규모 사구 (H &lt; 0.6m) → K₃ = 1.1</option>
+                <option value="1.2">중규모 사구 (0.6m ≤ H &lt; 3m) → K₃ = 1.2</option>
+                <option value="1.3">대규모 사구 (H ≥ 3m) → K₃ = 1.3</option>
+                <option value="0.9">반사구 (임계유속 이상) → K₃ = 0.9</option>
+              </select>
+            </div>
+            <div class="f">
+              <label>K₄ — 세립토/조립토 보정 <span class="un">수동입력 가능</span></label>
+              <input type="number" id="K4_val" value="1.0" step="0.01" min="0.4" max="1.0" oninput="calcAll()">
+            </div>
+          </div>
+          <div class="hint">K₂ (흐름 사각도)는 θ와 L/a 값으로 자동 계산됩니다. D₅₀ &lt; 2mm이면 K₄ = 1.0 적용 권장.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="ch"><div class="ch-dot" style="background:var(--c-lo)"></div><h3>산정 결과 — CSU 공식</h3></div>
+        <div class="cb">
+          <div class="fnote">
+            <span>ys,local</span> = 2.0 × K₁ × K₂ × K₃ × K₄ × y₁ × (a/y₁)^0.65 × Fr₁^0.43
+          </div>
+
+          <div class="ri"><span class="rl">Froude수 (Fr₁)</span><span class="rf">V₁/√(g·y₁)</span><span class="rv" id="lo_Fr">0.000</span></div>
+          <div class="ri"><span class="rl">a/y₁ 비</span><span class="rf">교각폭/수심</span><span class="rv" id="lo_ratio">0.00</span></div>
+
+          <div class="dvdr"></div>
+          <div class="kf">
+            <div class="ki"><div class="kn">K₁ 형상</div><div class="kv" id="lo_K1">1.00</div><div class="kl">선두형상</div></div>
+            <div class="ki"><div class="kn">K₂ 사각도</div><div class="kv" id="lo_K2">1.00</div><div class="kl">θ=<span id="lo_th">0</span>°</div></div>
+            <div class="ki"><div class="kn">K₃ 하상</div><div class="kv" id="lo_K3">1.10</div><div class="kl">평탄하상</div></div>
+            <div class="ki"><div class="kn">K₄ 보정</div><div class="kv" id="lo_K4">1.00</div><div class="kl">세립토</div></div>
+          </div>
+
+          <div class="ri"><span class="rl">K₁·K₂·K₃·K₄ 합성</span><span class="rf">조합계수</span><span class="rv" id="lo_Kall">1.10</span></div>
+          <div class="ri"><span class="rl">국부세굴심 (ys,local)</span><span class="rf">CSU 공식</span><span class="rv lo big" id="lo_result">0.00 m</span></div>
+
+          <div class="cs-wrap sec">
+            <svg viewBox="0 0 360 160" xmlns="http://www.w3.org/2000/svg">
+              <defs><marker id="arrlo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#f0a500" stroke-width="1.5"/></marker></defs>
+              <text x="180" y="14" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono">국부세굴 단면 개념도 (교각)</text>
+              <!-- water -->
+              <rect x="40" y="22" width="280" height="40" fill="rgba(88,166,255,.08)"/>
+              <line x1="40" y1="22" x2="320" y2="22" stroke="#58a6ff" stroke-width="1"/>
+              <text x="50" y="35" fill="#58a6ff" font-size="9" font-family="JetBrains Mono">▼ W.L</text>
+              <!-- pier -->
+              <rect x="160" y="22" width="40" height="75" fill="#484f58" rx="3"/>
+              <text x="180" y="66" text-anchor="middle" fill="#e6edf3" font-size="9" font-family="JetBrains Mono">교각</text>
+              <!-- original bed -->
+              <line x1="40" y1="97" x2="160" y2="97" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <line x1="200" y1="97" x2="320" y2="97" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <!-- scour line -->
+              <path d="M160 97 Q140 118 120 125 Q90 130 40 128" fill="none" stroke="#f0a500" stroke-width="2"/>
+              <path d="M200 97 Q220 118 240 125 Q270 130 320 128" fill="none" stroke="#f0a500" stroke-width="2"/>
+              <!-- scour depth arrow -->
+              <line x1="95" y1="97" x2="95" y2="126" stroke="#f0a500" stroke-width="1.2" marker-end="url(#arrlo)"/>
+              <text x="100" y="114" fill="#f0a500" font-size="10" font-family="JetBrains Mono" id="lo_svg_d">ys,local</text>
+              <!-- fill -->
+              <path d="M40 128 Q90 130 120 125 Q140 118 160 97 L160 130 L40 130 Z" fill="rgba(240,165,0,.12)"/>
+              <path d="M200 97 Q220 118 240 125 Q270 130 320 128 L320 130 L200 130 Z" fill="rgba(240,165,0,.12)"/>
+              <!-- flow arrow -->
+              <line x1="55" y1="55" x2="145" y2="55" stroke="#8b949e" stroke-width="1" marker-end="url(#arrlo)"/>
+              <text x="90" y="50" text-anchor="middle" fill="#8b949e" font-size="9" font-family="JetBrains Mono">V₁ →</text>
+              <!-- labels -->
+              <text x="40" y="148" fill="#8b949e" font-size="8" font-family="JetBrains Mono">--- 현 하상  ─ 국부세굴선</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- K1 reference table -->
+  <div class="card sec">
+    <div class="ch"><div class="ch-dot" style="background:var(--c-lo)"></div><h3>K₁ 교각 형상 계수 참고표 (HEC-18)</h3></div>
+    <div class="cb">
+      <table class="rtbl">
+        <tr><th>교각 선두 형상</th><th>K₁</th><th>적용 조건</th></tr>
+        <tr><td>원형 또는 반원형</td><td class="hl">1.0</td><td>가장 일반적인 형상</td></tr>
+        <tr><td>직사각형</td><td class="hl">1.1</td><td>수직 벽면 선두</td></tr>
+        <tr><td>삼각형 (60°~75°)</td><td class="hl">0.9</td><td>뾰족한 선두부</td></tr>
+        <tr><td>렌즈형 / 유선형</td><td class="hl">0.8</td><td>최적 수리학적 형상</td></tr>
+        <tr><td>정사각형</td><td class="hl">1.3</td><td>90° 모서리 선두</td></tr>
+      </table>
+      <div class="hint">⚠ θ ≥ 5° 이상 흐름 사각도 발생 시 K₂가 지배적이 되어 K₁의 영향 감소 (HEC-18 권고)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TAB 4: 총세굴 판정 ─── -->
+<div class="pane" id="p4">
+  <div class="ph">
+    <div class="pb p4">④</div>
+    <div class="pt">
+      <h2>총세굴 판정 (Total Scour Assessment)</h2>
+      <p>3종 세굴심의 합산 및 기초 근입깊이 비교를 통한 최종 안전성 판정. 설계세굴(100년) 기준 검토.</p>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="igrid">
+    <div class="ic">
+      <div class="icl">① 장기세굴 (ys,lt)</div>
+      <div class="icv" style="color:var(--c-lt)" id="tot_s1">0.00</div>
+      <div class="icu">m</div>
+    </div>
+    <div class="ic">
+      <div class="icl">② 수축세굴 (ys,contr)</div>
+      <div class="icv" style="color:var(--c-ct)" id="tot_s2">0.00</div>
+      <div class="icu">m</div>
+    </div>
+    <div class="ic">
+      <div class="icl">③ 국부세굴 (ys,local)</div>
+      <div class="icv" style="color:var(--c-lo)" id="tot_s3">0.00</div>
+      <div class="icu">m</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <div class="ch"><div class="ch-dot" style="background:var(--c-to)"></div><h3>기초 제원 입력</h3></div>
+        <div class="cb">
+          <div class="fg fg1">
+            <div class="f">
+              <label>기초 형식</label>
+              <select id="found_type" onchange="calcAll()">
+                <option value="direct">직접기초 (독립기초)</option>
+                <option value="pile">말뚝기초</option>
+                <option value="well">우물통기초</option>
+              </select>
+            </div>
+            <div class="f">
+              <label>현재 하상고 (EL.) <span class="un">m</span></label>
+              <input type="number" id="bed_EL" value="10.00" step="0.01" oninput="calcAll()">
+            </div>
+            <div class="f">
+              <label>기초 저면 고 (EL.) <span class="un">m</span></label>
+              <input type="number" id="found_EL" value="4.00" step="0.01" oninput="calcAll()">
+            </div>
+            <div class="f">
+              <label>설계 근입깊이 <span class="un">m</span></label>
+              <input type="number" id="found_depth" value="6.00" step="0.01" oninput="calcAll()" placeholder="자동 계산">
+            </div>
+          </div>
+          <div class="hint">💡 현재 하상고 - 기초저면 고 = 근입깊이(현황). 세굴 후 하상이 기초저면보다 높으면 위험!</div>
+        </div>
+      </div>
+
+      <div class="card sec">
+        <div class="ch"><div class="ch-dot" style="background:var(--c-to)"></div><h3>500년 빈도 검토 (선택)</h3></div>
+        <div class="cb">
+          <div class="fg">
+            <div class="f"><label>500년 빈도 확대계수 <span class="un">배</span></label><input type="number" id="check_factor" value="1.25" step="0.05" oninput="calcAll()"></div>
+            <div class="f"><label>검토세굴 총세굴심 (자동) <span class="un">m</span></label><input type="number" id="tot_check" value="" readonly style="opacity:.6"></div>
+          </div>
+          <div class="fnote"><span>검토세굴:</span> 500년 빈도 홍수 적용, 교량 붕괴 방지 확인 목적<br><span>판정기준:</span> 기초저면 ≥ (하상고 - 총세굴심) 이면 OK</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="ch"><div class="ch-dot" style="background:var(--c-to)"></div><h3>총세굴 산정 결과</h3></div>
+        <div class="cb">
+          <div class="ri"><span class="rl">현재 하상고</span><span class="rf">EL.</span><span class="rv" id="tot_bedEL">10.00 m</span></div>
+          <div class="ri"><span class="rl">장기세굴 (ys,lt)</span><span class="rv lt" id="tot_r1">- 0.00 m</span></div>
+          <div class="ri"><span class="rl">수축세굴 (ys,contr)</span><span class="rv ct" id="tot_r2">- 0.00 m</span></div>
+          <div class="ri"><span class="rl">국부세굴 (ys,local)</span><span class="rv lo" id="tot_r3">- 0.00 m</span></div>
+          <div class="dvdr"></div>
+          <div class="ri"><span class="rl" style="font-weight:600">총세굴심 Σ</span><span class="rv big" id="tot_total">0.00 m</span></div>
+          <div class="ri"><span class="rl" style="font-weight:600">세굴기준면 고 (EL.)</span><span class="rv big" id="tot_scourEL">0.00 m</span></div>
+          <div class="dvdr"></div>
+          <div class="ri"><span class="rl">기초 저면 고 (EL.)</span><span class="rv" id="tot_foundEL">4.00 m</span></div>
+          <div class="ri"><span class="rl">여유 근입깊이</span><span class="rv" id="tot_margin">0.00 m</span></div>
+
+          <div class="jbox ok" id="jbox">
+            <div class="js" id="jstatus">OK</div>
+            <div class="jm" id="jmsg">기초 저면이 세굴기준면 아래에 위치 — 안전</div>
+          </div>
+
+          <!-- Cross-section visualization -->
+          <div class="cs-wrap">
+            <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg" id="svg_tot">
+              <defs>
+                <marker id="arrtot" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#f85149" stroke-width="1.5"/></marker>
+                <marker id="arrok" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#3fb950" stroke-width="1.5"/></marker>
+              </defs>
+              <text x="180" y="14" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono">총세굴 단면 개념도</text>
+              <!-- water surface -->
+              <line x1="30" y1="28" x2="330" y2="28" stroke="#58a6ff" stroke-width="1"/>
+              <text x="335" y="31" fill="#58a6ff" font-size="8" font-family="JetBrains Mono">W.S</text>
+              <!-- water body -->
+              <rect x="30" y="28" width="300" height="62" fill="rgba(88,166,255,.07)"/>
+              <!-- pier -->
+              <rect x="155" y="28" width="50" height="130" fill="#21262d" stroke="#484f58" stroke-width="1" rx="3"/>
+              <text x="180" y="80" text-anchor="middle" fill="#8b949e" font-size="9" font-family="JetBrains Mono">교각</text>
+              <!-- current bed -->
+              <line x1="30" y1="90" x2="155" y2="90" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <line x1="205" y1="90" x2="330" y2="90" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <text x="32" y="87" fill="#8b949e" font-size="9" font-family="JetBrains Mono">현하상 EL.</text>
+              <!-- scour bed -->
+              <line x1="30" y1="130" x2="155" y2="130" stroke="#f85149" stroke-width="2"/>
+              <line x1="205" y1="130" x2="330" y2="130" stroke="#f85149" stroke-width="2"/>
+              <text x="32" y="127" fill="#f85149" font-size="9" font-family="JetBrains Mono">세굴기준면</text>
+              <!-- scour fill -->
+              <rect x="30" y="90" width="125" height="40" fill="rgba(248,81,73,.1)"/>
+              <rect x="205" y="90" width="125" height="40" fill="rgba(248,81,73,.1)"/>
+              <!-- total scour arrow -->
+              <line x1="50" y1="90" x2="50" y2="128" stroke="#f85149" stroke-width="1" marker-end="url(#arrtot)"/>
+              <text x="56" y="113" fill="#f85149" font-size="9" font-family="JetBrains Mono" id="tot_svg_d">Σys</text>
+              <!-- foundation -->
+              <line x1="140" y1="158" x2="220" y2="158" stroke="#3fb950" stroke-width="2" id="svg_fnd"/>
+              <text x="225" y="161" fill="#3fb950" font-size="9" font-family="JetBrains Mono">기초저면</text>
+              <!-- foundation block -->
+              <rect x="145" y="158" width="70" height="20" fill="rgba(63,185,80,.15)" rx="2" id="svg_fnd_blk"/>
+              <!-- margin annotation -->
+              <line x1="280" y1="130" x2="280" y2="157" stroke="#3fb950" stroke-width="1" id="svg_mgn_line"/>
+              <text x="285" y="146" fill="#3fb950" font-size="9" font-family="JetBrains Mono" id="svg_mgn_txt">여유</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Design notes -->
+  <div class="card sec">
+    <div class="ch"><div class="ch-dot" style="background:var(--c-to)"></div><h3>검토 기준 요약</h3></div>
+    <div class="cb">
+      <table class="rtbl">
+        <tr><th>검토항목</th><th>기준</th><th>적용 공식</th><th>결과</th></tr>
+        <tr>
+          <td>설계세굴 (100년)</td>
+          <td>기초저면 EL ≤ 세굴기준면 EL</td>
+          <td>HEC-18 / 하천설계기준</td>
+          <td id="tot_chk100" class="hl">-</td>
+        </tr>
+        <tr>
+          <td>검토세굴 (500년)</td>
+          <td>교량 붕괴 방지 확인</td>
+          <td>설계세굴 × 확대계수</td>
+          <td id="tot_chk500" class="hl">-</td>
+        </tr>
+      </table>
+      <div class="fnote">
+        <span>판정기준:</span> 기초저면 EL ≤ (현하상고 EL - 총세굴심) = 세굴기준면 → <span style="color:var(--ok)">OK ✓</span><br>
+        <span>NG 시:</span> 근입깊이 증가, 호안공·사석보호공, 세굴방지공(말뚝식 차수벽) 등 대책공 검토 필요
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+let curTab = 1;
+function showTab(n) {
+  curTab = n;
+  document.querySelectorAll('.pane').forEach((p, i) => p.classList.toggle('on', i === n - 1));
+  document.querySelectorAll('.tb').forEach((b, i) => b.classList.toggle('on', i === n - 1));
+  calcAll();
+}
+
+function fmtN(v, d=2) {
+  if (isNaN(v) || !isFinite(v)) return '—';
+  return v.toFixed(d);
+}
+
+// 산정방법 변경 시 UI 전환
+function onLtMethodChange() {
+  const method = document.getElementById('lt_method').value;
+  const isSurvey = (method === 'measured');
+  document.getElementById('lt_survey_block').style.display = isSurvey ? '' : 'none';
+  document.getElementById('lt_manual_block').style.display = isSurvey ? 'none' : '';
+  // 결과 행 visibility
+  document.getElementById('lt_row_past').style.display = isSurvey ? '' : 'none';
+  document.getElementById('lt_row_now').style.display  = isSurvey ? '' : 'none';
+  calcAll();
+}
+
+function calcAll() {
+  // ── Tab 1: Long-term scour ──
+  const lt_method = document.getElementById('lt_method').value;
+  const methodNames = {measured:'측량 추세분석 (자동)', hec6:'HEC-6 모형 (직접입력)', blench:'Blench 공식 (직접입력)', manual:'직접입력'};
+
+  let ys_lt;
+  if (lt_method === 'measured') {
+    // 자동계산: 과거 하상고 - 현재 하상고
+    const lt_past = parseFloat(document.getElementById('lt_bed_past').value) || 0;
+    const lt_now  = parseFloat(document.getElementById('lt_bed_now').value)  || 0;
+    ys_lt = Math.max(lt_past - lt_now, 0); // 음수(하상 상승)는 0 처리
+    // 자동계산 결과를 읽기전용 필드에 표시
+    document.getElementById('ys_lt_auto').value = fmtN(ys_lt, 3);
+    document.getElementById('lt_r_past').textContent = 'EL. ' + fmtN(lt_past, 2) + ' m';
+    document.getElementById('lt_r_now').textContent  = 'EL. ' + fmtN(lt_now,  2) + ' m';
+    document.getElementById('lt_formula').textContent = fmtN(lt_past,2) + ' − ' + fmtN(lt_now,2) + ' = ' + fmtN(ys_lt,3) + ' m';
+    // 음수 경고 색상
+    document.getElementById('ys_lt_auto').style.borderColor = (lt_past <= lt_now) ? 'var(--wn)' : 'var(--c-lt)';
+  } else {
+    // 직접입력
+    ys_lt = Math.max(parseFloat(document.getElementById('ys_lt_manual').value) || 0, 0);
+    document.getElementById('lt_formula').textContent = '직접입력 = ' + fmtN(ys_lt,3) + ' m';
+    document.getElementById('lt_r_past').textContent = '—';
+    document.getElementById('lt_r_now').textContent  = '—';
+  }
+
+  document.getElementById('lt_method_r').textContent = methodNames[lt_method] || '-';
+  document.getElementById('lt_result').textContent = fmtN(ys_lt, 3) + ' m';
+  document.getElementById('lt_svg_d').textContent  = fmtN(ys_lt, 2) + 'm';
+  // 음수(하상 상승) 경고 메시지
+  if (lt_method === 'measured') {
+    const lt_past = parseFloat(document.getElementById('lt_bed_past').value) || 0;
+    const lt_now  = parseFloat(document.getElementById('lt_bed_now').value)  || 0;
+    if (lt_past < lt_now) {
+      document.getElementById('lt_result').textContent = '0.000 m ⚠ 하상 상승 구간';
+      document.getElementById('lt_result').style.color = 'var(--wn)';
+    } else {
+      document.getElementById('lt_result').style.color = 'var(--c-lt)';
+    }
+  } else {
+    document.getElementById('lt_result').style.color = 'var(--c-lt)';
+  }
+
+  // ── Tab 2: Contraction scour ──
+  const Q1 = parseFloat(document.getElementById('Q1').value) || 0;
+  const Q2 = parseFloat(document.getElementById('Q2').value) || 0;
+  const W1 = parseFloat(document.getElementById('W1').value) || 1;
+  const W2 = parseFloat(document.getElementById('W2').value) || 1;
+  const y1_c = parseFloat(document.getElementById('y1_c').value) || 0.01;
+  const y0_c = parseFloat(document.getElementById('y0_c').value) || 0;
+  const V1_c = parseFloat(document.getElementById('V1_c').value) || 0;
+  const D50_c = parseFloat(document.getElementById('D50_c').value) || 0.01;
+  const k1 = parseFloat(document.getElementById('k1_sel').value) || 0.64;
+
+  // Critical velocity: Vc = 6.19 * y1^(1/6) * (D50/1000)^(1/3)
+  const Vc = 6.19 * Math.pow(y1_c, 1/6) * Math.pow(D50_c/1000, 1/3);
+  const isLiveBed = V1_c >= Vc;
+
+  let y2_c;
+  if (isLiveBed) {
+    // Live-bed
+    y2_c = y1_c * Math.pow(Q2 / Q1, 6/7) * Math.pow(W1 / W2, k1);
+  } else {
+    // Clear-water: y2 = [Q2^2 / (Ku^2 * Dm^(1/3) * W2^2)]^(3/7)
+    const Ku = 0.025;
+    const Dm = 1.25 * D50_c / 1000;
+    const denom = Ku * Ku * Math.pow(Dm, 1/3) * W2 * W2;
+    y2_c = Math.pow((Q2 * Q2) / denom, 3/7);
+  }
+  const ys_contr = Math.max(y2_c - y0_c, 0);
+
+  document.getElementById('ct_Vc').textContent = fmtN(Vc, 3) + ' m/s';
+  document.getElementById('ct_V1').textContent = fmtN(V1_c, 3) + ' m/s';
+  const condEl = document.getElementById('ct_cond');
+  condEl.className = 'ctag ' + (isLiveBed ? 'live' : 'clear');
+  condEl.innerHTML = `<div class="ctag-dot"></div>${isLiveBed ? '⚡ Live-bed 조건 (V₁ ≥ Vc)' : '💧 Clear-water 조건 (V₁ < Vc)'}`;
+  document.getElementById('ct_y2').textContent = fmtN(y2_c, 3) + ' m';
+  document.getElementById('ct_y0').textContent = fmtN(y0_c, 2) + ' m';
+  document.getElementById('ct_result').textContent = fmtN(ys_contr, 3) + ' m';
+  document.getElementById('ct_svgW1').textContent = 'W₁=' + W1 + 'm';
+  document.getElementById('ct_svgW2').textContent = 'W₂=' + W2 + 'm';
+  document.getElementById('ct_svgD').textContent = 'ys=' + fmtN(ys_contr, 2) + 'm';
+
+  // ── Tab 3: Local scour (CSU) ──
+  const a = parseFloat(document.getElementById('a_pier').value) || 0.01;
+  const L = parseFloat(document.getElementById('L_pier').value) || 1;
+  const y1_l = parseFloat(document.getElementById('y1_l').value) || 0.01;
+  const V1_l = parseFloat(document.getElementById('V1_l').value) || 0;
+  const theta = parseFloat(document.getElementById('theta').value) || 0;
+  const K1 = parseFloat(document.getElementById('K1_sel').value) || 1.0;
+  const K3 = parseFloat(document.getElementById('K3_sel').value) || 1.1;
+  const K4 = parseFloat(document.getElementById('K4_val').value) || 1.0;
+
+  const Fr1 = V1_l / Math.sqrt(9.81 * y1_l);
+  const thetaRad = theta * Math.PI / 180;
+  const K2 = Math.pow(Math.cos(thetaRad) + (L / a) * Math.sin(thetaRad), 0.65);
+  const Kall = K1 * K2 * K3 * K4;
+  const ys_local = 2.0 * Kall * y1_l * Math.pow(a / y1_l, 0.65) * Math.pow(Fr1, 0.43);
+
+  document.getElementById('lo_Fr').textContent = fmtN(Fr1, 4);
+  document.getElementById('lo_ratio').textContent = fmtN(a / y1_l, 3);
+  document.getElementById('lo_K1').textContent = fmtN(K1, 2);
+  document.getElementById('lo_K2').textContent = fmtN(K2, 3);
+  document.getElementById('lo_K3').textContent = fmtN(K3, 2);
+  document.getElementById('lo_K4').textContent = fmtN(K4, 2);
+  document.getElementById('lo_th').textContent = theta;
+  document.getElementById('lo_Kall').textContent = fmtN(Kall, 3);
+  document.getElementById('lo_result').textContent = fmtN(ys_local, 3) + ' m';
+  document.getElementById('lo_svg_d').textContent = fmtN(ys_local, 2) + 'm';
+
+  // ── Tab 4: Total ──
+  const ys_total = ys_lt + ys_contr + ys_local;
+  const bed_EL = parseFloat(document.getElementById('bed_EL').value) || 0;
+  const found_EL = parseFloat(document.getElementById('found_EL').value) || 0;
+  const scour_EL = bed_EL - ys_total;
+  const margin = scour_EL - found_EL; // positive = OK (foundation below scour line)
+  const isOK = found_EL <= scour_EL; // foundation bottom at or below scour elevation
+
+  // Actually corrected: scour_EL is lower than bed_EL.
+  // foundation bottom (found_EL) should be LOWER than scour_EL
+  // found_EL <= scour_EL means foundation IS below the scoured bed... wait
+  // Let me re-check:
+  // bed_EL = 10m (current bed)
+  // ys_total = 3m (scour depth)
+  // scour_EL = 7m (scoured bed elevation)
+  // found_EL = 4m (foundation bottom elevation)
+  // found_EL (4m) < scour_EL (7m) → foundation is BELOW the scoured bed → OK!
+  // So OK condition: found_EL < scour_EL, i.e. margin = scour_EL - found_EL > 0
+  const marginFixed = scour_EL - found_EL; // positive = OK
+
+  const check_factor = parseFloat(document.getElementById('check_factor').value) || 1.25;
+  const ys_check = ys_total * check_factor;
+  const scour_EL_500 = bed_EL - ys_check;
+  const isOK500 = found_EL < scour_EL_500;
+
+  document.getElementById('tot_check').value = fmtN(ys_check, 2);
+
+  // Update sidebar badges
+  document.getElementById('b1').textContent = fmtN(ys_lt,2)+'m';
+  document.getElementById('b2').textContent = fmtN(ys_contr,2)+'m';
+  document.getElementById('b3').textContent = fmtN(ys_local,2)+'m';
+  document.getElementById('b4').textContent = isOK ? 'OK' : 'NG';
+  document.getElementById('b4').className = 'tbadge ' + (isOK ? 'bok' : 'bng');
+
+  // Sidebar summary
+  document.getElementById('s1').textContent = fmtN(ys_lt,2) + ' m';
+  document.getElementById('s2').textContent = fmtN(ys_contr,2) + ' m';
+  document.getElementById('s3').textContent = fmtN(ys_local,2) + ' m';
+  document.getElementById('s4').textContent = fmtN(ys_total,2) + ' m';
+
+  // Sidebar bar
+  if (ys_total > 0) {
+    document.getElementById('bar1').style.width = (ys_lt/ys_total*100)+'%';
+    document.getElementById('bar2').style.width = (ys_contr/ys_total*100)+'%';
+    document.getElementById('bar3').style.width = (ys_local/ys_total*100)+'%';
+  } else {
+    ['bar1','bar2','bar3'].forEach(id => document.getElementById(id).style.width='0%');
+  }
+
+  // Tab 4 display
+  document.getElementById('tot_s1').textContent = fmtN(ys_lt,2);
+  document.getElementById('tot_s2').textContent = fmtN(ys_contr,2);
+  document.getElementById('tot_s3').textContent = fmtN(ys_local,2);
+  document.getElementById('tot_bedEL').textContent = 'EL. ' + fmtN(bed_EL,2) + ' m';
+  document.getElementById('tot_r1').textContent = '▽ ' + fmtN(ys_lt,2) + ' m';
+  document.getElementById('tot_r2').textContent = '▽ ' + fmtN(ys_contr,2) + ' m';
+  document.getElementById('tot_r3').textContent = '▽ ' + fmtN(ys_local,2) + ' m';
+  document.getElementById('tot_total').textContent = fmtN(ys_total,2) + ' m';
+  document.getElementById('tot_scourEL').textContent = 'EL. ' + fmtN(scour_EL,2) + ' m';
+  document.getElementById('tot_foundEL').textContent = 'EL. ' + fmtN(found_EL,2) + ' m';
+
+  const mgnEl = document.getElementById('tot_margin');
+  mgnEl.innerHTML = fmtN(marginFixed,2) + ' m <span class="mgn ' + (marginFixed > 0 ? 'ok' : 'ng') + '">' + (marginFixed > 0 ? '▼ 여유 있음' : '▲ 부족') + '</span>';
+
+  // Judgment
+  const jbox = document.getElementById('jbox');
+  jbox.className = 'jbox ' + (marginFixed > 0 ? 'ok' : 'ng');
+  document.getElementById('jstatus').textContent = marginFixed > 0 ? '✓ SAFE' : '✗ N.G.';
+  document.getElementById('jmsg').innerHTML = marginFixed > 0
+    ? `기초 저면(EL.${fmtN(found_EL,2)}m)이 세굴기준면(EL.${fmtN(scour_EL,2)}m) 아래 — <strong>안전</strong><br>여유 근입깊이 = ${fmtN(marginFixed,2)} m`
+    : `기초 저면(EL.${fmtN(found_EL,2)}m)이 세굴기준면(EL.${fmtN(scour_EL,2)}m) 보다 높음 — <strong>보강 필요</strong><br>부족 깊이 = ${fmtN(Math.abs(marginFixed),2)} m → 근입 증가 또는 대책공 검토`;
+
+  document.getElementById('tot_chk100').textContent = marginFixed > 0 ? 'OK ✓' : 'N.G. ✗';
+  document.getElementById('tot_chk100').className = marginFixed > 0 ? 'ok' : 'ng';
+  document.getElementById('tot_chk500').textContent = isOK500 ? 'OK ✓' : 'N.G. ✗';
+  document.getElementById('tot_chk500').className = isOK500 ? 'ok' : 'ng';
+  document.getElementById('tot_svg_d').textContent = fmtN(ys_total,2)+'m';
+
+  // Update SVG cross section
+  // Scale: bed_EL at y=90, foundation determined by ratio
+  const svgH = 200;
+  const bedY = 90;
+  const maxDraw = 70; // pixel height available below bed
+  const scaleM = ys_total > 0 ? Math.min(maxDraw / (ys_total * 1.5), 10) : 4;
+  const scourY = bedY + ys_total * scaleM;
+  const foundY = bedY + (bed_EL - found_EL) * scaleM;
+
+  // Update scour line SVG elements
+  const svgTot = document.getElementById('svg_tot');
+  // Update scour line
+  svgTot.querySelectorAll('line').forEach(el => {
+    if (el.getAttribute('stroke') === '#f85149') {
+      el.setAttribute('y1', Math.min(scourY, 160));
+      el.setAttribute('y2', Math.min(scourY, 160));
+    }
+  });
+}
+
+// Set today's date
+document.getElementById('chkDate').valueAsDate = new Date();
+
+// 초기 UI 상태 적용 (측량추세분석이 기본값이므로 onLtMethodChange 먼저 호출)
+onLtMethodChange();
+</script>
+</body>
+</html>
