@@ -27,7 +27,9 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 }
 .title-bar h1{font-size:18px;font-weight:700;color:var(--tx);letter-spacing:.5px;display:inline;}
 .title-bar .sub{font-size:12px;color:var(--mt);margin-left:12px;font-family:'JetBrains Mono',monospace;}
-.title-ver{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fin);background:rgba(154,122,255,.12);border:1px solid rgba(154,122,255,.3);padding:2px 8px;border-radius:10px;}
+.title-ver{position:absolute;right:140px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fin);background:rgba(154,122,255,.12);border:1px solid rgba(154,122,255,.3);padding:2px 8px;border-radius:10px;}
+.doc-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(79,144,255,.15);border:1px solid rgba(79,144,255,.5);color:var(--ac);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.3px;}
+.doc-btn:hover{background:rgba(79,144,255,.3);border-color:var(--ac);}
 
 /* ── MAIN LAYOUT ── */
 .app{display:flex;height:calc(100vh - 48px);border:1px solid var(--bd2);margin:0;}
@@ -248,6 +250,10 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
   <h1>Evaluating Scour at Bridges</h1>
   <span class="sub">교량 교각 국부세굴심 검토 및 등급판정</span>
   <div class="title-ver">v4.0</div>
+  <button class="doc-btn" onclick="exportToDoc()" title="Save as Word Document (.doc)">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="9" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 4h5M3 6.5h5M3 9h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M8 9.5l1.5 2.5L11 9.5" stroke="#4F90FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Save as .doc
+  </button>
 </div>
 
 <div class="app">
@@ -715,6 +721,198 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 const g = 9.81;
 let prot = 's';
 let foundMode = 'el';
+
+function exportToDoc(){
+  const gv=id=>{ const e=document.getElementById(id); return e?e.value||e.textContent||'—':'—'; };
+  const tv=id=>{ const e=document.getElementById(id); return e?e.textContent||'—':'—'; };
+
+  // Project info
+  const bridgeName = gv('bridgeName')||'—';
+  const pierNo     = gv('pierNo')||'—';
+  const engName    = gv('engName')||'—';
+  const chkDate    = gv('chkDate')||'—';
+
+  // Hydraulic
+  const yVal   = gv('y');   const VVal  = gv('V');
+  const FrVal  = gv('Fr_o'); const VcVal = gv('Vc_o');
+  const cdVal  = gv('cd_o');
+  const bVal   = gv('b');   const LVal  = gv('L');
+  const thVal  = gv('theta'); const bpVal = gv('bp_o');
+  const D50Val = gv('D50'); const K4Val  = gv('K4');
+  const K1Val  = document.getElementById('K1')?document.getElementById('K1').options[document.getElementById('K1').selectedIndex].text:'—';
+  const K3Val  = document.getElementById('K3')?document.getElementById('K3').options[document.getElementById('K3').selectedIndex].text:'—';
+  const K2Val  = gv('K2_o');
+  const ffVal  = document.getElementById('ff')?document.getElementById('ff').options[document.getElementById('ff').selectedIndex].text:'—';
+  const ftypeEl= document.getElementById('ftype');
+  const ftypeVal= ftypeEl?ftypeEl.options[ftypeEl.selectedIndex].text:'—';
+
+  // EL values (from result display)
+  const EL0v  = tv('r-EL0');  const EL1av = tv('r-EL1a');
+  const EL1v  = tv('r-EL1');  const EL2v  = tv('r-EL2');
+  const YSv   = tv('r-YS');   const selv  = tv('r-sel');
+  const pctv  = tv('r-pct');
+
+  // Scour results
+  const csuV  = tv('fv-csu'); const neilV = tv('fv-neil');
+  const lauV  = tv('fv-lau'); const froeV = tv('fv-froe');
+  const maxV  = tv('fv-max'); const finV  = tv('fv-fin2');
+  const rFr   = tv('r-Fr');   const rVc   = tv('r-Vc');
+  const rBp   = tv('r-bp');   const rKs   = tv('r-Ks');
+
+  // Grade
+  const s1v=tv('s1-val'); const s1s=tv('s1-sub');
+  const s2v=tv('s2-val'); const s2s=tv('s2-sub');
+  const s3v=tv('s3-val'); const s3s=tv('s3-sub');
+  const s4v=tv('s4-val'); const s4s=tv('s4-sub');
+
+  // Pre-judgment
+  const pre1=document.getElementById('pre1')?.checked;
+  const pre2=document.getElementById('pre2')?.checked;
+  const pre3=document.getElementById('pre3')?.checked;
+  const preList=[pre1?'Caisson (Open Caisson) Foundation':'', pre2?'Rock Bedrock':'', pre3?'Scour Resistance Verified':''].filter(Boolean).join(', ')||'None';
+
+  // Prot
+  const protMap={s:'Superior (Full function)',m:'Moderate (Partial function)',h:'Poor (Function lost)'};
+  const protTxt=protMap[prot]||'—';
+
+  const now=new Date();
+  const printDate=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+  const html=`
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head><meta charset='UTF-8'>
+<style>
+  body{font-family:'Times New Roman',serif;font-size:11pt;color:#111;margin:2cm 2.5cm;}
+  h1{font-size:16pt;text-align:center;font-weight:bold;border-bottom:2pt solid #1a3a6a;padding-bottom:6pt;color:#1a3a6a;margin-bottom:4pt;}
+  h2{font-size:12pt;font-weight:bold;color:#1a3a6a;border-bottom:1pt solid #1a3a6a;margin-top:14pt;margin-bottom:5pt;padding-bottom:2pt;}
+  h3{font-size:11pt;font-weight:bold;color:#2a4a7a;margin-top:10pt;margin-bottom:3pt;}
+  table{border-collapse:collapse;width:100%;margin-bottom:8pt;}
+  th{background:#1a3a6a;color:#fff;border:1pt solid #aaa;padding:4pt 6pt;font-size:10pt;text-align:center;}
+  td{border:1pt solid #aaa;padding:3pt 6pt;font-size:10pt;}
+  .info-lbl{color:#555;width:35%;}
+  .val{font-family:'Courier New',monospace;font-weight:bold;}
+  .grade-a{color:#15a055;font-weight:bold;}
+  .grade-b{color:#9a8800;font-weight:bold;}
+  .grade-c{color:#cc7000;font-weight:bold;}
+  .grade-d{color:#cc2222;font-weight:bold;}
+  .grade-e{color:#801010;font-weight:bold;}
+  .note{font-size:9pt;color:#555;font-style:italic;margin-top:4pt;}
+  .footer{font-size:9pt;color:#888;border-top:1pt solid #ccc;margin-top:20pt;padding-top:5pt;}
+  .highlight{background:#f0f5ff;font-weight:bold;}
+</style></head>
+<body>
+<h1>Evaluating Scour at Bridges<br>
+<span style="font-size:11pt;font-weight:normal;color:#555;">Local Scour Depth Assessment &amp; Condition Rating</span></h1>
+
+<table style="margin-bottom:6pt;">
+  <tr><td class="info-lbl">Bridge Name</td><td class="val">${bridgeName}</td><td class="info-lbl">Pier No.</td><td class="val">${pierNo}</td></tr>
+  <tr><td class="info-lbl">Engineer</td><td class="val">${engName}</td><td class="info-lbl">Review Date</td><td class="val">${chkDate}</td></tr>
+  <tr><td class="info-lbl">Print Date</td><td class="val">${printDate}</td><td class="info-lbl">Foundation Type</td><td class="val">${ftypeVal}</td></tr>
+</table>
+
+<h2>1. Hydraulic Conditions</h2>
+<table>
+  <tr><th>Parameter</th><th>Symbol</th><th>Value</th><th>Note</th></tr>
+  <tr><td>Flow Depth</td><td class="val">y</td><td class="val">${yVal} m</td><td></td></tr>
+  <tr><td>Approach Velocity</td><td class="val">V</td><td class="val">${VVal} m/s</td><td></td></tr>
+  <tr><td>Froude Number</td><td class="val">Fr</td><td class="val">${rFr}</td><td>Fr = V / √(g·y)</td></tr>
+  <tr><td>Critical Velocity</td><td class="val">Vc</td><td class="val">${rVc}</td><td>Vc = 6.19·y^(1/6)·D₅₀^(1/3)</td></tr>
+  <tr><td>Flow Condition</td><td class="val">—</td><td class="val">${cdVal}</td><td>Live-bed: V≥Vc / Clear-water: V&lt;Vc</td></tr>
+</table>
+
+<h2>2. Pier &amp; Bed Material Parameters</h2>
+<table>
+  <tr><th>Parameter</th><th>Symbol</th><th>Value</th><th>Note</th></tr>
+  <tr><td>Pier Width</td><td class="val">b</td><td class="val">${bVal} m</td><td></td></tr>
+  <tr><td>Pier Length</td><td class="val">L</td><td class="val">${LVal} m</td><td></td></tr>
+  <tr><td>Flow Attack Angle</td><td class="val">θ</td><td class="val">${thVal}°</td><td></td></tr>
+  <tr><td>Projected Pier Width</td><td class="val">b'</td><td class="val">${rBp}</td><td>b' = b·cosθ + L·sinθ</td></tr>
+  <tr><td>Median Grain Size</td><td class="val">D₅₀</td><td class="val">${D50Val} mm</td><td></td></tr>
+  <tr><td>Correction Factors</td><td class="val">K₁~K₄</td><td class="val">${rKs}</td><td>K₁:shape, K₂:angle, K₃:bed, K₄:armor</td></tr>
+  <tr><td>Froehlich Shape Factor</td><td class="val">f</td><td class="val">${ffVal}</td><td></td></tr>
+</table>
+
+<h2>3. Foundation Elevation System</h2>
+<table>
+  <tr><th>Level</th><th>Elevation</th><th>Description</th></tr>
+  <tr><td>EL.0 — Current Streambed</td><td class="val">${EL0v}</td><td>Reference bed elevation</td></tr>
+  <tr><td>EL.1a — Top of Foundation/Cap</td><td class="val">${EL1av}</td><td>Top of footing or pile cap</td></tr>
+  <tr><td>EL.1 — Bottom of Foundation/Cap</td><td class="val">${EL1v}</td><td>Bottom of footing or pile cap</td></tr>
+  <tr><td>EL.2 — Pile Tip / Ground Surface</td><td class="val">${EL2v}</td><td>Pile tip elevation (pile foundation only)</td></tr>
+  <tr class="highlight"><td>YS = h₁ (EL.0 − EL.1)</td><td class="val">${YSv}</td><td>Foundation embedment reference depth</td></tr>
+  <tr class="highlight"><td>Scour Line Elevation</td><td class="val">${selv}</td><td>EL.0 − ds</td></tr>
+  <tr class="highlight"><td>Foundation Penetration Ratio</td><td class="val">${pctv}</td><td>Scour line within foundation depth</td></tr>
+</table>
+
+<h2>4. Local Scour Depth Calculation</h2>
+<p style="font-size:9pt;color:#555;margin-bottom:4pt;">Method: Fig. 1.35 — Exclude maximum value; apply average of remaining three formulas</p>
+<table>
+  <tr><th>Formula</th><th>Expression</th><th>ds (m)</th><th>Status</th></tr>
+  <tr><td><b>① CSU</b> (HEC-18)</td><td style="font-size:9pt;">ds = 2.0·K₁·K₂·K₃·K₄·y·(b'/y)^0.65·Fr^0.43</td><td class="val" style="text-align:right;">${csuV}</td><td style="text-align:center;">—</td></tr>
+  <tr><td><b>② Neill</b></td><td style="font-size:9pt;">ds = 1.5·b^0.7·y^0.3</td><td class="val" style="text-align:right;">${neilV}</td><td style="text-align:center;">—</td></tr>
+  <tr><td><b>③ Laursen</b></td><td style="font-size:9pt;">ds = 1.1·√(b·y)</td><td class="val" style="text-align:right;">${lauV}</td><td style="text-align:center;">—</td></tr>
+  <tr><td><b>④ Froehlich</b></td><td style="font-size:9pt;">ds = 0.32·f·b'^0.62·y^0.46·Fr^0.20·(b/D₅₀)^0.08</td><td class="val" style="text-align:right;">${froeV}</td><td style="text-align:center;">—</td></tr>
+  <tr style="background:#fff0f0;"><td colspan="2"><b>Maximum Value (Excluded)</b></td><td class="val" style="text-align:right;color:#cc2222;">${maxV}</td><td style="text-align:center;color:#cc2222;">EXCLUDED</td></tr>
+  <tr style="background:#f0f0ff;"><td colspan="2"><b>Design Scour Depth ds (Average of 3)</b></td><td class="val" style="text-align:right;color:#3a3aaa;font-size:13pt;">${finV}</td><td style="text-align:center;color:#3a3aaa;font-weight:bold;">APPLIED</td></tr>
+</table>
+
+<h2>5. Condition Rating</h2>
+<h3>5.1 Pre-Screening Conditions (Table 1.62)</h3>
+<table>
+  <tr><th>Condition</th><th>Result</th></tr>
+  <tr><td>Applicable Conditions</td><td class="val">${preList}</td></tr>
+  <tr><td>Step 1 Assessment</td><td>${s1v}</td></tr>
+  <tr><td>Detail</td><td style="color:#555;">${s1s}</td></tr>
+</table>
+
+<h3>5.2 Basic Rating by Scour Position (Table 1.63)</h3>
+<table>
+  <tr><th>Rating</th><th>Foundation Condition</th><th>Penetration</th></tr>
+  <tr><td class="grade-a">a</td><td>Above top of foundation (0%) — No exposure</td><td>Scour line above EL.1a</td></tr>
+  <tr><td class="grade-b">b</td><td>Partial exposure of top (1~30%)</td><td>Within upper foundation</td></tr>
+  <tr><td class="grade-c">c</td><td>Within foundation depth (31~70%)</td><td>Mid-foundation</td></tr>
+  <tr><td class="grade-d">d</td><td>Partial exposure of bottom (71~100%)</td><td>Near base of foundation</td></tr>
+  <tr><td class="grade-e">e</td><td>Below foundation base (&gt;100%)</td><td>Foundation base exposed</td></tr>
+</table>
+<p><b>Assessment:</b> ${s2v}<br><span style="color:#555;">${s2s}</span></p>
+
+<h3>5.3 Scour Protection Condition Adjustment (Table 1.64)</h3>
+<p><b>Protection Status:</b> ${protTxt}</p>
+<p>${s3v}<br><span style="color:#555;">${s3s}</span></p>
+
+<h3>5.4 Final Rating</h3>
+<table>
+  <tr><th colspan="2" style="font-size:13pt;">Final Condition Rating</th></tr>
+  <tr><td style="width:40%;font-size:24pt;text-align:center;font-weight:bold;">${s4v}</td><td>${s4v}<br><span style="color:#555;font-size:9pt;">${s4s}</span></td></tr>
+  <tr><td>Foundation Penetration Ratio</td><td class="val">${pctv}</td></tr>
+</table>
+
+<h2>6. References</h2>
+<ol style="font-size:9pt;color:#444;line-height:1.8;">
+  <li>Ministry of Land, Infrastructure and Transport (2023). <i>Facility Safety Inspection Guidelines</i> — Tables 1.62–1.65, Fig. 1.35. MOLIT, Republic of Korea.</li>
+  <li>Richardson, E.V. and Davis, S.R. (2001). <i>Evaluating Scour at Bridges, 4th Ed.</i> FHWA HEC-18, FHWA NHI 01-001. U.S. DOT.</li>
+  <li>Hydraulic Engineering Circular No. 18 (HEC-18), 5th Ed. (2012). FHWA-HIF-12-003. U.S. DOT, Federal Highway Administration.</li>
+  <li>Neill, C.R. (1973). <i>Guide to Bridge Hydraulics.</i> Roads and Transportation Association of Canada, University of Toronto Press.</li>
+  <li>Laursen, E.M. and Toch, A. (1956). Scour Around Bridge Piers and Abutments. <i>Iowa Highway Research Board</i>, Bulletin No. 4.</li>
+  <li>Froehlich, D.C. (1988). Analysis of Onsite Measurements of Scour at Piers. <i>Proc. ASCE Hydraulic Eng. Conf.</i>, Colorado Springs, CO.</li>
+  <li>KDS 51 90 10 (2018). <i>River Bridge Design Standard.</i> Ministry of Land, Infrastructure and Transport, Korea.</li>
+  <li>Korea Road Bridge Design Standard — Limit State Design Method (2016). MOLIT &amp; Korea Expressway Corporation.</li>
+  <li>Korea Infrastructure Safety Corporation (2019). <i>Scour Assessment Guidelines for Detailed Safety Inspection of Bridges.</i></li>
+  <li>CSU Formula — Colorado State University (Richardson &amp; Davis, 2001, HEC-18 §4).</li>
+</ol>
+
+<div class="footer">
+  Generated by: Evaluating Scour at Bridges v4.0 &nbsp;|&nbsp; Engineer: ${engName} &nbsp;|&nbsp; Print Date: ${printDate}
+</div>
+</body></html>`;
+
+  const blob=new Blob(['\ufeff'+html],{type:'application/msword;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const fname=(bridgeName!=='—'?bridgeName:'Bridge')+'_'+(pierNo!=='—'?pierNo:'Pier')+'_ScourReport_'+printDate+'.doc';
+  a.href=url; a.download=fname; a.click();
+  URL.revokeObjectURL(url);
+}
 
 function n(id){ return parseFloat(document.getElementById(id).value)||0; }
 function s(id){ return document.getElementById(id).value; }
