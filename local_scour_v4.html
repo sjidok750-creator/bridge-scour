@@ -8,7 +8,7 @@
 <style>
 :root{
   --bg:#1E2A3A;--bg2:#253245;--bg3:#2C3B52;--bg4:#1A2535;
-  --bd:#3A5070;--bd2:#5070A0;
+  --bd:#2A3548;--bd2:#3A4A60;
   --tx:#E8F0FC;--mt:#8AAAD0;--dm:#5A7898;
   --ok:#22D97A;--ng:#FF5555;--wn:#FFC044;--ac:#5AA0FF;
   --ga:#22D97A;--gb:#D4C000;--gc:#FFA040;--gd:#FF5555;--ge:#B02020;
@@ -22,92 +22,112 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 /* ── TITLE BAR ── */
 .title-bar{
   text-align:center;padding:8px 12px;
-  background:var(--hdr);border-bottom:2px solid var(--ac);
+  background:#16191E;border-bottom:1px solid rgba(255,255,255,.06);
   height:48px;flex-shrink:0;position:relative;
 }
-.title-bar h1{font-size:18px;font-weight:700;color:var(--tx);letter-spacing:.5px;display:inline;}
-.title-bar .sub{font-size:12px;color:var(--mt);margin-left:12px;font-family:'JetBrains Mono',monospace;}
+.title-bar h1{font-size:17px;font-weight:400;color:#5AA0FF;letter-spacing:1.5px;display:inline;font-family:'JetBrains Mono',monospace;}
 .title-ver{position:absolute;right:140px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fin);background:rgba(154,122,255,.12);border:1px solid rgba(154,122,255,.3);padding:2px 8px;border-radius:10px;}
 .doc-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(79,144,255,.15);border:1px solid rgba(79,144,255,.5);color:var(--ac);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.3px;}
 .doc-btn:hover{background:rgba(79,144,255,.3);border-color:var(--ac);}
 
+/* ── SHEET TABS ── */
+.sheet-tabs{display:flex;align-items:stretch;background:var(--hdr);border-bottom:1px solid var(--bd);height:28px;flex-shrink:0;padding:0 8px;gap:0;overflow-x:auto;}
+.sheet-tab{display:flex;align-items:center;gap:4px;padding:0 12px;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--mt);background:var(--bg3);border:1px solid var(--bd);border-bottom:none;border-radius:4px 4px 0 0;cursor:pointer;white-space:nowrap;position:relative;top:1px;transition:all .12s;user-select:none;}
+.sheet-tab:hover{background:var(--bg2);color:var(--tx);}
+.sheet-tab.active{background:var(--bg);color:var(--tx);border-color:var(--bd2);font-weight:600;border-bottom:1px solid var(--bg);}
+.sheet-tab .tab-close{font-size:13px;color:var(--dm);cursor:pointer;margin-left:4px;line-height:1;}
+.sheet-tab .tab-close:hover{color:var(--ng);}
+.sheet-tab-add{display:flex;align-items:center;justify-content:center;width:26px;padding:0;font-size:16px;font-family:'JetBrains Mono',monospace;color:var(--ac);background:transparent;border:1px solid transparent;border-bottom:none;border-radius:4px 4px 0 0;cursor:pointer;position:relative;top:1px;transition:all .12s;}
+.sheet-tab-add:hover{background:rgba(79,144,255,.1);border-color:var(--bd);color:#fff;}
+
 /* ── MAIN LAYOUT ── */
-.app{display:flex;height:calc(100vh - 48px);border:1px solid var(--bd2);margin:0;}
+.app{display:flex;height:calc(100vh - 76px);border:none;margin:0;}
 
 /* ── LEFT PANEL ── */
-.lp{width:320px;flex-shrink:0;display:flex;flex-direction:column;border-right:2px solid var(--bd2);background:var(--bg2);}
-.fac{padding:9px 12px;border-bottom:1px solid var(--bd);flex-shrink:0;background:var(--bg3);}
-.fac-title{font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--bd);}
-.fac-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
-.fac .ff{display:flex;flex-direction:column;gap:3px;}
-.fac .ff label{font-size:11px;color:var(--mt);}
-.fac .ff input{background:var(--bg4);border:1px solid var(--bd);border-radius:3px;color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:4px 7px;outline:none;transition:border-color .15s;width:100%;}
-.fac .ff input:focus{border-color:var(--ac);}
+.lp{width:320px;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06);background:#182030;}
+.fac{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0;background:transparent;}
+.fac-title{font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;padding-bottom:4px;border-bottom:none;}
+.fac-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;grid-auto-rows:auto;}
+.fac .ff{display:flex;flex-direction:column;gap:2px;}
+.fac .ff label{font-size:10px;color:var(--dm);}
+.fac .ff input{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.06);border-radius:3px;color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:4px 7px;outline:none;transition:border-color .15s;width:100%;}
+.fac .ff input:focus{border-color:rgba(79,144,255,.4);}
 .inp{flex:1;overflow-y:auto;padding-bottom:16px;}
 
 /* ── INPUT SECTIONS ── */
-.sec-hd{font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.6px;padding:10px 12px 5px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:6px;}
+.sec-hd{font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.8px;font-weight:600;font-family:'JetBrains Mono',monospace;padding:8px 12px;margin:0;border-top:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.035);border-left:none;cursor:pointer;user-select:none;transition:all .15s;}
 .sec-hd:first-child{border-top:none;}
-.sec-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.ipg{padding:0 10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.sec-hd:hover{background:rgba(255,255,255,.06);color:var(--tx);}
+.sec-hd.open{color:var(--tx);background:rgba(79,144,255,.08);border-bottom:none;}
+.sec-hd .sec-num{font-size:10px;font-weight:700;color:var(--ac);font-family:'JetBrains Mono',monospace;opacity:.7;min-width:14px;}
+.sec-hd.open .sec-num{opacity:1;}
+.sec-hd .acc-arr{margin-left:auto;font-size:8px;color:var(--dm);transition:transform .25s,color .15s;}
+.sec-hd.open .acc-arr{transform:rotate(90deg);color:var(--ac);}
+.acc-bd{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.acc-bd.show{max-height:800px;}
+.acc-inner{padding:8px 10px 10px;margin:0;background:rgba(0,0,0,.12);border-bottom:1px solid rgba(255,255,255,.04);}
+.sec-hd.sh-green,.sec-hd.sh-blue,.sec-hd.sh-yellow,.sec-hd.sh-cyan,.sec-hd.sh-csu,.sec-hd.sh-red,.sec-hd.sh-purple{border-left:none;background:rgba(255,255,255,.035);}
+.sec-dot{display:none;}
+.sec-en{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:9px;color:var(--dm);opacity:.6;margin-left:auto;margin-right:8px;text-transform:none;letter-spacing:0;}
+.ipg{padding:4px 0;display:grid;grid-template-columns:1fr 1fr;gap:5px;}
 .ipg.g1{grid-template-columns:1fr;}
-.f{display:flex;flex-direction:column;gap:3px;}
+.f{display:flex;flex-direction:column;gap:2px;}
 .f.fw{grid-column:span 2;}
-.f label{font-size:11px;color:var(--mt);display:flex;justify-content:space-between;}
-.f label .un{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(90,122,170,.5);}
-.f input,.f select{background:var(--bg4);border:1px solid var(--bd);border-radius:3px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:13px;padding:5px 7px;outline:none;transition:border-color .15s;width:100%;}
-.f input:focus,.f select:focus{border-color:var(--ac);background:rgba(79,144,255,.05);}
+.f label{font-size:10px;color:var(--dm);display:flex;justify-content:space-between;letter-spacing:.2px;}
+.f label .un{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(90,122,170,.35);}
+.f input,.f select{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.06);border-radius:3px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:13px;padding:5px 7px;outline:none;transition:border-color .15s,background .15s;width:100%;}
+.f input:focus,.f select:focus{border-color:rgba(79,144,255,.4);background:rgba(79,144,255,.04);}
 .f select{font-family:'Noto Sans KR',sans-serif;font-size:12px;cursor:pointer;}
 .f select option{background:var(--bg3);}
-.f input.ro{cursor:not-allowed;opacity:.8;}
-.f input.ro.ok{border-color:var(--ok);color:var(--ok);}
-.f input.ro.wn{border-color:var(--wn);color:var(--wn);}
-.f input.ro.ac{border-color:var(--ac);color:var(--ac);}
-.f input:disabled{opacity:.4;cursor:not-allowed;border-color:var(--bd);}
+.f input.ro{cursor:not-allowed;opacity:.7;background:rgba(0,0,0,.12);border-color:rgba(255,255,255,.04);}
+.f input.ro.ok{border-color:rgba(34,217,122,.3);color:var(--ok);}
+.f input.ro.wn{border-color:rgba(255,192,68,.3);color:var(--wn);}
+.f input.ro.ac{border-color:rgba(79,144,255,.3);color:var(--ac);}
+.f input:disabled{opacity:.35;cursor:not-allowed;border-color:rgba(255,255,255,.03);}
 
 /* 사전판정 */
-.pre-box{padding:0 8px 4px;}
-.pre-item{display:flex;align-items:flex-start;gap:7px;padding:5px 7px;border-radius:4px;border:1px solid var(--bd);background:var(--bg3);margin-bottom:4px;cursor:pointer;transition:border-color .15s;}
-.pre-item:hover{border-color:var(--bd2);}
-.pre-item.checked{border-color:var(--ga);background:rgba(30,200,122,.06);}
+.pre-box{padding:0 0 2px;}
+.pre-item{display:flex;align-items:center;gap:7px;padding:4px 8px;border-radius:3px;border:1px solid rgba(255,255,255,.04);background:rgba(0,0,0,.12);margin-bottom:3px;cursor:pointer;transition:all .15s;}
+.pre-item:hover{border-color:rgba(255,255,255,.08);background:rgba(0,0,0,.18);}
+.pre-item.checked{border-color:rgba(34,217,122,.25);background:rgba(34,217,122,.05);}
 .pre-item input[type=checkbox]{width:13px;height:13px;margin-top:1px;cursor:pointer;flex-shrink:0;accent-color:var(--ga);}
 .pre-item .pl{flex:1;}
-.pre-item .pl strong{font-size:12px;font-weight:600;display:block;}
+.pre-item .pl strong{font-size:11px;font-weight:500;display:inline;color:var(--tx);}
 .pre-item .pl span{font-size:11px;color:var(--mt);line-height:1.3;}
-.pre-result{padding:5px 8px;background:rgba(30,200,122,.08);border:1px solid rgba(30,200,122,.25);border-radius:4px;font-size:12px;color:var(--ga);font-weight:600;text-align:center;display:none;margin:0 8px 4px;}
+.pre-result{padding:5px 8px;background:rgba(34,217,122,.06);border:1px solid rgba(34,217,122,.15);border-radius:3px;font-size:11px;color:var(--ga);font-weight:600;text-align:center;display:none;margin:2px 0 0;}
 .pre-result.show{display:block;}
 
 /* 보호공 */
-.prot-row{display:flex;gap:5px;padding:0 8px;}
-.pb{flex:1;padding:6px 3px;text-align:center;border-radius:4px;border:1px solid var(--bd);background:var(--bg3);cursor:pointer;transition:all .15s;}
-.pb:hover{border-color:var(--bd2);}
-.pb.on.ps{border-color:var(--ok);background:rgba(30,200,122,.08);}
-.pb.on.pm{border-color:var(--wn);background:rgba(255,176,58,.06);}
-.pb.on.ph{border-color:var(--ng);background:rgba(255,78,78,.06);}
-.pb-lb{font-size:15px;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.prot-row{display:flex;gap:4px;padding:0;}
+.pb{flex:1;padding:5px 2px;text-align:center;border-radius:3px;border:1px solid rgba(255,255,255,.05);background:rgba(0,0,0,.12);cursor:pointer;transition:all .15s;}
+.pb:hover{border-color:rgba(255,255,255,.1);background:rgba(0,0,0,.18);}
+.pb.on.ps{border-color:rgba(34,217,122,.25);background:rgba(34,217,122,.06);}
+.pb.on.pm{border-color:rgba(255,192,68,.25);background:rgba(255,192,68,.05);}
+.pb.on.ph{border-color:rgba(255,85,85,.25);background:rgba(255,85,85,.05);}
+.pb-lb{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;}
 .pb.on.ps .pb-lb{color:var(--ok);}
 .pb.on.pm .pb-lb{color:var(--wn);}
 .pb.on.ph .pb-lb{color:var(--ng);}
-.pb-sub{font-size:10px;color:var(--dm);margin-top:2px;line-height:1.3;}
-.note{font-size:11px;color:var(--dm);font-family:'JetBrains Mono',monospace;line-height:1.6;padding:5px 10px;background:rgba(255,255,255,.015);border-radius:3px;border-left:2px solid var(--bd2);margin:4px 10px 0;}
+.pb-sub{font-size:9px;color:var(--dm);margin-top:1px;line-height:1.2;}
+.note{font-size:10px;color:var(--dm);font-family:'JetBrains Mono',monospace;line-height:1.5;padding:4px 8px;background:transparent;border-radius:0;border-left:2px solid rgba(255,255,255,.06);margin:4px 0 0;}
 .note .hi{color:var(--fin);font-weight:600;}
 .note .ok{color:var(--ok);font-weight:600;}
 .note .ng{color:var(--ng);font-weight:600;}
 .note .wn{color:var(--wn);font-weight:600;}
 
 /* 기초 모드 탭 */
-.ftabs{display:flex;gap:0;margin:0 8px 5px;border-radius:4px;overflow:hidden;border:1px solid var(--bd);}
-.ftab{flex:1;padding:5px 0;text-align:center;font-size:12px;background:var(--bg3);cursor:pointer;transition:all .15s;color:var(--mt);border:none;}
-.ftab.active{background:var(--ac);color:#fff;font-weight:600;}
+.ftabs{display:flex;gap:0;margin:0 0 5px;border-radius:3px;overflow:hidden;border:1px solid rgba(255,255,255,.06);}
+.ftab{flex:1;padding:4px 0;text-align:center;font-size:11px;background:rgba(0,0,0,.12);cursor:pointer;transition:all .15s;color:var(--dm);border:none;}
+.ftab.active{background:rgba(79,144,255,.15);color:var(--ac);font-weight:600;}
 .fnd-computed{font-size:9px;color:var(--ac);font-family:'JetBrains Mono',monospace;padding:1px 0;}
 
 /* ── RIGHT PANEL ── */
-.rp{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
-.rp-top{flex:3;overflow-y:auto;border-bottom:1px solid var(--bd2);padding:10px 14px;}
-.rp-bot{flex:2.2;display:flex;overflow:hidden;border-bottom:1px solid var(--bd2);}
-.rp-bot-l{flex:3;overflow-y:auto;padding:10px 12px;border-right:1px solid var(--bd2);}
-.rp-bot-r{flex:2;overflow-y:auto;padding:8px;}
-.rp-ref{flex-shrink:0;height:120px;overflow-y:auto;padding:7px 14px;background:var(--bg2);}
+.rp{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#2A3C52;}
+.rp-top{flex:3;overflow-y:auto;border-bottom:1px solid rgba(255,255,255,.04);padding:8px 12px;background:#2E4058;}
+.rp-bot{flex:2.2;display:flex;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.04);}
+.rp-bot-l{flex:3.5;overflow-y:auto;padding:8px 10px;border-right:1px solid rgba(255,255,255,.04);}
+.rp-bot-r{flex:1.5;overflow:hidden;padding:3px;}
+.rp-ref{flex-shrink:0;overflow:hidden;padding:6px 14px 6px;background:#161C26;}
 
 /* ── RESULT CARDS (5개) ── */
 .stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:10px;}
@@ -136,16 +156,16 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .fb-step.active strong{color:var(--fin);}
 
 /* 카드 */
-.card{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;overflow:hidden;margin-bottom:8px;}
-.card-hd{padding:6px 10px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.012);}
-.card-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.card-hd h3{font-size:13px;font-weight:600;flex:1;}
-.card-b{padding:9px 10px;}
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:5px;overflow:hidden;margin-bottom:0;}
+.card-hd{padding:4px 8px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.012);}
+.card-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.card-hd h3{font-size:12px;font-weight:600;flex:1;}
+.card-b{padding:6px 8px;}
 
 /* 공식 비교표 */
 .ftbl{width:100%;border-collapse:collapse;}
-.ftbl th{background:var(--bg3);border:1px solid var(--bd);padding:6px 8px;font-size:12px;color:var(--mt);font-weight:500;text-align:center;}
-.ftbl td{border:1px solid var(--bd);padding:6px 8px;font-size:12px;vertical-align:middle;}
+.ftbl th{background:var(--bg3);border:1px solid var(--bd);padding:3px 6px;font-size:11px;color:var(--mt);font-weight:500;text-align:center;}
+.ftbl td{border:1px solid var(--bd);padding:3px 6px;font-size:11px;vertical-align:middle;}
 .ftbl .csu-row td{background:rgba(79,144,255,.025);}
 .ftbl .neil-row td{background:rgba(30,200,122,.025);}
 .ftbl .lau-row td{background:rgba(255,176,58,.025);}
@@ -160,11 +180,11 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .fn{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dm);}
 
 /* 수리 결과 행 */
-.ri{display:flex;align-items:baseline;padding:4px 0;border-bottom:1px solid rgba(36,48,80,.4);}
+.ri{display:flex;align-items:baseline;padding:2px 0;border-bottom:1px solid rgba(36,48,80,.4);}
 .ri:last-child{border-bottom:none;}
-.rl{flex:1;font-size:12px;color:var(--mt);}
-.rf{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(90,122,170,.4);text-align:center;width:90px;}
-.rv{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;text-align:right;min-width:80px;}
+.rl{flex:1;font-size:11px;color:var(--mt);}
+.rf{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(90,122,170,.4);text-align:center;width:80px;}
+.rv{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;text-align:right;min-width:70px;}
 .rv.ac{color:var(--ac);}.rv.ok{color:var(--ok);}.rv.ng{color:var(--ng);}.rv.wn{color:var(--wn);}.rv.fin{color:var(--fin);}
 
 /* 수식 */
@@ -180,24 +200,28 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .mval{color:var(--tx);}.mop{color:var(--dm);margin:0 1px;}
 
 /* 등급 판정 흐름 */
-.flow-card{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;overflow:hidden;margin-bottom:8px;}
+.flow-card{background:var(--bg2);border:1px solid var(--bd);border-radius:4px;overflow:hidden;margin-bottom:0;}
+.flow-card .flow-step-sm{border-bottom-color:var(--bd);}
 .flow-step{padding:8px 10px;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;gap:8px;}
 .flow-step:last-child{border-bottom:none;}
 .fs-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;}
 /* 축소형 */
-.flow-step-sm{padding:5px 8px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px;}
+.flow-step-sm{padding:4px 7px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px;}
 .flow-step-sm:last-child{border-bottom:none;}
-.fs-num-sm{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;flex-shrink:0;}
-.gbadge-sm{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;border:2px solid;flex-shrink:0;}
+.fs-num-sm{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;flex-shrink:0;}
+.gbadge-sm{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;border:2px solid;flex-shrink:0;}
 .gbadge-sm.ga{color:var(--ga);border-color:var(--ga);background:rgba(34,217,122,.1);}
 .gbadge-sm.gb{color:var(--gb);border-color:var(--gb);background:rgba(212,192,0,.1);}
 .gbadge-sm.gc{color:var(--gc);border-color:var(--gc);background:rgba(255,160,64,.1);}
 .gbadge-sm.gd{color:var(--gd);border-color:var(--gd);background:rgba(255,85,85,.1);}
 .gbadge-sm.ge{color:var(--ge);border-color:var(--ge);background:rgba(176,32,32,.1);}
 .fs-body{flex:1;}
-.fs-lb{font-size:11px;color:var(--mt);margin-bottom:2px;}
-.fs-val{font-size:13px;font-weight:600;}
-.fs-sub{font-size:11px;color:var(--mt);margin-top:2px;line-height:1.5;}
+.fs-lb{font-size:10px;color:var(--mt);margin-bottom:1px;}
+.fs-val{font-size:12px;font-weight:600;line-height:1.4;}
+.fs-sub{font-size:10px;color:var(--mt);margin-top:1px;line-height:1.3;}
+.fs-final-inline{display:flex;align-items:center;gap:6px;flex:1;}
+.fs-final-label{font-size:12px;font-weight:600;color:var(--fin);font-family:'JetBrains Mono',monospace;}
+.fs-final-grade{font-size:14px;font-weight:700;color:var(--fin);font-family:'JetBrains Mono',monospace;}
 
 /* 등급 뱃지 */
 .gbadge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;border:2px solid;flex-shrink:0;}
@@ -223,13 +247,14 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 /* 등급 참고표 */
 .gr-tbl{width:100%;border-collapse:collapse;font-size:10px;}
 .gr-tbl{border-collapse:collapse;}
-.gr-tbl th{background:var(--bg3);border:1px solid var(--bd);padding:6px 8px;font-size:12px;color:var(--mt);font-weight:500;text-align:center;}
-.gr-tbl td{border:1px solid var(--bd);padding:0 8px;font-size:12px;vertical-align:middle;}
+.gr-tbl th{background:var(--bg3);border:1px solid var(--bd);padding:4px 6px;font-size:11px;color:var(--mt);font-weight:500;text-align:center;white-space:nowrap;}
+.gr-tbl td{border:1px solid var(--bd);padding:3px 6px;font-size:11px;vertical-align:middle;}
 .gr-tbl tbody tr{height:1%;}/* 높이 균등 분배 */
 
 /* SVG 단면도 */
-.diag-wrap{background:var(--bg3);border:1px solid var(--bd);border-radius:5px;padding:6px;}
-.diag-wrap svg{width:100%;height:auto;display:block;}
+.diag-wrap{background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:2px;height:100%;display:flex;align-items:stretch;}
+.diag-wrap svg{width:100%;height:100%;display:block;}
+/* diag-wrap svg rule moved inline above */
 
 /* 레퍼런스 */
 .ref-title{font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;padding-bottom:3px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:5px;}
@@ -239,21 +264,97 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .ref-list{counter-reset:ref-counter;}
 .ref-list span.ref-main{color:var(--mt);}
 
-.dvdr{border:none;border-top:1px solid var(--bd);margin:6px 0;}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.dvdr{border:none;border-top:1px solid var(--bd);margin:3px 0;}
+.grid2{display:flex;gap:8px;align-items:stretch;}
+.grid2>.card{flex:1;min-width:0;display:flex;flex-direction:column;}
+.grid2>.card .card-b{flex:1;}
+
+/* ══ RESPONSIVE ══ */
+
+/* 1200px 이하: 우측 패널 내부 조정 */
+@media(max-width:1200px){
+  .stat-row{grid-template-columns:repeat(3,1fr);}
+  .rp-bot{flex-direction:column;}
+  .rp-bot-l{border-right:none;border-bottom:1px solid var(--bd2);}
+  .rp-bot-r{max-height:260px;}
+  .ref-list{grid-template-columns:1fr;}
+}
+
+/* 960px 이하: 좌우 패널 세로 전환 */
+@media(max-width:960px){
+  html,body{overflow:auto;height:auto;}
+  .app{flex-direction:column;height:auto;min-height:calc(100vh - 48px);}
+  .lp{width:100%;flex-shrink:0;border-right:none;border-bottom:2px solid var(--bd2);max-height:none;}
+  .inp{overflow-y:visible;}
+  .rp{overflow:visible;}
+  .rp-top{overflow-y:visible;}
+  .rp-bot{overflow:visible;flex-direction:column;}
+  .rp-bot-l{overflow-y:visible;}
+  .rp-bot-r{overflow-y:visible;max-height:300px;}
+  .rp-ref{height:auto;}
+  .grid2{flex-direction:column;}
+}
+
+/* 768px 이하: 태블릿/모바일 최적화 */
+@media(max-width:768px){
+  .title-bar{height:auto;padding:8px 10px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;}
+  .title-bar h1{font-size:15px;}
+  .title-bar .sub{font-size:10px;margin-left:6px;}
+  .title-ver{position:static;transform:none;margin-left:8px;}
+  .doc-btn{position:static;transform:none;margin-left:auto;}
+  .app{height:auto;}
+  .stat-row{grid-template-columns:repeat(2,1fr);}
+  .stat-v{font-size:18px;}
+  .fv{font-size:13px;}
+  .fv.fin-v{font-size:15px;}
+  .ri{flex-wrap:wrap;gap:2px;}
+  .rf{width:auto;text-align:left;font-size:9px;}
+  .rv{min-width:60px;font-size:12px;}
+  .rp-bot-l > div{flex-direction:column !important;}
+  .flow-card{margin-bottom:8px;}
+  .gr-tbl{font-size:11px;}
+  .gr-tbl th,.gr-tbl td{padding:4px 6px;}
+  .rp-ref{height:auto;max-height:none;}
+}
+
+/* 480px 이하: 모바일 */
+@media(max-width:480px){
+  html{font-size:13px;}
+  .title-bar h1{font-size:14px;}
+  .title-bar .sub{display:none;}
+  .fac-grid{grid-template-columns:1fr;}
+  .ipg{grid-template-columns:1fr;}
+  .ipg.g1{grid-template-columns:1fr;}
+  .f.fw{grid-column:span 1;}
+  .stat-row{grid-template-columns:1fr;}
+  .ftbl th,.ftbl td{padding:4px 5px;font-size:11px;}
+  .ftbl .fn{font-size:9px;}
+  .math{font-size:8px;}
+  .prot-row{flex-direction:column;padding:0;gap:5px;}
+  .pb{padding:8px 6px;}
+  .card-hd h3{font-size:12px;}
+  .note{font-size:10px;}
+  .diag-wrap{padding:4px;}
+}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
 <!-- ══ TITLE ══ -->
 <div class="title-bar">
   <h1>Evaluating Scour at Bridges</h1>
-  <span class="sub">교량 교각 국부세굴심 검토 및 등급판정</span>
   <div class="title-ver">v4.0</div>
-  <button class="doc-btn" onclick="exportToDoc()" title="Save as Word Document (.doc)">
+  <button class="doc-btn" onclick="exportToPDF()" title="Save as PDF">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="9" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 4h5M3 6.5h5M3 9h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M8 9.5l1.5 2.5L11 9.5" stroke="#4F90FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Save as .doc
+    Save as PDF
   </button>
+</div>
+
+<!-- ══ SHEET TABS ══ -->
+<div class="sheet-tabs" id="sheetTabs">
+  <div class="sheet-tab active" id="tab-0" onclick="switchTab(0)"><span class="tab-name">P-</span></div>
+  <button class="sheet-tab-add" onclick="addTab()" title="새 교각 추가">+</button>
 </div>
 
 <div class="app">
@@ -263,159 +364,163 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 
   <!-- 시설물명 입력 -->
   <div class="fac">
-    <div class="fac-title">시설물 정보</div>
+    <div class="fac-title" style="display:none;"></div>
     <div class="fac-grid">
       <div class="ff"><label>교량명</label><input id="bridgeName" type="text" placeholder="○○교" oninput="calc()"></div>
-      <div class="ff"><label>교각 번호</label><input id="pierNo" type="text" placeholder="P5-1" oninput="calc()"></div>
-      <div class="ff"><label>검토자</label><input id="engName" type="text" placeholder="홍길동" oninput="calc()"></div>
-      <div class="ff"><label>검토일</label><input id="chkDate" type="date" oninput="calc()"></div>
+      <div class="ff"><label>교각 번호</label><input id="pierNo" type="text" value="P-" oninput="updateTabName();calc()"></div>
+      <div class="ff" style="display:none;"><label>검토자</label><input id="engName" type="text" placeholder="홍길동" oninput="calc()"></div>
+      <div class="ff" style="display:none;"><label>검토일</label><input id="chkDate" type="date" oninput="calc()"></div>
     </div>
   </div>
 
-  <!-- 입력란 스크롤 영역 -->
+  <!-- 입력란 스크롤 영역 (아코디언) -->
   <div class="inp">
 
-    <!-- ① 표 1.62 사전판정 -->
-    <div class="sec-hd"><div class="sec-dot" style="background:var(--ga)"></div>[표 1.62] 사전 판정</div>
-    <div class="pre-box">
-      <label class="pre-item" id="pre-item-1" onclick="togglePre(1)">
-        <input type="checkbox" id="pre1" onchange="calc()">
-        <div class="pl"><strong>우물통 기초 (케이슨)</strong><span>기초 형식이 우물통 기초인 경우</span></div>
-      </label>
-      <label class="pre-item" id="pre-item-2" onclick="togglePre(2)">
-        <input type="checkbox" id="pre2" onchange="calc()">
-        <div class="pl"><strong>암반 지반</strong><span>기초 지반이 암반인 경우</span></div>
-      </label>
-      <label class="pre-item" id="pre-item-3" onclick="togglePre(3)">
-        <input type="checkbox" id="pre3" onchange="calc()">
-        <div class="pl"><strong>세굴 저항성 충분 입증</strong><span>안정성 검토결과 충분히 입증</span></div>
-      </label>
-      <div class="pre-result" id="pre-result">⊙ 위 조건 해당 → 즉시 <strong>a등급</strong> (표 1.62)</div>
-    </div>
-
-    <!-- ② 수리 조건 -->
-    <div class="sec-hd"><div class="sec-dot" style="background:var(--ac)"></div>수리 조건</div>
-    <div class="ipg">
-      <div class="f"><label>수심 (y) <span class="un">m</span></label><input type="number" id="y" value="9.75" step="0.01" oninput="calc()"></div>
-      <div class="f"><label>접근유속 (V) <span class="un">m/s</span></label><input type="number" id="V" value="2.88" step="0.01" oninput="calc()"></div>
-      <div class="f"><label>Froude수 (Fr) <span class="un">자동</span></label><input id="Fr_o" class="ro" readonly tabindex="-1"></div>
-      <div class="f"><label>임계유속 Vc <span class="un">자동</span></label><input id="Vc_o" class="ro" readonly tabindex="-1"></div>
-      <div class="f fw"><label>흐름 조건 <span class="un">자동판별</span></label><input id="cd_o" class="ro" readonly tabindex="-1"></div>
-    </div>
-
-    <!-- ③ 교각 제원 -->
-    <div class="sec-hd"><div class="sec-dot" style="background:var(--wn)"></div>교각 제원</div>
-    <div class="ipg">
-      <div class="f"><label>교각폭 (b) <span class="un">m</span></label><input type="number" id="b" value="3.0" step="0.1" oninput="calc()"></div>
-      <div class="f"><label>교각길이 (L) <span class="un">m</span></label><input type="number" id="L" value="25.0" step="0.5" oninput="calc()"></div>
-      <div class="f"><label>흐름사각도 (θ) <span class="un">°</span></label><input type="number" id="theta" value="0" step="1" oninput="calc()"></div>
-      <div class="f"><label>투영폭 b' <span class="un">자동</span></label><input id="bp_o" class="ro ac" readonly tabindex="-1"></div>
-    </div>
-    <div class="note">b' = b·cosθ + L·sinθ</div>
-
-    <!-- ④ 하상재료 -->
-    <div class="sec-hd"><div class="sec-dot" style="background:#00C8B0"></div>하상재료</div>
-    <div class="ipg">
-      <div class="f"><label>D₅₀ <span class="un">mm</span></label><input type="number" id="D50" value="1.0" step="0.1" min="0.001" oninput="calc()"></div>
-      <div class="f"><label>K₄ <span class="un">0.4~1.0</span></label><input type="number" id="K4" value="1.0" step="0.01" oninput="calc()"></div>
-    </div>
-
-    <!-- ⑤ K계수 / f계수 -->
-    <div class="sec-hd"><div class="sec-dot" style="background:var(--csu)"></div>CSU 계수 / Froehlich f</div>
-    <div class="ipg g1">
-      <div class="f"><label>K₁ — 교각 형상</label>
-        <select id="K1" onchange="calc()">
-          <option value="1.0" selected>원형/반원형 → K₁=1.0</option>
-          <option value="0.9">삼각형 (60°~75°) → K₁=0.9</option>
-          <option value="0.8">렌즈형/유선형 → K₁=0.8</option>
-          <option value="1.1">직사각형 → K₁=1.1</option>
-          <option value="1.3">정사각형 → K₁=1.3</option>
-        </select>
+    <!-- ① 사전판정 -->
+    <div class="sec-hd sh-green" onclick="toggleAcc(1)"><span class="sec-num">01</span>사전 판정<span class="sec-en">Pre-Screening</span><span class="acc-arr">▶</span></div>
+    <div class="acc-bd" id="acc-bd-1"><div class="acc-inner">
+      <div class="pre-box">
+        <label class="pre-item" id="pre-item-1" onclick="togglePre(1)">
+          <input type="checkbox" id="pre1" onchange="calc()">
+          <div class="pl"><strong>우물통 기초 (케이슨)</strong></div>
+        </label>
+        <label class="pre-item" id="pre-item-2" onclick="togglePre(2)">
+          <input type="checkbox" id="pre2" onchange="calc()">
+          <div class="pl"><strong>암반 지반</strong></div>
+        </label>
+        <label class="pre-item" id="pre-item-3" onclick="togglePre(3)">
+          <input type="checkbox" id="pre3" onchange="calc()">
+          <div class="pl"><strong>세굴 저항성 충분 입증</strong></div>
+        </label>
+        <div class="pre-result" id="pre-result">⊙ 위 조건 해당 → 즉시 <strong>a등급</strong> (표 1.62)</div>
       </div>
-      <div class="f"><label>K₃ — 하상 상태</label>
-        <select id="K3" onchange="calc()">
-          <option value="1.1" selected>평탄/소규모 사구 → K₃=1.1</option>
-          <option value="1.2">중규모 사구 (0.6m≤H&lt;3m) → K₃=1.2</option>
-          <option value="1.3">대규모 사구 (H≥3m) → K₃=1.3</option>
-          <option value="0.9">반사구 → K₃=0.9</option>
-        </select>
-      </div>
-      <div class="f"><label>K₂ (사각도 자동) <span class="un">자동</span></label><input id="K2_o" class="ro ac" readonly tabindex="-1"></div>
-      <div class="f"><label>Froehlich f</label>
-        <select id="ff" onchange="calc()">
-          <option value="0.7">f=0.7 날카로운 교각</option>
-          <option value="1.0" selected>f=1.0 원형 교각</option>
-          <option value="1.3">f=1.3 사각형 교각</option>
-        </select>
-      </div>
-    </div>
+    </div></div>
 
-    <!-- ⑥ 기초 제원 -->
-    <div class="sec-hd"><div class="sec-dot" style="background:var(--ng)"></div>기초 제원</div>
-    <div class="ipg g1" style="margin-bottom:5px;">
-      <div class="f"><label>기초 형식</label>
-        <select id="ftype" onchange="updateEL2State();calc()">
-          <option value="footing">직접기초 (기초푸팅)</option>
-          <option value="pile">말뚝기초 (Pile)</option>
-          <option value="well">우물통기초 (Caisson)</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- 기초 입력 모드 탭 -->
-    <div class="ftabs">
-      <button class="ftab active" id="ftab-el" onclick="setFoundMode('el')">EL. 입력 (도면)</button>
-      <button class="ftab" id="ftab-h" onclick="setFoundMode('h')">높이 입력 (도면 없음)</button>
-    </div>
-
-    <!-- EL 입력 모드 -->
-    <div id="fnd-el">
+    <!-- ② 교각제원 -->
+    <div class="sec-hd sh-yellow" onclick="toggleAcc(2)"><span class="sec-num">02</span>교각 제원<span class="sec-en">Pier Geometry</span><span class="acc-arr">▶</span></div>
+    <div class="acc-bd" id="acc-bd-2"><div class="acc-inner">
       <div class="ipg">
-        <div class="f fw"><label>현재 하상고 EL.0 <span class="un">m</span></label><input type="number" id="EL0" value="-7.89" step="0.01" oninput="calc()"></div>
-        <div class="f"><label>기초/Cap 상면 EL.1a <span class="un">m</span></label><input type="number" id="EL1a" value="-47.50" step="0.01" oninput="calc()"></div>
-        <div class="f"><label>기초/Cap 저면 EL.1 <span class="un">m</span></label><input type="number" id="EL1" value="-50.50" step="0.01" oninput="calc()"></div>
-        <div class="f fw"><label>지반고/말뚝선단 EL.2 <span class="un">m</span></label><input type="number" id="EL2" value="-60.90" step="0.01" oninput="calc()"></div>
+        <div class="f"><label>교각폭 (b) <span class="un">m</span></label><input type="number" id="b" value="3.0" step="0.1" oninput="calc()"></div>
+        <div class="f"><label>교각길이 (L) <span class="un">m</span></label><input type="number" id="L" value="25.0" step="0.5" oninput="calc()"></div>
+        <div class="f"><label>흐름사각도 (θ) <span class="un">°</span></label><input type="number" id="theta" value="0" step="1" oninput="calc()"></div>
+        <div class="f"><label>투영폭 b' <span class="un">자동</span></label><input id="bp_o" class="ro ac" readonly tabindex="-1"></div>
       </div>
-      <div class="note" id="el2-note" style="display:none;"><span class="ng">직접기초/우물통기초: 말뚝선단(EL.2) 해당없음</span></div>
-    </div>
+      <div class="note">b' = b·cosθ + L·sinθ</div>
+      <div class="ipg g1" style="margin-top:4px;">
+        <div class="f"><label>K₁ — 교각 형상</label>
+          <select id="K1" onchange="calc()">
+            <option value="1.0" selected>원형/반원형 → K₁=1.0</option>
+            <option value="0.9">삼각형 (60°~75°) → K₁=0.9</option>
+            <option value="0.8">렌즈형/유선형 → K₁=0.8</option>
+            <option value="1.1">직사각형 → K₁=1.1</option>
+            <option value="1.3">정사각형 → K₁=1.3</option>
+          </select>
+        </div>
+        <div class="f"><label>K₂ (사각도 자동) <span class="un">자동</span></label><input id="K2_o" class="ro ac" readonly tabindex="-1"></div>
+        <div class="f"><label>Froehlich f</label>
+          <select id="ff" onchange="calc()">
+            <option value="0.7">f=0.7 날카로운 교각</option>
+            <option value="1.0" selected>f=1.0 원형 교각</option>
+            <option value="1.3">f=1.3 사각형 교각</option>
+          </select>
+        </div>
+      </div>
+    </div></div>
 
-    <!-- 높이 입력 모드 -->
-    <div id="fnd-h" style="display:none;">
+    <!-- ③ 기초제원 -->
+    <div class="sec-hd sh-red" onclick="toggleAcc(3)"><span class="sec-num">03</span>기초 제원<span class="sec-en">Foundation</span><span class="acc-arr">▶</span></div>
+    <div class="acc-bd" id="acc-bd-3"><div class="acc-inner">
+      <div class="ipg g1" style="margin-bottom:5px;">
+        <div class="f"><label>기초 형식</label>
+          <select id="ftype" onchange="updateEL2State();calc()">
+            <option value="footing">직접기초 (기초푸팅)</option>
+            <option value="pile" selected>말뚝기초 (Pile)</option>
+            <option value="well">우물통기초 (Caisson)</option>
+          </select>
+        </div>
+      </div>
+      <div class="ftabs">
+        <button class="ftab active" id="ftab-el" onclick="setFoundMode('el')">EL. 입력 (도면)</button>
+        <button class="ftab" id="ftab-h" onclick="setFoundMode('h')">높이 입력 (도면 없음)</button>
+      </div>
+      <div id="fnd-el">
+        <div class="ipg">
+          <div class="f fw"><label>현재 하상고 EL.0 <span class="un">m</span></label><input type="number" id="EL0" value="-7.89" step="0.01" oninput="calc()"></div>
+          <div class="f"><label>기초/Cap 상면 EL.1a <span class="un">m</span></label><input type="number" id="EL1a" value="-35.20" step="0.01" oninput="calc()"></div>
+          <div class="f"><label>기초/Cap 저면 EL.1 <span class="un">m</span></label><input type="number" id="EL1" value="-50.50" step="0.01" oninput="calc()"></div>
+          <div class="f fw"><label>지반고/말뚝선단 EL.2 <span class="un">m</span></label><input type="number" id="EL2" value="-80.90" step="0.01" oninput="calc()"></div>
+        </div>
+        <div class="note" id="el2-note" style="display:none;"><span class="ng">직접기초/우물통기초: 말뚝선단(EL.2) 해당없음</span></div>
+      </div>
+      <div id="fnd-h" style="display:none;">
+        <div class="ipg">
+          <div class="f fw"><label>현재 하상고 EL.0 <span class="un">m (기준)</span></label><input type="number" id="hEL0" value="-7.89" step="0.01" oninput="calcFromH()"></div>
+          <div class="f"><label>H₁: 하상~기초상면 <span class="un">m</span></label><input type="number" id="hH1" value="27.31" step="0.01" oninput="calcFromH()"></div>
+          <div class="f"><label>→ EL.1a <span class="un">자동</span></label><input id="hEL1a_c" class="ro ac" readonly tabindex="-1"></div>
+          <div class="f"><label>H₂: 기초 두께 <span class="un">m</span></label><input type="number" id="hH2" value="15.30" step="0.01" oninput="calcFromH()"></div>
+          <div class="f"><label>→ EL.1 <span class="un">자동</span></label><input id="hEL1_c" class="ro ac" readonly tabindex="-1"></div>
+          <div class="f" id="hH3-row"><label>H₃: 말뚝 길이 <span class="un">m</span></label><input type="number" id="hH3" value="30.40" step="0.01" oninput="calcFromH()"></div>
+          <div class="f" id="hEL2-row"><label>→ EL.2 <span class="un">자동</span></label><input id="hEL2_c" class="ro ac" readonly tabindex="-1"></div>
+        </div>
+        <div class="note" id="h-nopile-note" style="display:none;"><span class="ng">직접기초/우물통기초: 말뚝선단(H₃) 해당없음</span></div>
+      </div>
+      <div class="ipg" style="margin-top:4px;">
+        <div class="f"><label>YS = h₁ <span class="un">자동</span></label><input id="YS_o" class="ro ok" readonly tabindex="-1"></div>
+        <div class="f"><label>기초 높이 <span class="un">자동</span></label><input id="fh_o" class="ro" readonly tabindex="-1"></div>
+      </div>
+      <div class="note">
+        <span class="hi">직접기초:</span> 기초상면~저면 기준 침투율<br>
+        <span class="hi">말뚝기초:</span> Cap상면~말뚝선단 기준 침투율
+      </div>
+    </div></div>
+
+    <!-- ④ 수리조건 -->
+    <div class="sec-hd sh-blue" onclick="toggleAcc(4)"><span class="sec-num">04</span>수리 조건<span class="sec-en">Hydraulics</span><span class="acc-arr">▶</span></div>
+    <div class="acc-bd" id="acc-bd-4"><div class="acc-inner">
       <div class="ipg">
-        <div class="f fw"><label>현재 하상고 EL.0 <span class="un">m (기준)</span></label><input type="number" id="hEL0" value="-7.89" step="0.01" oninput="calcFromH()"></div>
-        <div class="f"><label>H₁: 하상~기초상면 <span class="un">m</span></label><input type="number" id="hH1" value="39.61" step="0.01" oninput="calcFromH()"></div>
-        <div class="f"><label>→ EL.1a <span class="un">자동</span></label><input id="hEL1a_c" class="ro ac" readonly tabindex="-1"></div>
-        <div class="f"><label>H₂: 기초 두께 <span class="un">m</span></label><input type="number" id="hH2" value="3.0" step="0.01" oninput="calcFromH()"></div>
-        <div class="f"><label>→ EL.1 <span class="un">자동</span></label><input id="hEL1_c" class="ro ac" readonly tabindex="-1"></div>
-        <div class="f" id="hH3-row"><label>H₃: 말뚝 길이 <span class="un">m</span></label><input type="number" id="hH3" value="10.40" step="0.01" oninput="calcFromH()"></div>
-        <div class="f" id="hEL2-row"><label>→ EL.2 <span class="un">자동</span></label><input id="hEL2_c" class="ro ac" readonly tabindex="-1"></div>
+        <div class="f"><label>수심 (y) <span class="un">m</span></label><input type="number" id="y" value="9.75" step="0.01" oninput="calc()"></div>
+        <div class="f"><label>접근유속 (V) <span class="un">m/s</span></label><input type="number" id="V" value="2.88" step="0.01" oninput="calc()"></div>
+        <div class="f"><label>Froude수 (Fr) <span class="un">자동</span></label><input id="Fr_o" class="ro" readonly tabindex="-1"></div>
+        <div class="f"><label>임계유속 Vc <span class="un">자동</span></label><input id="Vc_o" class="ro" readonly tabindex="-1"></div>
+        <div class="f fw"><label>흐름 조건 <span class="un">자동판별</span></label><input id="cd_o" class="ro" readonly tabindex="-1"></div>
       </div>
-      <div class="note" id="h-nopile-note" style="display:none;"><span class="ng">직접기초/우물통기초: 말뚝선단(H₃) 해당없음</span></div>
-    </div>
+    </div></div>
 
-    <div class="ipg" style="margin-top:4px;">
-      <div class="f"><label>YS = h₁ <span class="un">자동</span></label><input id="YS_o" class="ro ok" readonly tabindex="-1"></div>
-      <div class="f"><label>기초 높이 <span class="un">자동</span></label><input id="fh_o" class="ro" readonly tabindex="-1"></div>
-    </div>
-    <div class="note">
-      <span class="hi">직접기초:</span> 기초상면~저면 기준 침투율<br>
-      <span class="hi">말뚝기초:</span> Cap상면~말뚝선단 기준 침투율
-    </div>
+    <!-- ⑤ 하상재료 -->
+    <div class="sec-hd sh-cyan" onclick="toggleAcc(5)"><span class="sec-num">05</span>하상재료<span class="sec-en">Bed Material</span><span class="acc-arr">▶</span></div>
+    <div class="acc-bd" id="acc-bd-5"><div class="acc-inner">
+      <div class="ipg">
+        <div class="f"><label>D₅₀ <span class="un">mm</span></label><input type="number" id="D50" value="1.0" step="0.1" min="0.001" oninput="calc()"></div>
+        <div class="f"><label>K₄ <span class="un">0.4~1.0</span></label><input type="number" id="K4" value="1.0" step="0.01" oninput="calc()"></div>
+      </div>
+      <div class="ipg g1" style="margin-top:4px;">
+        <div class="f"><label>K₃ — 하상 상태</label>
+          <select id="K3" onchange="calc()">
+            <option value="1.1" selected>평탄/소규모 사구 → K₃=1.1</option>
+            <option value="1.2">중규모 사구 (0.6m≤H&lt;3m) → K₃=1.2</option>
+            <option value="1.3">대규모 사구 (H≥3m) → K₃=1.3</option>
+            <option value="0.9">반사구 → K₃=0.9</option>
+          </select>
+        </div>
+      </div>
+    </div></div>
 
-    <!-- ⑦ 세굴보호공 -->
-    <div class="sec-hd"><div class="sec-dot" style="background:var(--fin)"></div>[표 1.64] 세굴보호공 상태</div>
-    <div class="prot-row">
-      <div class="pb ps on" id="pb-s" onclick="setProt('s')">
-        <div class="pb-lb">상</div><div class="pb-sub">기능<br>완전</div>
+    <!-- ⑥ 세굴보호공 -->
+    <div class="sec-hd sh-purple" onclick="toggleAcc(6)"><span class="sec-num">06</span>세굴보호공<span class="sec-en">Protection</span><span class="acc-arr">▶</span></div>
+    <div class="acc-bd" id="acc-bd-6"><div class="acc-inner">
+      <div class="prot-row">
+        <div class="pb ps on" id="pb-s" onclick="setProt('s')">
+          <div class="pb-lb">상</div><div class="pb-sub">기능<br>완전</div>
+        </div>
+        <div class="pb pm" id="pb-m" onclick="setProt('m')">
+          <div class="pb-lb">중</div><div class="pb-sub">부분<br>기능</div>
+        </div>
+        <div class="pb ph" id="pb-h" onclick="setProt('h')">
+          <div class="pb-lb">하</div><div class="pb-sub">기능<br>상실</div>
+        </div>
       </div>
-      <div class="pb pm" id="pb-m" onclick="setProt('m')">
-        <div class="pb-lb">중</div><div class="pb-sub">부분<br>기능</div>
-      </div>
-      <div class="pb ph" id="pb-h" onclick="setProt('h')">
-        <div class="pb-lb">하</div><div class="pb-sub">기능<br>상실</div>
-      </div>
-    </div>
-    <div class="note" style="margin-top:5px;"><span class="ok">상→상향</span>  <span class="wn">중→유지</span>  <span class="ng">하→하향</span>  ※b~d등급만 적용</div>
+      <div class="note" style="margin-top:5px;"><span class="ok">상→상향</span>  <span class="wn">중→유지</span>  <span class="ng">하→하향</span>  ※b~d등급만 적용</div>
+    </div></div>
 
   </div><!-- /inp -->
 </div><!-- /lp -->
@@ -488,48 +593,49 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 
     <!-- 최종결과 및 등급 판정 영역 (좌우 2칸) -->
     <div class="rp-bot-l">
-      <div style="display:flex;gap:8px;height:100%;">
+      <div style="display:flex;gap:6px;height:100%;align-items:stretch;">
 
         <!-- 좌: 등급 판정 단계 + 최종 박스 -->
         <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
 
           <!-- 등급 판정 단계별 (높이 꽉 채움) -->
           <div class="flow-card" style="flex:1;display:flex;flex-direction:column;">
-            <div class="flow-step-sm">
+            <!-- 1번(사전판정) 숨김: JS 참조 유지 -->
+            <div class="flow-step-sm" style="display:none;">
               <div class="fs-num-sm" style="background:rgba(30,200,122,.15);color:var(--ga);">1</div>
               <div class="fs-body">
-                <div class="fs-lb">[표 1.62] 사전 판정</div>
+                <div class="fs-lb">사전 판정</div>
                 <div class="fs-val" id="s1-val">—</div>
                 <div class="fs-sub" id="s1-sub">—</div>
               </div>
               <div class="gbadge-sm ga" id="s1-badge" style="opacity:.3;">a</div>
             </div>
             <div class="flow-step-sm">
-              <div class="fs-num-sm" style="background:rgba(154,122,255,.15);color:var(--fin);">2</div>
+              <div class="fs-num-sm" style="background:rgba(154,122,255,.15);color:var(--fin);">1</div>
               <div class="fs-body">
-                <div class="fs-lb">[표 1.63] 기본 등급</div>
+                <div class="fs-lb">기본 등급</div>
                 <div class="fs-val" id="s2-val">—</div>
                 <div class="fs-sub" id="s2-sub">—</div>
               </div>
               <div id="s2-badge" class="gbadge-sm" style="opacity:.3;">—</div>
             </div>
             <div class="flow-step-sm">
-              <div class="fs-num-sm" style="background:rgba(154,122,255,.15);color:var(--fin);">3</div>
+              <div class="fs-num-sm" style="background:rgba(154,122,255,.15);color:var(--fin);">2</div>
               <div class="fs-body">
-                <div class="fs-lb">[표 1.64] 보호공 보정</div>
+                <div class="fs-lb">보호공 보정</div>
                 <div class="fs-val" id="s3-val">—</div>
                 <div class="fs-sub" id="s3-sub">—</div>
               </div>
               <div id="s3-badge" class="gbadge-sm" style="opacity:.3;">—</div>
             </div>
-            <div class="flow-step-sm" style="background:rgba(154,122,255,.04);flex:1;align-items:center;">
+            <div class="flow-step-sm final-row" style="background:rgba(154,122,255,.06);align-items:center;">
               <div class="fs-num-sm" style="background:rgba(154,122,255,.25);color:var(--fin);">★</div>
-              <div class="fs-body">
-                <div class="fs-lb">최종 등급</div>
-                <div class="fs-val" id="s4-val" style="font-size:14px;">—</div>
-                <div class="fs-sub" id="s4-sub">—</div>
+              <div class="fs-final-inline">
+                <span class="fs-final-label">최종등급 :</span>
+                <span class="fs-final-grade" id="s4-val">—</span>
               </div>
-              <div id="s4-badge" class="gbadge-sm" style="opacity:.3;width:36px;height:36px;font-size:20px;">—</div>
+              <div id="s4-sub" style="display:none;">—</div>
+              <div id="s4-badge" class="gbadge-sm" style="opacity:.3;width:28px;height:28px;font-size:16px;">—</div>
             </div>
           </div><!-- /flow-card -->
 
@@ -540,15 +646,15 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
         </div><!-- /좌 -->
 
         <!-- 우: 등급 기준표 (높이 맞춤) -->
-        <div style="flex:1;min-width:0;align-self:stretch;">
+        <div style="flex:1;min-width:0;align-self:stretch;border:1px solid var(--bd);border-radius:4px;overflow:hidden;">
           <table class="gr-tbl" style="width:100%;height:100%;">
             <thead><tr><th>등급</th><th>지반 및 세굴 상태</th><th>현재</th></tr></thead>
             <tbody>
-              <tr id="gr-a"><td style="text-align:center;color:var(--ga);font-weight:700;font-family:'JetBrains Mono',monospace;">a</td><td>기초상단보다 위 (0%)</td><td style="text-align:center;" id="gr-a-cur">—</td></tr>
-              <tr id="gr-b"><td style="text-align:center;color:var(--gb);font-weight:700;font-family:'JetBrains Mono',monospace;">b</td><td>기초 상단 일부 노출 (1~30%)</td><td style="text-align:center;" id="gr-b-cur">—</td></tr>
-              <tr id="gr-c"><td style="text-align:center;color:var(--gc);font-weight:700;font-family:'JetBrains Mono',monospace;">c</td><td>기초 깊이내 (31~70%)</td><td style="text-align:center;" id="gr-c-cur">—</td></tr>
-              <tr id="gr-d"><td style="text-align:center;color:var(--gd);font-weight:700;font-family:'JetBrains Mono',monospace;">d</td><td>기초 하단 일부 노출 (71~100%)</td><td style="text-align:center;" id="gr-d-cur">—</td></tr>
-              <tr id="gr-e"><td style="text-align:center;color:var(--ge);font-weight:700;font-family:'JetBrains Mono',monospace;">e</td><td>기초 하단보다 아래 (100% 초과)</td><td style="text-align:center;" id="gr-e-cur">—</td></tr>
+              <tr id="gr-a"><td style="text-align:center;color:var(--ga);font-weight:700;font-family:'JetBrains Mono',monospace;">a</td><td>기초 상부 (0%)</td><td style="text-align:center;" id="gr-a-cur">—</td></tr>
+              <tr id="gr-b"><td style="text-align:center;color:var(--gb);font-weight:700;font-family:'JetBrains Mono',monospace;">b</td><td>상단 노출 (1~30%)</td><td style="text-align:center;" id="gr-b-cur">—</td></tr>
+              <tr id="gr-c"><td style="text-align:center;color:var(--gc);font-weight:700;font-family:'JetBrains Mono',monospace;">c</td><td>기초 내 (31~70%)</td><td style="text-align:center;" id="gr-c-cur">—</td></tr>
+              <tr id="gr-d"><td style="text-align:center;color:var(--gd);font-weight:700;font-family:'JetBrains Mono',monospace;">d</td><td>하단 노출 (71~100%)</td><td style="text-align:center;" id="gr-d-cur">—</td></tr>
+              <tr id="gr-e"><td style="text-align:center;color:var(--ge);font-weight:700;font-family:'JetBrains Mono',monospace;">e</td><td>기초 하부 (100%↑)</td><td style="text-align:center;" id="gr-e-cur">—</td></tr>
             </tbody>
           </table>
         </div><!-- /우 -->
@@ -562,131 +668,144 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
       <div class="diag-wrap">
 
         <!-- 직접기초 SVG -->
-        <svg viewBox="0 0 460 310" id="svg-f" style="display:block;">
+        <!-- 직접기초 SVG -->
+        <svg viewBox="0 0 480 255" id="svg-f" preserveAspectRatio="xMidYMid meet">
           <defs>
-            <marker id="f-a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5A7AAA" stroke-width="1.5"/></marker>
-            <marker id="f-a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#ff6e4a" stroke-width="1.5"/></marker>
+            <marker id="f-a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5A7AAA" stroke-width="1.5"/></marker>
+            <marker id="f-a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#ff6e4a" stroke-width="1.5"/></marker>
             <pattern id="hf" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#3A5080" stroke-width="1.5"/></pattern>
           </defs>
-          <line x1="28" y1="34" x2="155" y2="34" stroke="#5A7AAA" stroke-width="1" marker-end="url(#f-a1)"/>
-          <text x="84" y="29" text-anchor="middle" fill="#5A7AAA" font-size="8" font-family="JetBrains Mono">V →</text>
-          <rect x="28" y="18" width="294" height="28" fill="rgba(79,144,255,.08)"/>
-          <line x1="28" y1="18" x2="322" y2="18" stroke="#4F90FF" stroke-width="1"/>
-          <text x="326" y="22" fill="#4F90FF" font-size="8" font-family="JetBrains Mono">W.L</text>
-          <rect x="186" y="18" width="30" height="0" fill="#1a2a44" stroke="#4F90FF" stroke-width="1" rx="1" id="f-pier"/>
-          <rect x="187" y="19" width="28" height="0" fill="url(#hf)" opacity="0.3" id="f-pier-h"/>
-          <text x="201" y="0" text-anchor="middle" fill="#5A7AAA" font-size="8" font-family="JetBrains Mono" id="f-pier-t">교각</text>
-          <line x1="28" y1="46" x2="186" y2="46" stroke="#5A7AAA" stroke-width="1.5" stroke-dasharray="5 3" id="f-bed-l"/>
-          <line x1="216" y1="46" x2="322" y2="46" stroke="#5A7AAA" stroke-width="1.5" stroke-dasharray="5 3" id="f-bed-r"/>
-          <text x="326" y="50" fill="#5A7AAA" font-size="8" font-family="JetBrains Mono" id="f-lEL0">EL.0</text>
-          <rect x="28" y="46" width="158" height="0" fill="rgba(255,110,74,.1)" id="f-sf-l"/>
-          <rect x="216" y="46" width="106" height="0" fill="rgba(255,110,74,.1)" id="f-sf-r"/>
-          <line x1="28" y1="90" x2="186" y2="90" stroke="#ff6e4a" stroke-width="2" id="f-sl-l"/>
-          <line x1="216" y1="90" x2="322" y2="90" stroke="#ff6e4a" stroke-width="2" id="f-sl-r"/>
-          <text x="326" y="0" fill="#ff6e4a" font-size="8" font-family="JetBrains Mono" id="f-lSL">세굴선</text>
-          <line x1="52" y1="48" x2="52" y2="88" stroke="#ff6e4a" stroke-width="1.2" marker-end="url(#f-a2)" id="f-ds-arr"/>
-          <text x="58" y="0" fill="#ff6e4a" font-size="9" font-family="JetBrains Mono" id="f-lDs">ds</text>
-          <rect x="166" y="140" width="70" height="0" fill="#1e2d47" stroke="#4A5A7A" stroke-width="1.5" rx="1" id="f-fnd"/>
-          <rect x="167" y="141" width="68" height="0" fill="url(#hf)" opacity="0.4" id="f-fnd-h"/>
-          <text x="201" y="0" text-anchor="middle" fill="#7A90B0" font-size="7" font-family="JetBrains Mono" id="f-fnd-t">기초푸팅</text>
-          <line x1="28" y1="140" x2="166" y2="140" stroke="#60a5fa" stroke-width="1" stroke-dasharray="3 2" id="f-1al"/>
-          <line x1="236" y1="140" x2="322" y2="140" stroke="#60a5fa" stroke-width="1" stroke-dasharray="3 2" id="f-1ar"/>
-          <text x="326" y="0" fill="#60a5fa" font-size="8" font-family="JetBrains Mono" id="f-lEL1a">EL.1a</text>
-          <line x1="28" y1="160" x2="166" y2="160" stroke="#1EC87A" stroke-width="1.5" stroke-dasharray="3 2" id="f-1l"/>
-          <line x1="236" y1="160" x2="322" y2="160" stroke="#1EC87A" stroke-width="1.5" stroke-dasharray="3 2" id="f-1r"/>
-          <text x="326" y="0" fill="#1EC87A" font-size="8" font-family="JetBrains Mono" id="f-lEL1">EL.1</text>
-          <rect x="28" y="220" width="294" height="30" fill="rgba(90,122,170,.1)" id="f-gfill"/>
-          <line x1="28" y1="220" x2="322" y2="220" stroke="#4A5A7A" stroke-width="1.5" id="f-gl"/>
-          <text x="326" y="0" fill="#5A7AAA" font-size="8" font-family="JetBrains Mono" id="f-lEL2">EL.2</text>
-          <rect x="345" y="10" width="105" height="285" fill="rgba(255,255,255,.01)" stroke="#243050" stroke-width="0.5" rx="4"/>
-          <text x="397" y="24" text-anchor="middle" fill="#5A7AAA" font-size="8" font-family="JetBrains Mono">등급 위치</text>
-          <rect x="352" y="30" width="16" height="2" fill="#1EC87A" rx="1" id="f-ba"/>
-          <rect x="352" y="32" width="16" height="2" fill="#C0B000" rx="1" id="f-bb"/>
-          <rect x="352" y="34" width="16" height="2" fill="#FF9030" rx="1" id="f-bc"/>
-          <rect x="352" y="36" width="16" height="2" fill="#FF4E4E" rx="1" id="f-bd"/>
-          <rect x="352" y="38" width="16" height="2" fill="#9A1818" rx="1" id="f-be"/>
-          <text x="372" y="0" fill="#1EC87A" font-size="9" font-family="JetBrains Mono" font-weight="600" id="f-gla">a</text>
-          <text x="372" y="0" fill="#C0B000" font-size="9" font-family="JetBrains Mono" font-weight="600" id="f-glb">b</text>
-          <text x="372" y="0" fill="#FF9030" font-size="9" font-family="JetBrains Mono" font-weight="600" id="f-glc">c</text>
-          <text x="372" y="0" fill="#FF4E4E" font-size="9" font-family="JetBrains Mono" font-weight="600" id="f-gld">d</text>
-          <text x="372" y="0" fill="#9A1818" font-size="9" font-family="JetBrains Mono" font-weight="600" id="f-gle">e</text>
-          <line x1="350" y1="90" x2="368" y2="90" stroke="#ff6e4a" stroke-width="1.5" id="f-ptr"/>
-          <text x="371" y="0" fill="#ff6e4a" font-size="8" font-family="JetBrains Mono" font-weight="600" id="f-ptrl">ds</text>
-          <line x1="32" y1="300" x2="52" y2="300" stroke="#5A7AAA" stroke-width="1.5" stroke-dasharray="4 2"/>
-          <text x="55" y="303" fill="#5A7AAA" font-size="7" font-family="JetBrains Mono">현하상</text>
-          <line x1="100" y1="300" x2="120" y2="300" stroke="#ff6e4a" stroke-width="2"/>
-          <text x="123" y="303" fill="#ff6e4a" font-size="7" font-family="JetBrains Mono">세굴선</text>
-          <line x1="165" y1="300" x2="185" y2="300" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <text x="188" y="303" fill="#60a5fa" font-size="7" font-family="JetBrains Mono">기초상면</text>
-          <line x1="245" y1="300" x2="265" y2="300" stroke="#1EC87A" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <text x="268" y="303" fill="#1EC87A" font-size="7" font-family="JetBrains Mono">기초저면</text>
+          <!-- 유속 -->
+          <line x1="20" y1="30" x2="130" y2="30" stroke="#5A7AAA" stroke-width="1.5" marker-end="url(#f-a1)"/>
+          <text x="70" y="24" text-anchor="middle" fill="#5A7AAA" font-size="13" font-family="JetBrains Mono" font-weight="600">V →</text>
+          <!-- 수면 -->
+          <rect x="20" y="14" width="320" height="26" fill="rgba(79,144,255,.08)"/>
+          <line x1="20" y1="14" x2="340" y2="14" stroke="#4F90FF" stroke-width="1.5"/>
+          <text x="345" y="19" fill="#4F90FF" font-size="12" font-family="JetBrains Mono" font-weight="600">W.L</text>
+          <!-- 교각 -->
+          <rect x="170" y="14" width="32" height="0" fill="#1a2a44" stroke="#4F90FF" stroke-width="1.5" rx="1" id="f-pier"/>
+          <rect x="171" y="15" width="30" height="0" fill="url(#hf)" opacity="0.3" id="f-pier-h"/>
+          <text x="186" y="0" text-anchor="middle" fill="#8AAAD0" font-size="13" font-family="JetBrains Mono" font-weight="700" id="f-pier-t">교각</text>
+          <!-- 하상 -->
+          <line x1="20" y1="40" x2="170" y2="40" stroke="#5A7AAA" stroke-width="2" stroke-dasharray="6 3" id="f-bed-l"/>
+          <line x1="202" y1="40" x2="340" y2="40" stroke="#5A7AAA" stroke-width="2" stroke-dasharray="6 3" id="f-bed-r"/>
+          <text x="345" y="45" fill="#5A7AAA" font-size="12" font-family="JetBrains Mono" font-weight="600" id="f-lEL0">EL.0</text>
+          <!-- 세굴 영역 -->
+          <rect x="20" y="40" width="150" height="0" fill="rgba(255,110,74,.1)" id="f-sf-l"/>
+          <rect x="202" y="40" width="138" height="0" fill="rgba(255,110,74,.1)" id="f-sf-r"/>
+          <!-- 세굴선 -->
+          <line x1="20" y1="80" x2="170" y2="80" stroke="#ff6e4a" stroke-width="2.5" id="f-sl-l"/>
+          <line x1="202" y1="80" x2="340" y2="80" stroke="#ff6e4a" stroke-width="2.5" id="f-sl-r"/>
+          <text x="345" y="0" fill="#ff6e4a" font-size="12" font-family="JetBrains Mono" font-weight="700" id="f-lSL">세굴선</text>
+          <!-- ds -->
+          <line x1="44" y1="42" x2="44" y2="78" stroke="#ff6e4a" stroke-width="1.5" marker-end="url(#f-a2)" id="f-ds-arr"/>
+          <text x="52" y="0" fill="#ff6e4a" font-size="14" font-family="JetBrains Mono" font-weight="700" id="f-lDs">ds</text>
+          <!-- 기초 -->
+          <rect x="150" y="130" width="72" height="0" fill="#1e2d47" stroke="#4A5A7A" stroke-width="2" rx="1" id="f-fnd"/>
+          <rect x="151" y="131" width="70" height="0" fill="url(#hf)" opacity="0.4" id="f-fnd-h"/>
+          <text x="186" y="0" text-anchor="middle" fill="#8AAAD0" font-size="12" font-family="JetBrains Mono" font-weight="600" id="f-fnd-t">기초푸팅</text>
+          <!-- EL.1a -->
+          <line x1="20" y1="130" x2="150" y2="130" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4 2" id="f-1al"/>
+          <line x1="222" y1="130" x2="340" y2="130" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4 2" id="f-1ar"/>
+          <text x="345" y="0" fill="#60a5fa" font-size="12" font-family="JetBrains Mono" font-weight="600" id="f-lEL1a">EL.1a</text>
+          <!-- EL.1 -->
+          <line x1="20" y1="150" x2="150" y2="150" stroke="#1EC87A" stroke-width="2" stroke-dasharray="4 2" id="f-1l"/>
+          <line x1="222" y1="150" x2="340" y2="150" stroke="#1EC87A" stroke-width="2" stroke-dasharray="4 2" id="f-1r"/>
+          <text x="345" y="0" fill="#1EC87A" font-size="12" font-family="JetBrains Mono" font-weight="600" id="f-lEL1">EL.1</text>
+          <!-- 지반 -->
+          <rect x="20" y="210" width="320" height="30" fill="rgba(90,122,170,.1)" id="f-gfill"/>
+          <line x1="20" y1="210" x2="340" y2="210" stroke="#4A5A7A" stroke-width="2" id="f-gl"/>
+          <text x="345" y="0" fill="#5A7AAA" font-size="12" font-family="JetBrains Mono" font-weight="600" id="f-lEL2">EL.2</text>
+          <!-- 등급 막대 -->
+          <rect x="430" y="5" width="45" height="240" fill="rgba(255,255,255,.01)" stroke="#2A3A55" stroke-width="0.5" rx="3"/>
+          <rect x="436" y="14" width="14" height="2" fill="#1EC87A" rx="1" id="f-ba"/>
+          <rect x="436" y="16" width="14" height="2" fill="#C0B000" rx="1" id="f-bb"/>
+          <rect x="436" y="18" width="14" height="2" fill="#FF9030" rx="1" id="f-bc"/>
+          <rect x="436" y="20" width="14" height="2" fill="#FF4E4E" rx="1" id="f-bd"/>
+          <rect x="436" y="22" width="14" height="2" fill="#9A1818" rx="1" id="f-be"/>
+          <text x="454" y="0" fill="#1EC87A" font-size="13" font-family="JetBrains Mono" font-weight="700" id="f-gla">a</text>
+          <text x="454" y="0" fill="#C0B000" font-size="13" font-family="JetBrains Mono" font-weight="700" id="f-glb">b</text>
+          <text x="454" y="0" fill="#FF9030" font-size="13" font-family="JetBrains Mono" font-weight="700" id="f-glc">c</text>
+          <text x="454" y="0" fill="#FF4E4E" font-size="13" font-family="JetBrains Mono" font-weight="700" id="f-gld">d</text>
+          <text x="454" y="0" fill="#9A1818" font-size="13" font-family="JetBrains Mono" font-weight="700" id="f-gle">e</text>
+          <line x1="434" y1="80" x2="450" y2="80" stroke="#ff6e4a" stroke-width="2" id="f-ptr"/>
+          <text x="453" y="0" fill="#ff6e4a" font-size="12" font-family="JetBrains Mono" font-weight="700" id="f-ptrl">ds</text>
+          <!-- 범례 -->
+          <line x1="25" y1="248" x2="42" y2="248" stroke="#5A7AAA" stroke-width="2" stroke-dasharray="5 3"/>
+          <text x="45" y="252" fill="#5A7AAA" font-size="10" font-family="JetBrains Mono">하상</text>
+          <line x1="78" y1="248" x2="95" y2="248" stroke="#ff6e4a" stroke-width="2.5"/>
+          <text x="98" y="252" fill="#ff6e4a" font-size="10" font-family="JetBrains Mono">세굴</text>
+          <line x1="131" y1="248" x2="148" y2="248" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4 2"/>
+          <text x="151" y="252" fill="#60a5fa" font-size="10" font-family="JetBrains Mono">상면</text>
+          <line x1="184" y1="248" x2="201" y2="248" stroke="#1EC87A" stroke-width="2" stroke-dasharray="4 2"/>
+          <text x="204" y="252" fill="#1EC87A" font-size="10" font-family="JetBrains Mono">저면</text>
         </svg>
 
         <!-- 말뚝기초 SVG -->
-        <svg viewBox="0 0 460 310" id="svg-p" style="display:none;">
+        <svg viewBox="0 0 480 255" id="svg-p" style="display:none;" preserveAspectRatio="xMidYMid meet">
           <defs>
-            <marker id="p-a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5A7AAA" stroke-width="1.5"/></marker>
-            <marker id="p-a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#ff6e4a" stroke-width="1.5"/></marker>
+            <marker id="p-a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#5A7AAA" stroke-width="1.5"/></marker>
+            <marker id="p-a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#ff6e4a" stroke-width="1.5"/></marker>
             <pattern id="hp" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#3A5080" stroke-width="1.5"/></pattern>
           </defs>
-          <line x1="28" y1="34" x2="155" y2="34" stroke="#5A7AAA" stroke-width="1" marker-end="url(#p-a1)"/>
-          <text x="84" y="29" text-anchor="middle" fill="#5A7AAA" font-size="8" font-family="JetBrains Mono">V →</text>
-          <rect x="28" y="18" width="294" height="28" fill="rgba(79,144,255,.08)"/>
-          <line x1="28" y1="18" x2="322" y2="18" stroke="#4F90FF" stroke-width="1"/>
-          <text x="326" y="22" fill="#4F90FF" font-size="8" font-family="JetBrains Mono">W.L</text>
-          <rect x="189" y="18" width="24" height="0" fill="#1a2a44" stroke="#4F90FF" stroke-width="1" rx="1" id="p-pier"/>
-          <rect x="190" y="19" width="22" height="0" fill="url(#hp)" opacity="0.3" id="p-pier-h"/>
-          <text x="201" y="0" text-anchor="middle" fill="#5A7AAA" font-size="8" font-family="JetBrains Mono" id="p-pier-t">교각</text>
-          <line x1="28" y1="46" x2="189" y2="46" stroke="#5A7AAA" stroke-width="1.5" stroke-dasharray="5 3" id="p-bed-l"/>
-          <line x1="213" y1="46" x2="322" y2="46" stroke="#5A7AAA" stroke-width="1.5" stroke-dasharray="5 3" id="p-bed-r"/>
-          <text x="326" y="50" fill="#5A7AAA" font-size="8" font-family="JetBrains Mono" id="p-lEL0">EL.0</text>
-          <rect x="28" y="46" width="161" height="0" fill="rgba(255,110,74,.1)" id="p-sf-l"/>
-          <rect x="213" y="46" width="109" height="0" fill="rgba(255,110,74,.1)" id="p-sf-r"/>
-          <line x1="28" y1="90" x2="189" y2="90" stroke="#ff6e4a" stroke-width="2" id="p-sl-l"/>
-          <line x1="213" y1="90" x2="322" y2="90" stroke="#ff6e4a" stroke-width="2" id="p-sl-r"/>
-          <text x="326" y="0" fill="#ff6e4a" font-size="8" font-family="JetBrains Mono" id="p-lSL">세굴선</text>
-          <line x1="52" y1="48" x2="52" y2="88" stroke="#ff6e4a" stroke-width="1.2" marker-end="url(#p-a2)" id="p-ds-arr"/>
-          <text x="58" y="0" fill="#ff6e4a" font-size="9" font-family="JetBrains Mono" id="p-lDs">ds</text>
-          <rect x="166" y="140" width="70" height="0" fill="#1e2d47" stroke="#4A5A7A" stroke-width="1.5" rx="1" id="p-cap"/>
-          <rect x="167" y="141" width="68" height="0" fill="url(#hp)" opacity="0.4" id="p-cap-h"/>
-          <text x="201" y="0" text-anchor="middle" fill="#7A90B0" font-size="7" font-family="JetBrains Mono" id="p-cap-t">Pile Cap</text>
-          <line x1="28" y1="140" x2="166" y2="140" stroke="#60a5fa" stroke-width="1" stroke-dasharray="3 2" id="p-1al"/>
-          <line x1="236" y1="140" x2="322" y2="140" stroke="#60a5fa" stroke-width="1" stroke-dasharray="3 2" id="p-1ar"/>
-          <text x="326" y="0" fill="#60a5fa" font-size="8" font-family="JetBrains Mono" id="p-lEL1a">EL.1a</text>
-          <line x1="28" y1="160" x2="166" y2="160" stroke="#1EC87A" stroke-width="1.5" stroke-dasharray="3 2" id="p-1l"/>
-          <line x1="236" y1="160" x2="322" y2="160" stroke="#1EC87A" stroke-width="1.5" stroke-dasharray="3 2" id="p-1r"/>
-          <text x="326" y="0" fill="#1EC87A" font-size="8" font-family="JetBrains Mono" id="p-lEL1">EL.1</text>
-          <rect x="173" y="160" width="10" height="0" fill="#111e30" stroke="#4A5A7A" stroke-width="1" id="p-pl"/>
-          <rect x="196" y="160" width="10" height="0" fill="#111e30" stroke="#4A5A7A" stroke-width="1" id="p-pc"/>
-          <rect x="219" y="160" width="10" height="0" fill="#111e30" stroke="#4A5A7A" stroke-width="1" id="p-pr"/>
-          <polygon points="0,0 10,0 5,8" fill="#111e30" stroke="#4A5A7A" stroke-width="1" id="p-tl"/>
-          <polygon points="0,0 10,0 5,8" fill="#111e30" stroke="#4A5A7A" stroke-width="1" id="p-tc"/>
-          <polygon points="0,0 10,0 5,8" fill="#111e30" stroke="#4A5A7A" stroke-width="1" id="p-tr"/>
-          <rect x="28" y="220" width="294" height="30" fill="rgba(90,122,170,.1)" id="p-gfill"/>
-          <line x1="28" y1="220" x2="322" y2="220" stroke="#4A5A7A" stroke-width="1.5" id="p-gl"/>
-          <text x="326" y="0" fill="#5A7AAA" font-size="8" font-family="JetBrains Mono" id="p-lEL2">EL.2</text>
-          <rect x="345" y="10" width="105" height="285" fill="rgba(255,255,255,.01)" stroke="#243050" stroke-width="0.5" rx="4"/>
-          <text x="397" y="24" text-anchor="middle" fill="#5A7AAA" font-size="8" font-family="JetBrains Mono">등급 위치</text>
-          <rect x="352" y="30" width="16" height="2" fill="#1EC87A" rx="1" id="p-ba"/>
-          <rect x="352" y="32" width="16" height="2" fill="#C0B000" rx="1" id="p-bb"/>
-          <rect x="352" y="34" width="16" height="2" fill="#FF9030" rx="1" id="p-bc"/>
-          <rect x="352" y="36" width="16" height="2" fill="#FF4E4E" rx="1" id="p-bd"/>
-          <rect x="352" y="38" width="16" height="2" fill="#9A1818" rx="1" id="p-be"/>
-          <text x="372" y="0" fill="#1EC87A" font-size="9" font-family="JetBrains Mono" font-weight="600" id="p-gla">a</text>
-          <text x="372" y="0" fill="#C0B000" font-size="9" font-family="JetBrains Mono" font-weight="600" id="p-glb">b</text>
-          <text x="372" y="0" fill="#FF9030" font-size="9" font-family="JetBrains Mono" font-weight="600" id="p-glc">c</text>
-          <text x="372" y="0" fill="#FF4E4E" font-size="9" font-family="JetBrains Mono" font-weight="600" id="p-gld">d</text>
-          <text x="372" y="0" fill="#9A1818" font-size="9" font-family="JetBrains Mono" font-weight="600" id="p-gle">e</text>
-          <line x1="350" y1="90" x2="368" y2="90" stroke="#ff6e4a" stroke-width="1.5" id="p-ptr"/>
-          <text x="371" y="0" fill="#ff6e4a" font-size="8" font-family="JetBrains Mono" font-weight="600" id="p-ptrl">ds</text>
-          <line x1="32" y1="300" x2="52" y2="300" stroke="#5A7AAA" stroke-width="1.5" stroke-dasharray="4 2"/>
-          <text x="55" y="303" fill="#5A7AAA" font-size="7" font-family="JetBrains Mono">현하상</text>
-          <line x1="100" y1="300" x2="120" y2="300" stroke="#ff6e4a" stroke-width="2"/>
-          <text x="123" y="303" fill="#ff6e4a" font-size="7" font-family="JetBrains Mono">세굴선</text>
-          <line x1="165" y1="300" x2="185" y2="300" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <text x="188" y="303" fill="#60a5fa" font-size="7" font-family="JetBrains Mono">Cap 상면</text>
-          <line x1="245" y1="300" x2="265" y2="300" stroke="#1EC87A" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <text x="268" y="303" fill="#1EC87A" font-size="7" font-family="JetBrains Mono">Cap 저면</text>
+          <line x1="20" y1="30" x2="130" y2="30" stroke="#5A7AAA" stroke-width="1.5" marker-end="url(#p-a1)"/>
+          <text x="70" y="24" text-anchor="middle" fill="#5A7AAA" font-size="13" font-family="JetBrains Mono" font-weight="600">V →</text>
+          <rect x="20" y="14" width="320" height="26" fill="rgba(79,144,255,.08)"/>
+          <line x1="20" y1="14" x2="340" y2="14" stroke="#4F90FF" stroke-width="1.5"/>
+          <text x="345" y="19" fill="#4F90FF" font-size="12" font-family="JetBrains Mono" font-weight="600">W.L</text>
+          <rect x="175" y="14" width="24" height="0" fill="#1a2a44" stroke="#4F90FF" stroke-width="1.5" rx="1" id="p-pier"/>
+          <rect x="176" y="15" width="22" height="0" fill="url(#hp)" opacity="0.3" id="p-pier-h"/>
+          <text x="186" y="0" text-anchor="middle" fill="#8AAAD0" font-size="13" font-family="JetBrains Mono" font-weight="700" id="p-pier-t">교각</text>
+          <line x1="20" y1="40" x2="175" y2="40" stroke="#5A7AAA" stroke-width="2" stroke-dasharray="6 3" id="p-bed-l"/>
+          <line x1="199" y1="40" x2="340" y2="40" stroke="#5A7AAA" stroke-width="2" stroke-dasharray="6 3" id="p-bed-r"/>
+          <text x="345" y="45" fill="#5A7AAA" font-size="12" font-family="JetBrains Mono" font-weight="600" id="p-lEL0">EL.0</text>
+          <rect x="20" y="40" width="155" height="0" fill="rgba(255,110,74,.1)" id="p-sf-l"/>
+          <rect x="199" y="40" width="141" height="0" fill="rgba(255,110,74,.1)" id="p-sf-r"/>
+          <line x1="20" y1="80" x2="175" y2="80" stroke="#ff6e4a" stroke-width="2.5" id="p-sl-l"/>
+          <line x1="199" y1="80" x2="340" y2="80" stroke="#ff6e4a" stroke-width="2.5" id="p-sl-r"/>
+          <text x="345" y="0" fill="#ff6e4a" font-size="12" font-family="JetBrains Mono" font-weight="700" id="p-lSL">세굴선</text>
+          <line x1="44" y1="42" x2="44" y2="78" stroke="#ff6e4a" stroke-width="1.5" marker-end="url(#p-a2)" id="p-ds-arr"/>
+          <text x="52" y="0" fill="#ff6e4a" font-size="14" font-family="JetBrains Mono" font-weight="700" id="p-lDs">ds</text>
+          <rect x="150" y="130" width="72" height="0" fill="#1e2d47" stroke="#4A5A7A" stroke-width="2" rx="1" id="p-cap"/>
+          <rect x="151" y="131" width="70" height="0" fill="url(#hp)" opacity="0.4" id="p-cap-h"/>
+          <text x="186" y="0" text-anchor="middle" fill="#8AAAD0" font-size="12" font-family="JetBrains Mono" font-weight="600" id="p-cap-t">Pile Cap</text>
+          <line x1="20" y1="130" x2="150" y2="130" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4 2" id="p-1al"/>
+          <line x1="222" y1="130" x2="340" y2="130" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4 2" id="p-1ar"/>
+          <text x="345" y="0" fill="#60a5fa" font-size="12" font-family="JetBrains Mono" font-weight="600" id="p-lEL1a">EL.1a</text>
+          <line x1="20" y1="150" x2="150" y2="150" stroke="#1EC87A" stroke-width="2" stroke-dasharray="4 2" id="p-1l"/>
+          <line x1="222" y1="150" x2="340" y2="150" stroke="#1EC87A" stroke-width="2" stroke-dasharray="4 2" id="p-1r"/>
+          <text x="345" y="0" fill="#1EC87A" font-size="12" font-family="JetBrains Mono" font-weight="600" id="p-lEL1">EL.1</text>
+          <rect x="157" y="150" width="10" height="0" fill="#111e30" stroke="#4A5A7A" stroke-width="1.5" id="p-pl"/>
+          <rect x="180" y="150" width="10" height="0" fill="#111e30" stroke="#4A5A7A" stroke-width="1.5" id="p-pc"/>
+          <rect x="203" y="150" width="10" height="0" fill="#111e30" stroke="#4A5A7A" stroke-width="1.5" id="p-pr"/>
+          <polygon points="0,0 10,0 5,8" fill="#111e30" stroke="#4A5A7A" stroke-width="1.5" id="p-tl"/>
+          <polygon points="0,0 10,0 5,8" fill="#111e30" stroke="#4A5A7A" stroke-width="1.5" id="p-tc"/>
+          <polygon points="0,0 10,0 5,8" fill="#111e30" stroke="#4A5A7A" stroke-width="1.5" id="p-tr"/>
+          <rect x="20" y="210" width="320" height="30" fill="rgba(90,122,170,.1)" id="p-gfill"/>
+          <line x1="20" y1="210" x2="340" y2="210" stroke="#4A5A7A" stroke-width="2" id="p-gl"/>
+          <text x="345" y="0" fill="#5A7AAA" font-size="12" font-family="JetBrains Mono" font-weight="600" id="p-lEL2">EL.2</text>
+          <rect x="430" y="5" width="45" height="240" fill="rgba(255,255,255,.01)" stroke="#2A3A55" stroke-width="0.5" rx="3"/>
+          <rect x="436" y="14" width="14" height="2" fill="#1EC87A" rx="1" id="p-ba"/>
+          <rect x="436" y="16" width="14" height="2" fill="#C0B000" rx="1" id="p-bb"/>
+          <rect x="436" y="18" width="14" height="2" fill="#FF9030" rx="1" id="p-bc"/>
+          <rect x="436" y="20" width="14" height="2" fill="#FF4E4E" rx="1" id="p-bd"/>
+          <rect x="436" y="22" width="14" height="2" fill="#9A1818" rx="1" id="p-be"/>
+          <text x="454" y="0" fill="#1EC87A" font-size="13" font-family="JetBrains Mono" font-weight="700" id="p-gla">a</text>
+          <text x="454" y="0" fill="#C0B000" font-size="13" font-family="JetBrains Mono" font-weight="700" id="p-glb">b</text>
+          <text x="454" y="0" fill="#FF9030" font-size="13" font-family="JetBrains Mono" font-weight="700" id="p-glc">c</text>
+          <text x="454" y="0" fill="#FF4E4E" font-size="13" font-family="JetBrains Mono" font-weight="700" id="p-gld">d</text>
+          <text x="454" y="0" fill="#9A1818" font-size="13" font-family="JetBrains Mono" font-weight="700" id="p-gle">e</text>
+          <line x1="434" y1="80" x2="450" y2="80" stroke="#ff6e4a" stroke-width="2" id="p-ptr"/>
+          <text x="453" y="0" fill="#ff6e4a" font-size="12" font-family="JetBrains Mono" font-weight="700" id="p-ptrl">ds</text>
+          <!-- 범례 -->
+          <line x1="25" y1="248" x2="42" y2="248" stroke="#5A7AAA" stroke-width="2" stroke-dasharray="5 3"/>
+          <text x="45" y="252" fill="#5A7AAA" font-size="10" font-family="JetBrains Mono">하상</text>
+          <line x1="78" y1="248" x2="95" y2="248" stroke="#ff6e4a" stroke-width="2.5"/>
+          <text x="98" y="252" fill="#ff6e4a" font-size="10" font-family="JetBrains Mono">세굴</text>
+          <line x1="131" y1="248" x2="148" y2="248" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4 2"/>
+          <text x="151" y="252" fill="#60a5fa" font-size="10" font-family="JetBrains Mono">Cap상</text>
+          <line x1="189" y1="248" x2="206" y2="248" stroke="#1EC87A" stroke-width="2" stroke-dasharray="4 2"/>
+          <text x="209" y="252" fill="#1EC87A" font-size="10" font-family="JetBrains Mono">Cap하</text>
         </svg>
 
       </div>
@@ -701,16 +820,12 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
       적용 기준 및 참고문헌 (References)
     </div>
     <ol class="ref-list">
-      <li><span class="ref-main">국토교통부 (2023). <em>시설물 안전점검 지침</em> — 표 1.62~1.65, 그림 1.35. 국토교통부.</span></li>
-      <li><span class="ref-main">Richardson, E.V. &amp; Davis, S.R. (2001). <em>Evaluating Scour at Bridges, 4th Ed.</em> FHWA HEC-18, FHWA NHI 01-001.</span></li>
-      <li><span class="ref-main">Hydraulic Engineering Circular No. 18, 5th Ed. (2012). FHWA-HIF-12-003. U.S. DOT, FHWA.</span></li>
-      <li><span class="ref-main">Neill, C.R. (1973). <em>Guide to Bridge Hydraulics.</em> Roads &amp; Transportation Assoc. of Canada, Univ. of Toronto Press.</span></li>
-      <li><span class="ref-main">Laursen, E.M. &amp; Toch, A. (1956). Scour Around Bridge Piers and Abutments. <em>Iowa Highway Research Board</em>, Bulletin No. 4.</span></li>
-      <li><span class="ref-main">Froehlich, D.C. (1988). Analysis of Onsite Measurements of Scour at Piers. <em>Proc. ASCE Hydraulic Eng. Conf.</em>, Colorado Springs.</span></li>
-      <li><span class="ref-main">KDS 51 90 10 (2018). <em>하천교량 설계기준.</em> 국토교통부.</span></li>
-      <li><span class="ref-main">도로교설계기준 (한계상태설계법) (2016). 국토교통부·한국도로공사.</span></li>
-      <li><span class="ref-main">한국시설안전공단 (2019). <em>교량 정밀안전진단 세굴 검토 지침.</em></span></li>
-      <li><span class="ref-main">CSU Formula — Colorado State Univ. (Richardson &amp; Davis, 2001, HEC-18 §4).</span></li>
+      <li><span class="ref-main">Neill, C.R. (1973). Guide to Bridge Hydraulics. Univ. of Toronto.</span></li>
+      <li><span class="ref-main">Laursen &amp; Toch (1956). Scour at Piers. Iowa HRB Bull. No.4.</span></li>
+      <li><span class="ref-main">Froehlich, D.C. (1988). Onsite Scour Meas. ASCE Hyd. Conf.</span></li>
+      <li><span class="ref-main">KDS 51 90 10 (2018). River Bridge Design Std. MOLIT.</span></li>
+      <li><span class="ref-main">KISTEC (2019). Bridge Scour Inspection Guide.</span></li>
+      <li><span class="ref-main">CSU Formula — Colorado State Univ. (HEC-18 §4).</span></li>
     </ol>
   </div>
 
@@ -722,196 +837,288 @@ const g = 9.81;
 let prot = 's';
 let foundMode = 'el';
 
-function exportToDoc(){
+function exportToPDF(){
   const gv=id=>{ const e=document.getElementById(id); return e?e.value||e.textContent||'—':'—'; };
   const tv=id=>{ const e=document.getElementById(id); return e?e.textContent||'—':'—'; };
 
-  // Project info
   const bridgeName = gv('bridgeName')||'—';
   const pierNo     = gv('pierNo')||'—';
-  const engName    = gv('engName')||'—';
-  const chkDate    = gv('chkDate')||'—';
 
-  // Hydraulic
   const yVal   = gv('y');   const VVal  = gv('V');
-  const FrVal  = gv('Fr_o'); const VcVal = gv('Vc_o');
-  const cdVal  = gv('cd_o');
   const bVal   = gv('b');   const LVal  = gv('L');
-  const thVal  = gv('theta'); const bpVal = gv('bp_o');
-  const D50Val = gv('D50'); const K4Val  = gv('K4');
-  const K1Val  = document.getElementById('K1')?document.getElementById('K1').options[document.getElementById('K1').selectedIndex].text:'—';
-  const K3Val  = document.getElementById('K3')?document.getElementById('K3').options[document.getElementById('K3').selectedIndex].text:'—';
-  const K2Val  = gv('K2_o');
-  const ffVal  = document.getElementById('ff')?document.getElementById('ff').options[document.getElementById('ff').selectedIndex].text:'—';
-  const ftypeEl= document.getElementById('ftype');
-  const ftypeVal= ftypeEl?ftypeEl.options[ftypeEl.selectedIndex].text:'—';
+  const thVal  = gv('theta');
+  const D50Val = gv('D50'); const K4Val = gv('K4');
 
-  // EL values (from result display)
+  // Select elements - get both value and text
+  const K1El=document.getElementById('K1');
+  const k1v=K1El?K1El.value:'—';
+  const k1t=K1El?K1El.options[K1El.selectedIndex].text:'—';
+  const K3El=document.getElementById('K3');
+  const k3v=K3El?K3El.value:'—';
+  const k3t=K3El?K3El.options[K3El.selectedIndex].text:'—';
+  const ffEl=document.getElementById('ff');
+  const fv=ffEl?ffEl.value:'—';
+  const ft=ffEl?ffEl.options[ffEl.selectedIndex].text:'—';
+  const ftypeEl=document.getElementById('ftype');
+  const ftypeVal=ftypeEl?ftypeEl.options[ftypeEl.selectedIndex].text:'—';
+  const isFooting=ftypeVal.includes('직접')||ftypeVal.includes('Footing')||ftypeVal.includes('footing');
+
+  // Computed values from display
+  const rK2  = gv('K2_o');
+  const rFr  = tv('r-Fr');
+  const rBp  = tv('r-bp');
+
   const EL0v  = tv('r-EL0');  const EL1av = tv('r-EL1a');
   const EL1v  = tv('r-EL1');  const EL2v  = tv('r-EL2');
-  const YSv   = tv('r-YS');   const selv  = tv('r-sel');
-  const pctv  = tv('r-pct');
 
-  // Scour results
   const csuV  = tv('fv-csu'); const neilV = tv('fv-neil');
   const lauV  = tv('fv-lau'); const froeV = tv('fv-froe');
   const maxV  = tv('fv-max'); const finV  = tv('fv-fin2');
-  const rFr   = tv('r-Fr');   const rVc   = tv('r-Vc');
-  const rBp   = tv('r-bp');   const rKs   = tv('r-Ks');
 
-  // Grade
-  const s1v=tv('s1-val'); const s1s=tv('s1-sub');
-  const s2v=tv('s2-val'); const s2s=tv('s2-sub');
-  const s3v=tv('s3-val'); const s3s=tv('s3-sub');
+  // Determine excluded (max)
+  const vals=[{n:'CSU',v:parseFloat(csuV)},{n:'Neill',v:parseFloat(neilV)},{n:'Laursen',v:parseFloat(lauV)},{n:'Froehlich',v:parseFloat(froeV)}];
+  const maxName=vals.reduce((a,b)=>a.v>b.v?a:b).n;
+
+  // D50 in meters for Froehlich display
+  const D50m=(parseFloat(D50Val)/1000);
+  const D50ms=D50m>0?D50m.toFixed(4).replace(/0+$/,'').replace(/\.$/,''):'—';
+
   const s4v=tv('s4-val'); const s4s=tv('s4-sub');
+  const pctv=tv('r-pct');
+  const gradeMatch=s4v.match(/[a-e]/i);
+  const gradeLetter=gradeMatch?gradeMatch[0].toLowerCase():'';
 
-  // Pre-judgment
-  const pre1=document.getElementById('pre1')?.checked;
-  const pre2=document.getElementById('pre2')?.checked;
-  const pre3=document.getElementById('pre3')?.checked;
-  const preList=[pre1?'Caisson (Open Caisson) Foundation':'', pre2?'Rock Bedrock':'', pre3?'Scour Resistance Verified':''].filter(Boolean).join(', ')||'None';
-
-  // Prot
-  const protMap={s:'Superior (Full function)',m:'Moderate (Partial function)',h:'Poor (Function lost)'};
-  const protTxt=protMap[prot]||'—';
+  // Capture SVG
+  const svgId=isFooting?'svg-f':'svg-p';
+  const svgEl=document.getElementById(svgId);
+  const svgClone=svgEl.cloneNode(true);
+  svgClone.removeAttribute('id');
+  svgClone.removeAttribute('style');
+  svgClone.setAttribute('width','100%');
+  svgClone.setAttribute('height','100%');
+  const svgStr=new XMLSerializer().serializeToString(svgClone);
 
   const now=new Date();
   const printDate=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
 
-  const html=`
-<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-<head><meta charset='UTF-8'>
+  // Fraction helper: renders top/bottom as stacked fraction
+  const F=(t,b)=>`<span class="fr"><span>${t}</span><span>${b}</span></span>`;
+
+  // Excluded tag
+  const exTag=name=>maxName===name?' <span style="color:#cc2222;font-size:9pt;margin-left:10pt;">(최댓값 — 제외)</span>':'';
+
+  // Build HTML content in a temporary container
+  const container=document.createElement('div');
+  container.id='pdf-temp';
+  container.style.cssText='position:fixed;left:0;top:0;width:210mm;padding:12mm 15mm 10mm 15mm;background:#fff;font-family:"Malgun Gothic","맑은 고딕","Times New Roman",serif;font-size:9.5pt;color:#111;line-height:1.3;z-index:-1;opacity:1;';
+  container.innerHTML=`
 <style>
-  body{font-family:'Times New Roman',serif;font-size:11pt;color:#111;margin:2cm 2.5cm;}
-  h1{font-size:16pt;text-align:center;font-weight:bold;border-bottom:2pt solid #1a3a6a;padding-bottom:6pt;color:#1a3a6a;margin-bottom:4pt;}
-  h2{font-size:12pt;font-weight:bold;color:#1a3a6a;border-bottom:1pt solid #1a3a6a;margin-top:14pt;margin-bottom:5pt;padding-bottom:2pt;}
-  h3{font-size:11pt;font-weight:bold;color:#2a4a7a;margin-top:10pt;margin-bottom:3pt;}
-  table{border-collapse:collapse;width:100%;margin-bottom:8pt;}
-  th{background:#1a3a6a;color:#fff;border:1pt solid #aaa;padding:4pt 6pt;font-size:10pt;text-align:center;}
-  td{border:1pt solid #aaa;padding:3pt 6pt;font-size:10pt;}
-  .info-lbl{color:#555;width:35%;}
-  .val{font-family:'Courier New',monospace;font-weight:bold;}
-  .grade-a{color:#15a055;font-weight:bold;}
-  .grade-b{color:#9a8800;font-weight:bold;}
-  .grade-c{color:#cc7000;font-weight:bold;}
-  .grade-d{color:#cc2222;font-weight:bold;}
-  .grade-e{color:#801010;font-weight:bold;}
-  .note{font-size:9pt;color:#555;font-style:italic;margin-top:4pt;}
-  .footer{font-size:9pt;color:#888;border-top:1pt solid #ccc;margin-top:20pt;padding-top:5pt;}
-  .highlight{background:#f0f5ff;font-weight:bold;}
-</style></head>
-<body>
-<h1>Evaluating Scour at Bridges<br>
-<span style="font-size:11pt;font-weight:normal;color:#555;">Local Scour Depth Assessment &amp; Condition Rating</span></h1>
+  #pdf-temp *{box-sizing:border-box;}
+  #pdf-temp .title{font-size:16pt;text-align:center;font-weight:bold;margin:0 0 2pt 0;letter-spacing:2px;}
+  #pdf-temp .subtitle{font-size:12pt;text-align:center;font-weight:bold;margin:0 0 8pt 0;}
+  #pdf-temp .sec-hd{font-size:10.5pt;font-weight:bold;background:#222;color:#fff;padding:2pt 8pt;margin:8pt 0 0 0;display:inline-block;}
+  #pdf-temp .sec-tag{font-size:9pt;font-weight:normal;margin-left:6pt;}
+  #pdf-temp table{border-collapse:collapse;width:100%;margin-bottom:0;}
+  #pdf-temp th{background:#dde4ed;border:1pt solid #888;padding:3pt 5pt;font-size:8.5pt;text-align:center;font-weight:bold;}
+  #pdf-temp td{border:1pt solid #888;padding:2.5pt 5pt;font-size:9pt;text-align:center;}
+  #pdf-temp .td-l{text-align:left;}
+  #pdf-temp .v{font-weight:bold;}
+  #pdf-temp .fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;line-height:1.1;}
+  #pdf-temp .fr>span:first-child{border-bottom:1.5px solid #000;padding:0 4px 1px 4px;}
+  #pdf-temp .fr>span:last-child{padding:1px 4px 0 4px;}
+  #pdf-temp .f-title{font-size:11pt;font-weight:bold;margin:12pt 0 4pt 0;}
+  #pdf-temp .f-body{margin-left:40pt;}
+  #pdf-temp .f-line{font-size:10.5pt;margin:6pt 0;line-height:2.4;font-family:'Times New Roman',serif;}
+  #pdf-temp .f-line-sm{font-size:9.5pt;margin:6pt 0;line-height:2.4;font-family:'Times New Roman',serif;}
+  #pdf-temp .f-result{font-weight:bold;margin-top:2pt;}
+  #pdf-temp .k-list{margin:4pt 0 4pt 50pt;font-size:9.5pt;line-height:1.9;}
+  #pdf-temp .k-row{display:flex;align-items:baseline;}
+  #pdf-temp .k-name{width:22pt;font-weight:bold;}
+  #pdf-temp .k-desc{width:200pt;color:#444;}
+  #pdf-temp .k-colon{width:16pt;text-align:center;}
+  #pdf-temp .k-val{font-weight:bold;}
+  #pdf-temp .f-note{font-size:9pt;color:#333;margin:3pt 0 3pt 50pt;line-height:1.7;}
+  #pdf-temp .sum-box{margin-top:8pt;padding:6pt 10pt;border:1.5pt solid #1a3a6a;background:#f0f4ff;text-align:center;font-size:10pt;}
+  #pdf-temp .eval-wrap{display:flex;gap:6pt;margin-top:4pt;}
+  #pdf-temp .eval-wrap>div{flex:1;}
+  #pdf-temp .eval-wrap .diag{flex:1;border:1pt solid #888;padding:4pt;min-height:200px;}
+  #pdf-temp .eval-wrap .grade-tbl{flex:1;}
+  #pdf-temp .ga{color:#15a055;font-weight:bold;} #pdf-temp .gb{color:#9a8800;font-weight:bold;}
+  #pdf-temp .gc{color:#cc7000;font-weight:bold;} #pdf-temp .gd{color:#cc2222;font-weight:bold;}
+  #pdf-temp .ge{color:#801010;font-weight:bold;}
+  #pdf-temp .cur{background:#e8f0ff;font-weight:bold;}
+  #pdf-temp .cur-mark{color:#1a3a6a;font-weight:bold;}
+  #pdf-temp .ft{font-size:7.5pt;color:#888;border-top:0.5pt solid #ccc;margin-top:8pt;padding-top:3pt;text-align:center;}
+</style>
 
-<table style="margin-bottom:6pt;">
-  <tr><td class="info-lbl">Bridge Name</td><td class="val">${bridgeName}</td><td class="info-lbl">Pier No.</td><td class="val">${pierNo}</td></tr>
-  <tr><td class="info-lbl">Engineer</td><td class="val">${engName}</td><td class="info-lbl">Review Date</td><td class="val">${chkDate}</td></tr>
-  <tr><td class="info-lbl">Print Date</td><td class="val">${printDate}</td><td class="info-lbl">Foundation Type</td><td class="val">${ftypeVal}</td></tr>
+<div class="title">Evaluating Scour at Bridges</div>
+<div class="subtitle">(${bridgeName}: ${pierNo})</div>
+
+<span class="sec-hd">입력사항<span class="sec-tag">[${ftypeVal}]</span></span>
+<table style="margin-top:1pt;">
+  <tr>
+    <th colspan="4">교각제원</th>
+    <th colspan="3">CSU계수</th>
+    <th>Froehlich</th>
+  </tr>
+  <tr>
+    <th>교각폭(b) m</th><th>교고(L) m</th><th>흐름사각(θ)</th><th>투영폭(b') m</th>
+    <th>교각형상(K1)</th><th>하상상태(K3)</th><th>사각도(K2)</th>
+    <th>f</th>
+  </tr>
+  <tr>
+    <td class="v">${bVal}</td><td class="v">${LVal}</td><td class="v">${thVal}°</td><td class="v">${rBp}</td>
+    <td class="v">${k1v}</td><td class="v">${k3v}</td><td class="v">${rK2}</td>
+    <td class="v">${fv}</td>
+  </tr>
 </table>
-
-<h2>1. Hydraulic Conditions</h2>
 <table>
-  <tr><th>Parameter</th><th>Symbol</th><th>Value</th><th>Note</th></tr>
-  <tr><td>Flow Depth</td><td class="val">y</td><td class="val">${yVal} m</td><td></td></tr>
-  <tr><td>Approach Velocity</td><td class="val">V</td><td class="val">${VVal} m/s</td><td></td></tr>
-  <tr><td>Froude Number</td><td class="val">Fr</td><td class="val">${rFr}</td><td>Fr = V / √(g·y)</td></tr>
-  <tr><td>Critical Velocity</td><td class="val">Vc</td><td class="val">${rVc}</td><td>Vc = 6.19·y^(1/6)·D₅₀^(1/3)</td></tr>
-  <tr><td>Flow Condition</td><td class="val">—</td><td class="val">${cdVal}</td><td>Live-bed: V≥Vc / Clear-water: V&lt;Vc</td></tr>
+  <tr>
+    <th colspan="2">수리조건</th>
+    <th colspan="2">하상재료</th>
+    <th colspan="4">기초제원</th>
+  </tr>
+  <tr>
+    <th>수심(y), m</th><th>유속(V)m/s</th>
+    <th>D<sub>50</sub> mm</th><th>K4(0.4~1.0)</th>
+    <th>하상고(EL.)</th><th>기초상단(EL.)</th><th>기초하단(EL.)</th><th>말뚝선단(EL.)</th>
+  </tr>
+  <tr>
+    <td class="v">${yVal}</td><td class="v">${VVal}</td>
+    <td class="v">${D50Val}</td><td class="v">${K4Val}</td>
+    <td class="v">${EL0v}</td><td class="v">${EL1av}</td><td class="v">${EL1v}</td><td class="v">${EL2v}</td>
+  </tr>
 </table>
 
-<h2>2. Pier &amp; Bed Material Parameters</h2>
-<table>
-  <tr><th>Parameter</th><th>Symbol</th><th>Value</th><th>Note</th></tr>
-  <tr><td>Pier Width</td><td class="val">b</td><td class="val">${bVal} m</td><td></td></tr>
-  <tr><td>Pier Length</td><td class="val">L</td><td class="val">${LVal} m</td><td></td></tr>
-  <tr><td>Flow Attack Angle</td><td class="val">θ</td><td class="val">${thVal}°</td><td></td></tr>
-  <tr><td>Projected Pier Width</td><td class="val">b'</td><td class="val">${rBp}</td><td>b' = b·cosθ + L·sinθ</td></tr>
-  <tr><td>Median Grain Size</td><td class="val">D₅₀</td><td class="val">${D50Val} mm</td><td></td></tr>
-  <tr><td>Correction Factors</td><td class="val">K₁~K₄</td><td class="val">${rKs}</td><td>K₁:shape, K₂:angle, K₃:bed, K₄:armor</td></tr>
-  <tr><td>Froehlich Shape Factor</td><td class="val">f</td><td class="val">${ffVal}</td><td></td></tr>
-</table>
+<br>
+<span class="sec-hd">세굴심<span class="sec-tag">[비교표]</span></span>
 
-<h2>3. Foundation Elevation System</h2>
-<table>
-  <tr><th>Level</th><th>Elevation</th><th>Description</th></tr>
-  <tr><td>EL.0 — Current Streambed</td><td class="val">${EL0v}</td><td>Reference bed elevation</td></tr>
-  <tr><td>EL.1a — Top of Foundation/Cap</td><td class="val">${EL1av}</td><td>Top of footing or pile cap</td></tr>
-  <tr><td>EL.1 — Bottom of Foundation/Cap</td><td class="val">${EL1v}</td><td>Bottom of footing or pile cap</td></tr>
-  <tr><td>EL.2 — Pile Tip / Ground Surface</td><td class="val">${EL2v}</td><td>Pile tip elevation (pile foundation only)</td></tr>
-  <tr class="highlight"><td>YS = h₁ (EL.0 − EL.1)</td><td class="val">${YSv}</td><td>Foundation embedment reference depth</td></tr>
-  <tr class="highlight"><td>Scour Line Elevation</td><td class="val">${selv}</td><td>EL.0 − ds</td></tr>
-  <tr class="highlight"><td>Foundation Penetration Ratio</td><td class="val">${pctv}</td><td>Scour line within foundation depth</td></tr>
-</table>
-
-<h2>4. Local Scour Depth Calculation</h2>
-<p style="font-size:9pt;color:#555;margin-bottom:4pt;">Method: Fig. 1.35 — Exclude maximum value; apply average of remaining three formulas</p>
-<table>
-  <tr><th>Formula</th><th>Expression</th><th>ds (m)</th><th>Status</th></tr>
-  <tr><td><b>① CSU</b> (HEC-18)</td><td style="font-size:9pt;">ds = 2.0·K₁·K₂·K₃·K₄·y·(b'/y)^0.65·Fr^0.43</td><td class="val" style="text-align:right;">${csuV}</td><td style="text-align:center;">—</td></tr>
-  <tr><td><b>② Neill</b></td><td style="font-size:9pt;">ds = 1.5·b^0.7·y^0.3</td><td class="val" style="text-align:right;">${neilV}</td><td style="text-align:center;">—</td></tr>
-  <tr><td><b>③ Laursen</b></td><td style="font-size:9pt;">ds = 1.1·√(b·y)</td><td class="val" style="text-align:right;">${lauV}</td><td style="text-align:center;">—</td></tr>
-  <tr><td><b>④ Froehlich</b></td><td style="font-size:9pt;">ds = 0.32·f·b'^0.62·y^0.46·Fr^0.20·(b/D₅₀)^0.08</td><td class="val" style="text-align:right;">${froeV}</td><td style="text-align:center;">—</td></tr>
-  <tr style="background:#fff0f0;"><td colspan="2"><b>Maximum Value (Excluded)</b></td><td class="val" style="text-align:right;color:#cc2222;">${maxV}</td><td style="text-align:center;color:#cc2222;">EXCLUDED</td></tr>
-  <tr style="background:#f0f0ff;"><td colspan="2"><b>Design Scour Depth ds (Average of 3)</b></td><td class="val" style="text-align:right;color:#3a3aaa;font-size:13pt;">${finV}</td><td style="text-align:center;color:#3a3aaa;font-weight:bold;">APPLIED</td></tr>
-</table>
-
-<h2>5. Condition Rating</h2>
-<h3>5.1 Pre-Screening Conditions (Table 1.62)</h3>
-<table>
-  <tr><th>Condition</th><th>Result</th></tr>
-  <tr><td>Applicable Conditions</td><td class="val">${preList}</td></tr>
-  <tr><td>Step 1 Assessment</td><td>${s1v}</td></tr>
-  <tr><td>Detail</td><td style="color:#555;">${s1s}</td></tr>
-</table>
-
-<h3>5.2 Basic Rating by Scour Position (Table 1.63)</h3>
-<table>
-  <tr><th>Rating</th><th>Foundation Condition</th><th>Penetration</th></tr>
-  <tr><td class="grade-a">a</td><td>Above top of foundation (0%) — No exposure</td><td>Scour line above EL.1a</td></tr>
-  <tr><td class="grade-b">b</td><td>Partial exposure of top (1~30%)</td><td>Within upper foundation</td></tr>
-  <tr><td class="grade-c">c</td><td>Within foundation depth (31~70%)</td><td>Mid-foundation</td></tr>
-  <tr><td class="grade-d">d</td><td>Partial exposure of bottom (71~100%)</td><td>Near base of foundation</td></tr>
-  <tr><td class="grade-e">e</td><td>Below foundation base (&gt;100%)</td><td>Foundation base exposed</td></tr>
-</table>
-<p><b>Assessment:</b> ${s2v}<br><span style="color:#555;">${s2s}</span></p>
-
-<h3>5.3 Scour Protection Condition Adjustment (Table 1.64)</h3>
-<p><b>Protection Status:</b> ${protTxt}</p>
-<p>${s3v}<br><span style="color:#555;">${s3s}</span></p>
-
-<h3>5.4 Final Rating</h3>
-<table>
-  <tr><th colspan="2" style="font-size:13pt;">Final Condition Rating</th></tr>
-  <tr><td style="width:40%;font-size:24pt;text-align:center;font-weight:bold;">${s4v}</td><td>${s4v}<br><span style="color:#555;font-size:9pt;">${s4s}</span></td></tr>
-  <tr><td>Foundation Penetration Ratio</td><td class="val">${pctv}</td></tr>
-</table>
-
-<h2>6. References</h2>
-<ol style="font-size:9pt;color:#444;line-height:1.8;">
-  <li>Ministry of Land, Infrastructure and Transport (2023). <i>Facility Safety Inspection Guidelines</i> — Tables 1.62–1.65, Fig. 1.35. MOLIT, Republic of Korea.</li>
-  <li>Richardson, E.V. and Davis, S.R. (2001). <i>Evaluating Scour at Bridges, 4th Ed.</i> FHWA HEC-18, FHWA NHI 01-001. U.S. DOT.</li>
-  <li>Hydraulic Engineering Circular No. 18 (HEC-18), 5th Ed. (2012). FHWA-HIF-12-003. U.S. DOT, Federal Highway Administration.</li>
-  <li>Neill, C.R. (1973). <i>Guide to Bridge Hydraulics.</i> Roads and Transportation Association of Canada, University of Toronto Press.</li>
-  <li>Laursen, E.M. and Toch, A. (1956). Scour Around Bridge Piers and Abutments. <i>Iowa Highway Research Board</i>, Bulletin No. 4.</li>
-  <li>Froehlich, D.C. (1988). Analysis of Onsite Measurements of Scour at Piers. <i>Proc. ASCE Hydraulic Eng. Conf.</i>, Colorado Springs, CO.</li>
-  <li>KDS 51 90 10 (2018). <i>River Bridge Design Standard.</i> Ministry of Land, Infrastructure and Transport, Korea.</li>
-  <li>Korea Road Bridge Design Standard — Limit State Design Method (2016). MOLIT &amp; Korea Expressway Corporation.</li>
-  <li>Korea Infrastructure Safety Corporation (2019). <i>Scour Assessment Guidelines for Detailed Safety Inspection of Bridges.</i></li>
-  <li>CSU Formula — Colorado State University (Richardson &amp; Davis, 2001, HEC-18 §4).</li>
-</ol>
-
-<div class="footer">
-  Generated by: Evaluating Scour at Bridges v4.0 &nbsp;|&nbsp; Engineer: ${engName} &nbsp;|&nbsp; Print Date: ${printDate}
+<!-- ① CSU -->
+<div class="f-title">1) C.S.U. 공식</div>
+<div class="f-body">
+  <div class="f-line">
+    ${F('d<sub>s</sub>','y')} &nbsp;=&nbsp; 2 &nbsp;*&nbsp; K<sub>1</sub> &nbsp;*&nbsp; K<sub>2</sub> &nbsp;*&nbsp; K<sub>3</sub> &nbsp;*&nbsp; K<sub>4</sub> &nbsp;&nbsp;*&nbsp; ( ${F("b'","y")} )<sup> 0.65</sup> &nbsp;*&nbsp; ( Fr )<sup> 0.43</sup>
+  </div>
+  <div class="k-list">
+    <div class="k-row"><span class="k-name">K<sub>1</sub></span> <span class="k-desc">(교각형상에 따른 보정계수)</span> <span class="k-colon">:</span> <span class="k-val">${k1v}</span></div>
+    <div class="k-row"><span class="k-name">K<sub>2</sub></span> <span class="k-desc">(흐름입사각에 대한 보정계수)</span> <span class="k-colon">:</span> <span class="k-val">${rK2}</span></div>
+    <div class="k-row"><span class="k-name">K<sub>3</sub></span> <span class="k-desc">(하상조건에 대한 보정계수)</span> <span class="k-colon">:</span> <span class="k-val">${k3v}</span></div>
+    <div class="k-row"><span class="k-name">K<sub>4</sub></span> <span class="k-desc">(하상재료의 크기에 대한 보정계수)</span> <span class="k-colon">:</span> <span class="k-val">${K4Val}</span></div>
+  </div>
+  <div class="f-line">
+    ${F('d<sub>s</sub>',yVal)} &nbsp;=&nbsp; 2 &nbsp;*&nbsp; ${k1v} &nbsp;*&nbsp; ${rK2} &nbsp;*&nbsp; ${k3v} &nbsp;*&nbsp; ${K4Val} &nbsp;&nbsp;*&nbsp; ( ${F(rBp,yVal)} )<sup> 0.65</sup> &nbsp;*&nbsp; ( ${rFr} )<sup> 0.43</sup>
+  </div>
+  <div class="f-line f-result">
+    d<sub>s</sub> &nbsp;=&nbsp; <b>${csuV}</b> &nbsp;m${exTag('CSU')}
+  </div>
 </div>
-</body></html>`;
 
-  const blob=new Blob(['\ufeff'+html],{type:'application/msword;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  const fname=(bridgeName!=='—'?bridgeName:'Bridge')+'_'+(pierNo!=='—'?pierNo:'Pier')+'_ScourReport_'+printDate+'.doc';
-  a.href=url; a.download=fname; a.click();
-  URL.revokeObjectURL(url);
+<!-- ② Neill -->
+<div class="f-title">2) Neill 공식</div>
+<div class="f-body">
+  <div class="f-line">
+    ${F('d<sub>s</sub>','b')} &nbsp;=&nbsp; 1.5 &nbsp;*&nbsp; ( ${F('y','b')} )<sup> 0.3</sup>
+  </div>
+  <div class="f-line">
+    ${F('d<sub>s</sub>',bVal)} &nbsp;=&nbsp; 1.5 &nbsp;&nbsp;( ${F(yVal,bVal)} )<sup> 0.3</sup>
+  </div>
+  <div class="f-line f-result">
+    d<sub>s</sub> &nbsp;=&nbsp; <b>${neilV}</b> &nbsp;m${exTag('Neill')}
+  </div>
+</div>
+
+<!-- ③ Laursen -->
+<div class="f-title">3) Laursen 공식</div>
+<div class="f-body">
+  <div class="f-line">
+    ${F('d<sub>s</sub>','y')} &nbsp;=&nbsp; 1.1 &nbsp;*&nbsp; ( ${F('b','y')} )<sup> 0.5</sup>
+  </div>
+  <div class="f-line">
+    ${F('d<sub>s</sub>',yVal)} &nbsp;=&nbsp; 1.1 &nbsp;&nbsp;( ${F(bVal,yVal)} )<sup> 0.5</sup>
+  </div>
+  <div class="f-line f-result">
+    d<sub>s</sub> &nbsp;=&nbsp; <b>${lauV}</b> &nbsp;m${exTag('Laursen')}
+  </div>
+</div>
+
+<!-- ④ Froehlich -->
+<div class="f-title">4) Froehlich 공식</div>
+<div class="f-body">
+  <div class="f-line-sm">
+    d<sub>s</sub> &nbsp;=&nbsp; 0.32 &nbsp;*&nbsp; f &nbsp;*&nbsp; (b')<sup> 0.62</sup> &nbsp;*&nbsp; y<sup> 0.46</sup> &nbsp;*&nbsp; Fr<sup> 0.20</sup> &nbsp;*&nbsp; ( ${F('b','D<sub>50</sub>')} )<sup> 0.08</sup>
+  </div>
+  <div class="f-note">
+    f &nbsp;: &nbsp; ${ft}
+  </div>
+  <div class="f-line-sm">
+    d<sub>s</sub> &nbsp;=&nbsp; 0.32 &nbsp;*&nbsp; ${fv} &nbsp;*&nbsp; (${rBp})<sup> 0.62</sup> &nbsp;*&nbsp; ${yVal}<sup> 0.46</sup> &nbsp;*&nbsp; ${rFr}<sup> 0.20</sup> &nbsp;*&nbsp; ( ${F(bVal,D50ms)} )<sup> 0.08</sup>
+  </div>
+  <div class="f-line f-result">
+    d<sub>s</sub> &nbsp;=&nbsp; <b>${froeV}</b> &nbsp;m${exTag('Froehlich')}
+  </div>
+</div>
+
+<!-- 적용 세굴심 요약 -->
+<div class="sum-box">
+  <b>적용세굴심 (3개평균, 최댓값 제외)</b> &nbsp;&nbsp;&nbsp;
+  d<sub>s</sub> = <span style="font-size:14pt;color:#1a3a6a;font-weight:bold;">${finV}</span> m
+</div>
+
+<br>
+<span class="sec-hd">평가결과</span>
+<table style="margin-top:1pt;">
+  <tr>
+    <th style="width:50%;">대상교각 세굴삽도</th>
+    <th style="width:50%;">세굴심평가 결과 (최종등급 ${s4v})</th>
+  </tr>
+</table>
+<div class="eval-wrap">
+  <div class="diag">${svgStr}</div>
+  <div class="grade-tbl">
+    <table>
+      <tr><th style="width:12%;">등급</th><th>지반 및 세굴 상태</th><th style="width:15%;">현재</th></tr>
+      <tr class="${gradeLetter==='a'?'cur':''}"><td class="ga">a</td><td class="td-l">기초상단보다 위 (0%)</td><td>${gradeLetter==='a'?'<span class="cur-mark">◀ 현재</span>':'—'}</td></tr>
+      <tr class="${gradeLetter==='b'?'cur':''}"><td class="gb">b</td><td class="td-l">기초 상단 일부 노출 (1~30%)</td><td>${gradeLetter==='b'?'<span class="cur-mark">◀ 현재</span>':'—'}</td></tr>
+      <tr class="${gradeLetter==='c'?'cur':''}"><td class="gc">c</td><td class="td-l">기초 깊이내 (31~70%)</td><td>${gradeLetter==='c'?'<span class="cur-mark">◀ 현재</span>':'—'}</td></tr>
+      <tr class="${gradeLetter==='d'?'cur':''}"><td class="gd">d</td><td class="td-l">기초 하단 일부 노출 (71~100%)</td><td>${gradeLetter==='d'?'<span class="cur-mark">◀ 현재</span>':'—'}</td></tr>
+      <tr class="${gradeLetter==='e'?'cur':''}"><td class="ge">e</td><td class="td-l">기초 하단보다 아래 (100% 초과)</td><td>${gradeLetter==='e'?'<span class="cur-mark">◀ 현재</span>':'—'}</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="ft">
+  Evaluating Scour at Bridges v4.0 &nbsp;|&nbsp; ${printDate}
+</div>
+
+`;
+  document.body.appendChild(container);
+  const fname=(bridgeName!=='—'?bridgeName:'Bridge')+'_'+(pierNo!=='—'?pierNo:'Pier')+'_ScourReport_'+printDate+'.pdf';
+  const opt={
+    margin:0,
+    filename:fname,
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2,useCORS:true,scrollY:0},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['avoid-all','css','legacy']}
+  };
+  html2pdf().set(opt).from(container).toPdf().output('blob').then(async(blob)=>{
+    document.body.removeChild(container);
+    try{
+      const handle=await window.showSaveFilePicker({
+        suggestedName:fname,
+        types:[{description:'PDF 파일',accept:{'application/pdf':['.pdf']}}]
+      });
+      const w=await handle.createWritable();
+      await w.write(blob);
+      await w.close();
+    }catch(e){
+      if(e.name==='AbortError')return;
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;a.download=fname;a.click();
+      URL.revokeObjectURL(url);
+    }
+  });
 }
 
 function n(id){ return parseFloat(document.getElementById(id).value)||0; }
@@ -921,6 +1128,15 @@ function setV(id,val,d=3){ const e=document.getElementById(id); if(e) e.value=fm
 function setT(id,txt){ const e=document.getElementById(id); if(e) e.textContent=txt; }
 function setH(id,html){ const e=document.getElementById(id); if(e) e.innerHTML=html; }
 function setA(id,attrs){ const e=document.getElementById(id); if(!e)return; Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v)); }
+
+function toggleAcc(n){
+  const bd=document.getElementById('acc-bd-'+n);
+  const hd=bd.previousElementSibling;
+  bd.classList.toggle('show');
+  hd.classList.toggle('open');
+  const arr=hd.querySelector('.acc-arr');
+  if(arr) arr.textContent=bd.classList.contains('show')?'▼':'▶';
+}
 
 function togglePre(num){
   const cb=document.getElementById('pre'+num);
@@ -1183,7 +1399,6 @@ function calc(){
   setT('s2-val',s2val); setT('s2-sub',s2sub);
   setT('s3-val',s3val); setT('s3-sub',s3sub);
   setT('s4-val',s4val); setT('s4-sub',s4sub);
-  document.getElementById('s4-val').style.color=gradeColors[finalGrade];
 
   const fb=document.getElementById('final-box');
   fb.className='final-box '+fboxCls[finalGrade];
@@ -1329,6 +1544,110 @@ function updateSvgP(EL0,EL1a,EL1,EL2,ds,scourEL,capH_m,pileH_m,grade,gHex){
 document.getElementById('chkDate').valueAsDate=new Date();
 updateEL2State();
 setProt('s');
+
+/* ══ SHEET TAB SYSTEM ══ */
+let tabs = [];
+let activeTab = 0;
+let tabCounter = 0;
+
+// 저장할 입력 필드 ID 목록
+const fieldIds = ['bridgeName','pierNo','y','V','b','L','theta','D50','K4','EL0','EL1a','EL1','EL2','hEL0','hH1','hH2','hH3'];
+const selectIds = ['K1','K3','ff','ftype'];
+const checkIds = ['pre1','pre2','pre3'];
+
+function getFormData(){
+  const d={};
+  fieldIds.forEach(id=>{const e=document.getElementById(id);if(e)d[id]=e.value;});
+  selectIds.forEach(id=>{const e=document.getElementById(id);if(e)d[id]=e.value;});
+  checkIds.forEach(id=>{const e=document.getElementById(id);if(e)d[id]=e.checked;});
+  d._prot=prot; d._foundMode=foundMode;
+  return d;
+}
+
+function setFormData(d){
+  fieldIds.forEach(id=>{const e=document.getElementById(id);if(e&&d[id]!==undefined)e.value=d[id];});
+  selectIds.forEach(id=>{const e=document.getElementById(id);if(e&&d[id]!==undefined)e.value=d[id];});
+  checkIds.forEach(id=>{const e=document.getElementById(id);if(e&&d[id]!==undefined)e.checked=d[id];});
+  if(d._prot)setProt(d._prot);
+  if(d._foundMode)setFoundMode(d._foundMode);
+  updateEL2State();
+  // 사전판정 체크 상태 반영
+  checkIds.forEach((_,i)=>{const it=document.getElementById('pre-item-'+(i+1));if(it){it.classList.toggle('checked',document.getElementById(checkIds[i]).checked);}});
+  calc();
+}
+
+function getDefaults(){
+  const d={};
+  d.bridgeName=''; d.pierNo='P-';
+  d.y='9.75'; d.V='2.88'; d.b='3.0'; d.L='25.0'; d.theta='0';
+  d.D50='1.0'; d.K4='1.0';
+  d.EL0='-7.89'; d.EL1a='-35.20'; d.EL1='-50.50'; d.EL2='-80.90';
+  d.hEL0='-7.89'; d.hH1='27.31'; d.hH2='15.30'; d.hH3='30.40';
+  d.K1='1.0'; d.K3='1.1'; d.ff='1.0'; d.ftype='pile';
+  d.pre1=false; d.pre2=false; d.pre3=false;
+  d._prot='s'; d._foundMode='el';
+  return d;
+}
+
+// 초기 탭 등록
+tabs.push({id:0, data:getFormData()});
+tabCounter=1;
+
+function renderTabs(){
+  const bar=document.getElementById('sheetTabs');
+  bar.innerHTML='';
+  tabs.forEach((t,i)=>{
+    const div=document.createElement('div');
+    div.className='sheet-tab'+(i===activeTab?' active':'');
+    div.id='tab-'+t.id;
+    const nm=t.data.pierNo||'P-';
+    div.innerHTML='<span class="tab-name">'+nm+'</span>'+(tabs.length>1?'<span class="tab-close" onclick="event.stopPropagation();removeTab('+i+')">×</span>':'');
+    div.onclick=()=>switchTab(i);
+    bar.appendChild(div);
+  });
+  const btn=document.createElement('button');
+  btn.className='sheet-tab-add';
+  btn.title='새 교각 추가';
+  btn.textContent='+';
+  btn.onclick=addTab;
+  bar.appendChild(btn);
+}
+
+function switchTab(idx){
+  // 현재 탭 데이터 저장
+  tabs[activeTab].data=getFormData();
+  activeTab=idx;
+  // 새 탭 데이터 로드
+  setFormData(tabs[idx].data);
+  renderTabs();
+}
+
+function addTab(){
+  // 현재 탭 저장
+  tabs[activeTab].data=getFormData();
+  // 새 탭 생성
+  const newTab={id:tabCounter++, data:getDefaults()};
+  tabs.push(newTab);
+  activeTab=tabs.length-1;
+  setFormData(newTab.data);
+  document.getElementById('chkDate').valueAsDate=new Date();
+  renderTabs();
+}
+
+function removeTab(idx){
+  if(tabs.length<=1)return;
+  tabs.splice(idx,1);
+  if(activeTab>=tabs.length)activeTab=tabs.length-1;
+  setFormData(tabs[activeTab].data);
+  renderTabs();
+}
+
+function updateTabName(){
+  const pn=document.getElementById('pierNo').value||'P-';
+  tabs[activeTab].data.pierNo=pn;
+  const tabEl=document.querySelector('#sheetTabs .sheet-tab.active .tab-name');
+  if(tabEl)tabEl.textContent=pn;
+}
 </script>
 </body>
 </html>
