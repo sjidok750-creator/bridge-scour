@@ -837,7 +837,7 @@ const g = 9.81;
 let prot = 's';
 let foundMode = 'el';
 
-function exportToPDF(){
+async function exportToPDF(){
   const gv=id=>{ const e=document.getElementById(id); return e?e.value||e.textContent||'—':'—'; };
   const tv=id=>{ const e=document.getElementById(id); return e?e.textContent||'—':'—'; };
 
@@ -888,15 +888,44 @@ function exportToPDF(){
   const gradeMatch=s4v.match(/[a-e]/i);
   const gradeLetter=gradeMatch?gradeMatch[0].toLowerCase():'';
 
-  // Capture SVG
+  // Capture SVG as rasterized PNG data URL for reliable PDF rendering
   const svgId=isFooting?'svg-f':'svg-p';
   const svgEl=document.getElementById(svgId);
   const svgClone=svgEl.cloneNode(true);
   svgClone.removeAttribute('id');
   svgClone.removeAttribute('style');
-  svgClone.setAttribute('width','100%');
-  svgClone.setAttribute('height','100%');
-  const svgStr=new XMLSerializer().serializeToString(svgClone);
+  // Adapt colors for white PDF background
+  const colorMap=[
+    ['#1a2a44','#2a4a7a'],['#1e2d47','#2a4a7a'],['#111e30','#2a4a7a'],
+    ['#3A5080','#4a6090'],['#8AAAD0','#2a5090'],['#5A7AAA','#3a6090'],
+    ['#4A5A7A','#5a6a8a'],['#2A3A55','#8a9ab0'],
+    ['rgba(79,144,255,.08)','rgba(79,144,255,.15)'],
+    ['rgba(90,122,170,.1)','rgba(90,122,170,.2)'],
+    ['rgba(255,255,255,.01)','rgba(200,210,230,.15)']
+  ];
+  const svgTmpStr=new XMLSerializer().serializeToString(svgClone);
+  let svgAdapted=svgTmpStr;
+  colorMap.forEach(([dark,light])=>{svgAdapted=svgAdapted.split(dark).join(light);});
+  const vb=svgClone.getAttribute('viewBox')||'0 0 480 255';
+  const [,,svgW,svgH]=vb.split(/\s+/).map(Number);
+  const svgScale=3;
+  const svgDataUrl=await new Promise((resolve)=>{
+    const canvas=document.createElement('canvas');
+    canvas.width=svgW*svgScale; canvas.height=svgH*svgScale;
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    const img=new Image();
+    const blob=new Blob([svgAdapted],{type:'image/svg+xml;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    img.onload=()=>{
+      ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/png'));
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);resolve('');};
+    img.src=url;
+  });
+  const svgStr=svgDataUrl?`<img src="${svgDataUrl}" style="width:100%;height:auto;">`:'';
 
   const now=new Date();
   const printDate=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
