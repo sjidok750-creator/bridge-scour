@@ -910,7 +910,7 @@ function exportToPDF(){
   // Build HTML content in a temporary container
   const container=document.createElement('div');
   container.id='pdf-temp';
-  container.style.cssText='position:fixed;left:0;top:0;width:210mm;padding:12mm 15mm 10mm 15mm;background:#fff;font-family:"Malgun Gothic","맑은 고딕","Times New Roman",serif;font-size:9.5pt;color:#111;line-height:1.3;z-index:-1;opacity:1;';
+  container.style.cssText='width:210mm;padding:12mm 15mm 10mm 15mm;background:#fff;font-family:"Malgun Gothic","맑은 고딕","Times New Roman",serif;font-size:9.5pt;color:#111;line-height:1.3;';
   container.innerHTML=`
 <style>
   #pdf-temp *{box-sizing:border-box;}
@@ -1091,18 +1091,23 @@ function exportToPDF(){
 </div>
 
 `;
+  // Hide app, show only PDF container for html2canvas
+  const appEl=document.querySelector('.app');
+  if(appEl) appEl.style.display='none';
+  window.scrollTo(0,0);
   document.body.appendChild(container);
   const fname=(bridgeName!=='—'?bridgeName:'Bridge')+'_'+(pierNo!=='—'?pierNo:'Pier')+'_ScourReport_'+printDate+'.pdf';
   const opt={
     margin:0,
     filename:fname,
     image:{type:'jpeg',quality:0.98},
-    html2canvas:{scale:2,useCORS:true,scrollY:0},
+    html2canvas:{scale:2,useCORS:true,logging:false},
     jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
     pagebreak:{mode:['avoid-all','css','legacy']}
   };
   html2pdf().set(opt).from(container).toPdf().output('blob').then(async(blob)=>{
     document.body.removeChild(container);
+    if(appEl) appEl.style.display='';
     try{
       const handle=await window.showSaveFilePicker({
         suggestedName:fname,
@@ -1130,7 +1135,7 @@ function setH(id,html){ const e=document.getElementById(id); if(e) e.innerHTML=h
 function setA(id,attrs){ const e=document.getElementById(id); if(!e)return; Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v)); }
 
 function saveDiagPNG(){
-  const svg=document.querySelector('.diag-wrap svg:not([style*="display:none"])');
+  const svg=Array.from(document.querySelectorAll('.diag-wrap svg')).find(s=>s.style.display!=='none');
   if(!svg) return;
   const s=new XMLSerializer().serializeToString(svg);
   const vb=svg.getAttribute('viewBox')||'0 0 480 255';
