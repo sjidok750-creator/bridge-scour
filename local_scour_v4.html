@@ -1129,8 +1129,8 @@ async function buildPdfHtml(){
         <span class="fc-res ${maxName==='Froehlich'?'excluded':''}">${fmtC(froeV)} m${exMark('Froehlich')}</span>
       </div>
       <div class="fc-body">
-        <div class="fc-eq">d<sub>s</sub> = 0.32·f·b'<sup>0.62</sup>·y<sup>0.46</sup>·Fr<sup>0.20</sup>·(b/D<sub>50</sub>)<sup>0.08</sup></div>
-        <div class="fc-sub">d<sub>s</sub> = 0.32×${fv}×${rBpN}<sup>0.62</sup>×${yVal}<sup>0.46</sup>×${rFr}<sup>0.20</sup>×(${F(bVal,D50ms)})<sup>0.08</sup></div>
+        <div class="fc-eq">d<sub>s</sub>/b = 0.32·f·(b'/b)<sup>0.62</sup>·(y/b)<sup>0.46</sup>·Fr<sup>0.20</sup>·(b/D<sub>50</sub>)<sup>0.08</sup> + 1</div>
+        <div class="fc-sub">${F('d<sub>s</sub>',bVal)} = 0.32×${fv}×(${F(rBpN,bVal)})<sup>0.62</sup>×(${F(yVal,bVal)})<sup>0.46</sup>×${rFr}<sup>0.20</sup>×(${F(bVal,D50ms)})<sup>0.08</sup> + 1</div>
         <div class="fc-note">f=${fv} (${ft})</div>
       </div>
     </div>
@@ -1361,7 +1361,7 @@ function calc(){
   const csu=2.0*K1*K2*K3*K4*y*Math.pow(bp/y,0.65)*Math.pow(Fr,0.43);
   const neil=1.5*Math.pow(b,0.7)*Math.pow(y,0.3);
   const lau=1.1*Math.sqrt(b*y);
-  const froe=0.32*f*Math.pow(bp,0.62)*Math.pow(y,0.46)*Math.pow(Fr,0.20)*Math.pow(b/D50m,0.08);
+  const froe=b*(0.32*f*Math.pow(bp/b,0.62)*Math.pow(y/b,0.46)*Math.pow(Fr,0.20)*Math.pow(b/D50m,0.08)+1);
   const vals4=[csu,neil,lau,froe];
 
   // 그림 1.35: 최댓값 제외 3개 평균
@@ -1410,7 +1410,7 @@ function calc(){
   setH('fstr-csu',`<span class="math">${vl(2.0,1)}${op('×')}${vl(K1,2)}${op('×')}${vl(K2,3)}${op('×')}${vl(K3,2)}${op('×')}${vl(K4,2)}${op('×')}${vl(y,2)}${op('×')}${sup(frac(vl(bp,3),vl(y,2)),'0.65')}${op('×')}${sup(vl(Fr,4),'0.43')}</span>`);
   setH('fstr-neil',`<span class="math">${vl(1.5,1)}${op('×')}${sup(vl(b,2),'0.7')}${op('×')}${sup(vl(y,2),'0.3')}</span>`);
   setH('fstr-lau',`<span class="math">${vl(1.1,1)}${op('×')}${sqrt(vl(b,2)+op('×')+vl(y,2))}</span>`);
-  setH('fstr-froe',`<span class="math">${vl(0.32,2)}${op('×')}${vl(f,1)}${op('×')}${sup(vl(bp,3),'0.62')}${op('×')}${sup(vl(y,2),'0.46')}${op('×')}${sup(vl(Fr,4),'0.20')}${op('×')}${sup(frac('b',`D<span class="msub">50</span>`),'0.08')}</span>`);
+  setH('fstr-froe',`<span class="math">${vl(b,2)}×(${vl(0.32,2)}${op('×')}${vl(f,1)}${op('×')}${sup(frac(vl(bp,3),vl(b,2)),'0.62')}${op('×')}${sup(frac(vl(y,2),vl(b,2)),'0.46')}${op('×')}${sup(vl(Fr,4),'0.20')}${op('×')}${sup(frac(vl(b,2),`D<span class="msub">50</span>`),'0.08')}${op('+')}1)</span>`);
 
   ['csu','neil','lau','froe'].forEach((k,i)=>{
     const el=document.getElementById('fv-'+k);
