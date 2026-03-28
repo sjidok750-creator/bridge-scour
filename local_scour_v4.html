@@ -493,7 +493,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
         <div class="note" id="h-nopile-note" style="display:none;"><span class="ng">직접기초/우물통기초: 말뚝선단(H₃) 해당없음</span></div>
       </div>
       <div class="ipg" style="margin-top:4px;">
-        <div class="f"><label>YS = h₁ <span class="un">자동</span></label><input id="YS_o" class="ro ok" readonly tabindex="-1"></div>
+        <div class="f" id="ys-tip-wrap"><label>YS = h₁ <span class="un">자동</span></label><input id="YS_o" class="ro ok" readonly tabindex="-1"></div>
         <div class="f"><label>기초 높이 <span class="un">자동</span></label><input id="fh_o" class="ro" readonly tabindex="-1"></div>
       </div>
       <div class="note">
@@ -508,9 +508,9 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
       <div class="ipg">
         <div class="f"><label>수심 (y) <span class="un">m</span></label><input type="number" id="y" value="9.75" step="0.01" oninput="calc()"></div>
         <div class="f"><label>접근유속 (V) <span class="un">m/s</span></label><input type="number" id="V" value="2.88" step="0.01" oninput="calc()"></div>
-        <div class="f"><label>Froude수 (Fr) <span class="un">자동</span></label><input id="Fr_o" class="ro" readonly tabindex="-1"></div>
-        <div class="f"><label>임계유속 Vc <span class="un">자동</span></label><input id="Vc_o" class="ro" readonly tabindex="-1"></div>
-        <div class="f fw"><label>흐름 조건 <span class="un">자동판별</span></label><input id="cd_o" class="ro" readonly tabindex="-1"></div>
+        <div class="f" id="fr-tip-wrap"><label>Froude수 (Fr) <span class="un">자동</span></label><input id="Fr_o" class="ro" readonly tabindex="-1"></div>
+        <div class="f" id="vc-tip-wrap"><label>임계유속 Vc <span class="un">자동</span></label><input id="Vc_o" class="ro" readonly tabindex="-1"></div>
+        <div class="f fw" id="cd-tip-wrap"><label>흐름 조건 <span class="un">자동판별</span></label><input id="cd_o" class="ro" readonly tabindex="-1"></div>
       </div>
     </div></div>
 
@@ -1945,11 +1945,55 @@ async function generatePdfForTab(tabIdx){
   <div class="tip-row"><span class="tip-src">HEC-18 (FHWA)</span><br>K₂ = (cosθ + L/b·sinθ)<sup style="font-size:7px;">0.65</sup></div>
 </div>
 
+<div id="fr-float-tip" class="float-tip" style="width:230px;">
+  <div class="tip-hd">Froude 수 (Fr)</div>
+  <div class="tip-row" style="text-align:center;"><span class="tip-val">Fr = V / √(g·y)</span></div>
+  <div class="tip-row">V = 접근유속 (m/s)<br>g = 중력가속도 (9.81 m/s²)<br>y = 수심 (m)</div>
+  <div class="tip-row">Fr &lt; 1 : 상류 (Subcritical)<br>Fr ≥ 1 : 사류 (Supercritical)</div>
+  <div class="tip-row"><span class="tip-src">HEC-18, 5th Ed. (2012)</span></div>
+</div>
+
+<div id="vc-float-tip" class="float-tip" style="width:240px;">
+  <div class="tip-hd">임계유속 (Vc)</div>
+  <div class="tip-row" style="text-align:center;"><span class="tip-val">Vc = 6.19·y<sup style="font-size:7px;">1/6</sup>·D₅₀<sup style="font-size:7px;">1/3</sup></span></div>
+  <div class="tip-row">y = 수심 (m)<br>D₅₀ = 하상재료 중앙입경 (m)</div>
+  <div class="tip-row">세굴 발생 여부를 판단하는<br>하상재료 이동 시작 유속</div>
+  <div class="tip-row"><span class="tip-src">Laursen (1963) / HEC-18 Eq. 6.1</span></div>
+</div>
+
+<div id="cd-float-tip" class="float-tip" style="width:250px;">
+  <div class="tip-hd">흐름 조건 판별</div>
+  <div class="tip-row"><span class="tip-val">V ≥ Vc → Live-bed</span><br>유속이 임계유속 이상이면 하상재료가 상류에서 지속 공급되며 세굴과 퇴적이 동시 발생</div>
+  <div class="tip-row"><span class="tip-val">V &lt; Vc → Clear-water</span><br>유속이 임계유속 미만이면 하상재료 공급 없이 세굴만 진행 (최대 세굴심 더 큼)</div>
+  <div class="tip-row"><span class="tip-src">HEC-18, 5th Ed. (2012) Ch.6</span></div>
+</div>
+
+<div id="ys-float-tip" class="float-tip" style="width:230px;">
+  <div class="tip-hd">YS = h₁ (지반고차)</div>
+  <div class="tip-row" style="text-align:center;"><span class="tip-val">h₁ = EL.0 − EL.1</span></div>
+  <div class="tip-row">EL.0 = 현재 하상고<br>EL.1 = 기초 하단 표고</div>
+  <div class="tip-row">현재 하상에서 기초 하단까지의 깊이로, 기초의 안전 여유를 판단하는 기준</div>
+</div>
+
 <script>
 (function(){
-  function bindTip(tipId, inputId){
+  function bindTip(tipId, wrapId){
+    const tip=document.getElementById(tipId);
+    const wrap=document.getElementById(wrapId);
+    if(!tip||!wrap) return;
+    wrap.addEventListener('mouseenter',function(){
+      const r=wrap.getBoundingClientRect();
+      tip.style.left=r.left+'px';
+      tip.style.top=(r.top-tip.offsetHeight-8)+'px';
+      tip.classList.add('show');
+    });
+    wrap.addEventListener('mouseleave',function(){tip.classList.remove('show');});
+  }
+  // input ID 기반
+  function bindTipByInput(tipId, inputId){
     const tip=document.getElementById(tipId);
     const el=document.getElementById(inputId);
+    if(!tip||!el) return;
     const wrap=el.closest('.f');
     wrap.addEventListener('mouseenter',function(){
       const r=wrap.getBoundingClientRect();
@@ -1959,8 +2003,12 @@ async function generatePdfForTab(tabIdx){
     });
     wrap.addEventListener('mouseleave',function(){tip.classList.remove('show');});
   }
-  bindTip('d50-float-tip','D50');
-  bindTip('theta-float-tip','theta');
+  bindTipByInput('d50-float-tip','D50');
+  bindTipByInput('theta-float-tip','theta');
+  bindTip('fr-float-tip','fr-tip-wrap');
+  bindTip('vc-float-tip','vc-tip-wrap');
+  bindTip('cd-float-tip','cd-tip-wrap');
+  bindTip('ys-float-tip','ys-tip-wrap');
 })();
 </script>
 </body>
