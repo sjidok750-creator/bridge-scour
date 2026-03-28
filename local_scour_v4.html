@@ -987,7 +987,7 @@ async function buildPdfHtml(){
   #pdf-temp .dtbl td{border:0.7pt solid #8a9ab0;padding:4pt 4pt;font-size:9.5pt;text-align:center;font-weight:600;color:#222;}
 
   /* ── TWO-COLUMN ── */
-  #pdf-temp .cols2{display:flex;gap:8pt;align-items:stretch;}
+  #pdf-temp .cols2{display:flex;gap:6pt;align-items:stretch;}
   #pdf-temp .cols2>.col{flex:1;min-width:0;display:flex;flex-direction:column;gap:3pt;}
 
   /* ── FORMULA CARDS ── */
@@ -996,9 +996,14 @@ async function buildPdfHtml(){
   #pdf-temp .fc-hd .fc-res{font-size:11pt;font-weight:800;color:#222;}
   #pdf-temp .fc-hd .fc-res.excluded{text-decoration:line-through;color:#aaa;font-size:9.5pt;}
   #pdf-temp .fc-body{flex:1;}
-  #pdf-temp .fc-eq{font-family:'Times New Roman',serif;font-size:9pt;color:#444;line-height:1.7;margin-bottom:1pt;padding-left:14pt;}
-  #pdf-temp .fc-sub{font-family:'Times New Roman',serif;font-size:8.5pt;color:#666;line-height:1.6;padding-left:14pt;}
-  #pdf-temp .fc-note{font-size:7.5pt;color:#888;margin-top:1pt;}
+  #pdf-temp .fc-eq{font-family:'Times New Roman',serif;font-size:9pt;color:#333;line-height:2;margin-bottom:0;}
+  #pdf-temp .fc-sub{font-family:'Times New Roman',serif;font-size:8pt;color:#555;line-height:2;}
+  #pdf-temp .fc-note{font-size:7pt;color:#888;margin-top:0;}
+
+  /* ── PROT TAG ── */
+  #pdf-temp .prot-tag{display:inline-flex;align-items:center;gap:4pt;font-size:8.5pt;color:#555;margin:2pt 0 3pt 0;}
+  #pdf-temp .prot-dot{display:inline-block;width:8pt;height:8pt;border-radius:50%;}
+  #pdf-temp .prot-dot.ps{background:#0d7a3e;} #pdf-temp .prot-dot.pm{background:#cc7000;} #pdf-temp .prot-dot.ph{background:#cc2222;}
 
   /* ── SUMMARY BOX ── */
   #pdf-temp .sum{margin:4pt 0;padding:4pt 0;border-top:1.5pt solid #1a3a6a;border-bottom:1.5pt solid #1a3a6a;display:flex;align-items:center;justify-content:center;gap:12pt;}
@@ -1008,12 +1013,12 @@ async function buildPdfHtml(){
 
   /* ── EVAL SECTION ── */
   #pdf-temp .eval-row{display:flex;gap:0;margin-top:2pt;border:0.7pt solid #8a9ab0;}
-  #pdf-temp .eval-diag{flex:1;padding:3pt;border-right:0.7pt solid #8a9ab0;text-align:center;min-height:140pt;}
-  #pdf-temp .eval-diag img{width:100%;height:auto;max-height:155pt;object-fit:contain;}
+  #pdf-temp .eval-diag{flex:1;padding:4pt;border-right:0.7pt solid #8a9ab0;text-align:center;min-height:180pt;}
+  #pdf-temp .eval-diag img{width:100%;height:auto;max-height:200pt;object-fit:contain;}
   #pdf-temp .eval-right{flex:1;display:flex;flex-direction:column;}
   #pdf-temp .eval-right .gr-tbl{width:100%;flex:1;}
   #pdf-temp .eval-right .gr-tbl th{background:#e8eef6;border:0.7pt solid #8a9ab0;padding:2pt 3pt;font-size:8pt;text-align:center;font-weight:700;color:#1a3a6a;}
-  #pdf-temp .eval-right .gr-tbl td{border:0.7pt solid #8a9ab0;padding:2.5pt 4pt;font-size:9pt;}
+  #pdf-temp .eval-right .gr-tbl td{border:0.7pt solid #8a9ab0;padding:4pt 4pt;font-size:9.5pt;}
   #pdf-temp .eval-right .gr-tbl td:first-child{text-align:center;font-weight:800;font-size:10pt;width:28pt;}
   #pdf-temp .eval-right .gr-tbl td:last-child{text-align:center;width:30pt;}
   #pdf-temp .eval-right .gr-tbl .td-l{text-align:left;font-size:9pt;}
@@ -1022,9 +1027,9 @@ async function buildPdfHtml(){
   #pdf-temp .gc{color:#cc7000;} #pdf-temp .gd{color:#cc2222;} #pdf-temp .ge{color:#801010;}
 
   /* ── RESULT BADGE ── */
-  #pdf-temp .result-badge{display:flex;align-items:center;justify-content:center;gap:8pt;padding:5pt 8pt;background:${gradeC}11;border-top:0.7pt solid #8a9ab0;}
-  #pdf-temp .rb-grade{font-size:20pt;font-weight:800;color:${gradeC};line-height:1;}
-  #pdf-temp .rb-info{font-size:9pt;color:#333;line-height:1.4;}
+  #pdf-temp .result-badge{display:flex;align-items:center;justify-content:center;gap:10pt;padding:8pt 10pt;background:${gradeC}11;border-top:0.7pt solid #8a9ab0;}
+  #pdf-temp .rb-grade{font-size:26pt;font-weight:800;color:${gradeC};line-height:1;}
+  #pdf-temp .rb-info{font-size:9.5pt;color:#333;line-height:1.5;}
   #pdf-temp .rb-info strong{color:${gradeC};}
 
   /* ── FOOTER ── */
@@ -1059,6 +1064,10 @@ async function buildPdfHtml(){
     <td>${EL0v}</td><td>${EL1av}</td><td>${EL1v}</td><td>${EL2v}</td>
   </tr>
 </table>
+<div class="prot-tag">
+  <span class="prot-dot ${prot==='s'?'ps':prot==='m'?'pm':'ph'}"></span>
+  <span>세굴보호공: <b>${prot==='s'?'상 (기능 완전)':prot==='m'?'중 (부분 기능)':'하 (기능 상실)'}</b>${prot!=='m'?(' → 등급 '+(prot==='s'?'상향':'하향')+' 적용'):' → 등급 유지'}</span>
+</div>
 
 <!-- ═══ 2. 세굴심 산정 (2단 편집) ═══ -->
 <span class="sec">2. 세굴심 산정</span>
@@ -1071,13 +1080,9 @@ async function buildPdfHtml(){
         <span class="fc-res ${maxName==='CSU'?'excluded':''}">${fmtC(csuV)} m${exMark('CSU')}</span>
       </div>
       <div class="fc-body">
-        <div class="fc-eq">
-          ${F('d<sub>s</sub>','y')} = 2·K₁·K₂·K₃·K₄·(${F("b'","y")})<sup>0.65</sup>·Fr<sup>0.43</sup>
-        </div>
-        <div class="fc-sub">
-          ${F('d<sub>s</sub>',yVal)} = 2×${k1v}×${rK2}×${k3v}×${K4Val}×(${F(rBp,yVal)})<sup>0.65</sup>×${rFr}<sup>0.43</sup>
-        </div>
-        <div class="fc-note">K₁=${k1v}(${k1t}) K₃=${k3v}(${k3t})</div>
+        <div class="fc-eq">d<sub>s</sub>/y = 2·K₁·K₂·K₃·K₄·(b'/y)<sup>0.65</sup>·Fr<sup>0.43</sup></div>
+        <div class="fc-sub">d<sub>s</sub>/${yVal} = 2×${k1v}×${rK2}×${k3v}×${K4Val}×(${rBp}/${yVal})<sup>0.65</sup>×${rFr}<sup>0.43</sup></div>
+        <div class="fc-note">K₁=${k1v}(${k1t}), K₃=${k3v}(${k3t})</div>
       </div>
     </div>
     <!-- ② Neill -->
@@ -1087,12 +1092,8 @@ async function buildPdfHtml(){
         <span class="fc-res ${maxName==='Neill'?'excluded':''}">${fmtC(neilV)} m${exMark('Neill')}</span>
       </div>
       <div class="fc-body">
-        <div class="fc-eq">
-          ${F('d<sub>s</sub>','b')} = 1.5·(${F('y','b')})<sup>0.3</sup>
-        </div>
-        <div class="fc-sub">
-          ${F('d<sub>s</sub>',bVal)} = 1.5×(${F(yVal,bVal)})<sup>0.3</sup>
-        </div>
+        <div class="fc-eq">d<sub>s</sub>/b = 1.5·(y/b)<sup>0.3</sup></div>
+        <div class="fc-sub">d<sub>s</sub>/${bVal} = 1.5×(${yVal}/${bVal})<sup>0.3</sup></div>
       </div>
     </div>
   </div>
@@ -1104,12 +1105,8 @@ async function buildPdfHtml(){
         <span class="fc-res ${maxName==='Laursen'?'excluded':''}">${fmtC(lauV)} m${exMark('Laursen')}</span>
       </div>
       <div class="fc-body">
-        <div class="fc-eq">
-          ${F('d<sub>s</sub>','y')} = 1.1·(${F('b','y')})<sup>0.5</sup>
-        </div>
-        <div class="fc-sub">
-          ${F('d<sub>s</sub>',yVal)} = 1.1×(${F(bVal,yVal)})<sup>0.5</sup>
-        </div>
+        <div class="fc-eq">d<sub>s</sub>/y = 1.1·(b/y)<sup>0.5</sup></div>
+        <div class="fc-sub">d<sub>s</sub>/${yVal} = 1.1×(${bVal}/${yVal})<sup>0.5</sup></div>
       </div>
     </div>
     <!-- ④ Froehlich -->
@@ -1119,12 +1116,8 @@ async function buildPdfHtml(){
         <span class="fc-res ${maxName==='Froehlich'?'excluded':''}">${fmtC(froeV)} m${exMark('Froehlich')}</span>
       </div>
       <div class="fc-body">
-        <div class="fc-eq">
-          d<sub>s</sub> = 0.32·f·b'<sup>0.62</sup>·y<sup>0.46</sup>·Fr<sup>0.20</sup>·(${F('b','D<sub>50</sub>')})<sup>0.08</sup>
-        </div>
-        <div class="fc-sub">
-          d<sub>s</sub> = 0.32×${fv}×${rBp}<sup>0.62</sup>×${yVal}<sup>0.46</sup>×${rFr}<sup>0.20</sup>×(${F(bVal,D50ms)})<sup>0.08</sup>
-        </div>
+        <div class="fc-eq">d<sub>s</sub> = 0.32·f·b'<sup>0.62</sup>·y<sup>0.46</sup>·Fr<sup>0.20</sup>·(b/D<sub>50</sub>)<sup>0.08</sup></div>
+        <div class="fc-sub">d<sub>s</sub> = 0.32×${fv}×${rBp}<sup>0.62</sup>×${yVal}<sup>0.46</sup>×${rFr}<sup>0.20</sup>×(${bVal}/${D50ms})<sup>0.08</sup></div>
         <div class="fc-note">f=${fv} (${ft})</div>
       </div>
     </div>
