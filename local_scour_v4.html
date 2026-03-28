@@ -974,8 +974,7 @@ async function buildPdfHtml(){
   #pdf-temp .hdr{border-bottom:2.5pt solid #1a3a6a;padding-bottom:4pt;margin-bottom:5pt;display:flex;align-items:baseline;justify-content:space-between;}
   #pdf-temp .hdr-title{font-size:14pt;font-weight:800;color:#1a3a6a;letter-spacing:1px;}
   #pdf-temp .hdr-sub{font-size:10pt;color:#333;font-weight:600;}
-  #pdf-temp .hdr-meta{display:flex;gap:12pt;font-size:9pt;color:#555;margin-bottom:4pt;}
-  #pdf-temp .hdr-meta span{font-weight:600;color:#1a3a6a;}
+  #pdf-temp .hdr-meta{display:none;}
 
   /* ── SECTION TITLES ── */
   #pdf-temp .sec{font-size:10pt;font-weight:800;color:#fff;background:#1a3a6a;padding:1.5pt 8pt;margin:5pt 0 2pt 0;display:inline-block;letter-spacing:0.5px;}
@@ -1033,33 +1032,26 @@ async function buildPdfHtml(){
   <span class="hdr-title">Evaluating Scour at Bridges</span>
   <span class="hdr-sub">${bridgeName} — ${pierNo}</span>
 </div>
-<div class="hdr-meta">
-  <div>기초형식: <span>${ftypeVal}</span></div>
-  <div>수심: <span>${yVal}m</span></div>
-  <div>유속: <span>${VVal}m/s</span></div>
-  <div>Fr: <span>${rFr}</span></div>
-  <div>투영폭: <span>${rBp}</span></div>
-  <div>D₅₀: <span>${D50Val}mm</span></div>
-  <div>작성일: <span>${printDate}</span></div>
-</div>
 
 <!-- ═══ 1. 입력사항 ═══ -->
 <span class="sec">1. 입력사항</span>
 <table class="dtbl">
   <tr>
-    <th>교각폭 b (m)</th><th>교고 L (m)</th><th>흐름사각 θ</th><th>투영폭 b' (m)</th>
-    <th>K₁</th><th>K₂</th><th>K₃</th><th>K₄</th><th>f</th>
+    <th>기초형식</th><th>수심 y (m)</th><th>유속 V (m/s)</th><th>Fr</th>
+    <th>교각폭 b (m)</th><th>교고 L (m)</th><th>흐름사각 θ</th><th>투영폭 b' (m)</th><th>D₅₀ (mm)</th><th>작성일</th>
   </tr>
   <tr>
-    <td>${bVal}</td><td>${LVal}</td><td>${thVal}°</td><td>${rBp}</td>
-    <td>${k1v}</td><td>${rK2}</td><td>${k3v}</td><td>${K4Val}</td><td>${fv}</td>
+    <td>${ftypeVal}</td><td>${yVal}</td><td>${VVal}</td><td>${rFr}</td>
+    <td>${bVal}</td><td>${LVal}</td><td>${thVal}°</td><td>${rBp}</td><td>${D50Val}</td><td>${printDate}</td>
   </tr>
 </table>
 <table class="dtbl" style="margin-top:-0.7pt;">
   <tr>
+    <th>K₁</th><th>K₂</th><th>K₃</th><th>K₄</th><th>f</th>
     <th>하상고 EL.0</th><th>기초상단 EL.1a</th><th>기초하단 EL.1</th><th>말뚝선단 EL.2</th>
   </tr>
   <tr>
+    <td>${k1v}</td><td>${rK2}</td><td>${k3v}</td><td>${K4Val}</td><td>${fv}</td>
     <td>${EL0v}</td><td>${EL1av}</td><td>${EL1v}</td><td>${EL2v}</td>
   </tr>
 </table>
