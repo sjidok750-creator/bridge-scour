@@ -85,6 +85,21 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .f input.ro.ac{border-color:rgba(79,144,255,.3);color:var(--ac);}
 .f input:disabled{opacity:.35;cursor:not-allowed;border-color:rgba(255,255,255,.03);}
 
+/* PDF 내보내기 모달 */
+.pdf-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;}
+.pdf-modal-overlay.show{display:flex;}
+.pdf-modal{background:var(--bg2);border:1px solid var(--bd2);border-radius:8px;padding:20px 24px;min-width:320px;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.pdf-modal h3{font-size:14px;color:var(--tx);margin-bottom:14px;font-family:'JetBrains Mono',monospace;}
+.pdf-modal label{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:5px;cursor:pointer;font-size:13px;color:var(--tx);border:1px solid rgba(255,255,255,.06);margin-bottom:6px;transition:all .15s;}
+.pdf-modal label:hover{background:rgba(79,144,255,.08);border-color:rgba(79,144,255,.3);}
+.pdf-modal label input[type=radio]{accent-color:var(--ac);}
+.pdf-modal .pdf-modal-btns{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;}
+.pdf-modal .pdf-modal-btns button{padding:6px 16px;border-radius:5px;font-size:12px;font-family:'JetBrains Mono',monospace;cursor:pointer;border:1px solid;transition:all .15s;}
+.pdf-modal .btn-cancel{background:transparent;border-color:var(--bd2);color:var(--mt);}
+.pdf-modal .btn-cancel:hover{background:rgba(255,255,255,.05);}
+.pdf-modal .btn-export{background:rgba(79,144,255,.2);border-color:var(--ac);color:var(--ac);font-weight:600;}
+.pdf-modal .btn-export:hover{background:rgba(79,144,255,.35);}
+
 /* 사전판정 */
 .pre-box{padding:0 0 2px;}
 .pre-item{display:flex;align-items:center;gap:7px;padding:4px 8px;border-radius:3px;border:1px solid rgba(255,255,255,.04);background:rgba(0,0,0,.12);margin-bottom:3px;cursor:pointer;transition:all .15s;}
@@ -345,7 +360,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 <div class="title-bar">
   <h1>Evaluating Scour at Bridges</h1>
   <div class="title-ver">v4.0</div>
-  <button class="doc-btn" onclick="exportToPDF()" title="Save as PDF">
+  <button class="doc-btn" onclick="showPdfModal()" title="Save as PDF">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="9" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 4h5M3 6.5h5M3 9h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M8 9.5l1.5 2.5L11 9.5" stroke="#4F90FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Save as PDF
   </button>
@@ -837,9 +852,10 @@ const g = 9.81;
 let prot = 's';
 let foundMode = 'el';
 
-async function exportToPDF(){
-  const gv=id=>{ const e=document.getElementById(id); return e?e.value||e.textContent||'—':'—'; };
-  const tv=id=>{ const e=document.getElementById(id); return e?e.textContent||'—':'—'; };
+const gv=id=>{ const e=document.getElementById(id); return e?e.value||e.textContent||'—':'—'; };
+const tv=id=>{ const e=document.getElementById(id); return e?e.textContent||'—':'—'; };
+
+async function buildPdfHtml(){
 
   const bridgeName = gv('bridgeName')||'—';
   const pierNo     = gv('pierNo')||'—';
@@ -968,15 +984,20 @@ async function exportToPDF(){
   #pdf-temp .k-val{font-weight:bold;}
   #pdf-temp .f-note{font-size:9pt;color:#333;margin:3pt 0 3pt 50pt;line-height:1.7;}
   #pdf-temp .sum-box{margin-top:8pt;padding:6pt 10pt;border:1.5pt solid #1a3a6a;background:#f0f4ff;text-align:center;font-size:10pt;}
-  #pdf-temp .eval-wrap{display:flex;gap:6pt;margin-top:4pt;}
-  #pdf-temp .eval-wrap>div{flex:1;}
-  #pdf-temp .eval-wrap .diag{flex:1;border:1pt solid #888;padding:4pt;min-height:200px;}
-  #pdf-temp .eval-wrap .grade-tbl{flex:1;}
+  #pdf-temp .eval-outer{display:table;width:100%;border-collapse:collapse;margin-top:0;}
+  #pdf-temp .eval-outer .eval-cell{display:table-cell;width:50%;vertical-align:top;border:1pt solid #888;padding:0;}
+  #pdf-temp .eval-outer .diag{padding:6pt;text-align:center;}
+  #pdf-temp .eval-outer .diag img{width:100%;height:auto;max-height:220px;object-fit:contain;}
+  #pdf-temp .eval-outer .grade-tbl{padding:0;}
+  #pdf-temp .eval-outer .grade-tbl table{margin:0;height:100%;}
+  #pdf-temp .eval-outer .grade-tbl th,
+  #pdf-temp .eval-outer .grade-tbl td{border:1pt solid #888;padding:4pt 6pt;font-size:9pt;}
+  #pdf-temp .eval-outer .grade-tbl td:first-child{text-align:center;width:12%;font-weight:bold;font-size:10pt;}
+  #pdf-temp .eval-outer .grade-tbl td:last-child{text-align:center;width:15%;}
   #pdf-temp .ga{color:#15a055;font-weight:bold;} #pdf-temp .gb{color:#9a8800;font-weight:bold;}
   #pdf-temp .gc{color:#cc7000;font-weight:bold;} #pdf-temp .gd{color:#cc2222;font-weight:bold;}
   #pdf-temp .ge{color:#801010;font-weight:bold;}
   #pdf-temp .cur{background:#e8f0ff;font-weight:bold;}
-  #pdf-temp .cur-mark{color:#1a3a6a;font-weight:bold;}
   #pdf-temp .ft{font-size:7.5pt;color:#888;border-top:0.5pt solid #ccc;margin-top:8pt;padding-top:3pt;text-align:center;}
 </style>
 
@@ -1070,7 +1091,8 @@ async function exportToPDF(){
   </div>
 </div>
 
-<!-- ④ Froehlich -->
+<!-- ④ Froehlich — 항상 2페이지로 -->
+<div style="page-break-before:always;"></div>
 <div class="f-title">4) Froehlich 공식</div>
 <div class="f-body">
   <div class="f-line-sm">
@@ -1097,20 +1119,20 @@ async function exportToPDF(){
 <span class="sec-hd">평가결과</span>
 <table style="margin-top:1pt;">
   <tr>
-    <th style="width:50%;">대상교각 세굴삽도</th>
+    <th style="width:50%;">${pierNo} 교각 세굴심도 모식도</th>
     <th style="width:50%;">세굴심평가 결과 (최종등급 ${s4v})</th>
   </tr>
 </table>
-<div class="eval-wrap">
-  <div class="diag">${svgStr}</div>
-  <div class="grade-tbl">
+<div class="eval-outer">
+  <div class="eval-cell diag">${svgStr}</div>
+  <div class="eval-cell grade-tbl">
     <table>
       <tr><th style="width:12%;">등급</th><th>지반 및 세굴 상태</th><th style="width:15%;">현재</th></tr>
-      <tr class="${gradeLetter==='a'?'cur':''}"><td class="ga">a</td><td class="td-l">기초상단보다 위 (0%)</td><td>${gradeLetter==='a'?'<span class="cur-mark">◀ 현재</span>':'—'}</td></tr>
-      <tr class="${gradeLetter==='b'?'cur':''}"><td class="gb">b</td><td class="td-l">기초 상단 일부 노출 (1~30%)</td><td>${gradeLetter==='b'?'<span class="cur-mark">◀ 현재</span>':'—'}</td></tr>
-      <tr class="${gradeLetter==='c'?'cur':''}"><td class="gc">c</td><td class="td-l">기초 깊이내 (31~70%)</td><td>${gradeLetter==='c'?'<span class="cur-mark">◀ 현재</span>':'—'}</td></tr>
-      <tr class="${gradeLetter==='d'?'cur':''}"><td class="gd">d</td><td class="td-l">기초 하단 일부 노출 (71~100%)</td><td>${gradeLetter==='d'?'<span class="cur-mark">◀ 현재</span>':'—'}</td></tr>
-      <tr class="${gradeLetter==='e'?'cur':''}"><td class="ge">e</td><td class="td-l">기초 하단보다 아래 (100% 초과)</td><td>${gradeLetter==='e'?'<span class="cur-mark">◀ 현재</span>':'—'}</td></tr>
+      <tr class="${gradeLetter==='a'?'cur':''}"><td class="ga">a</td><td class="td-l">기초상단보다 위 (0%)</td><td>${gradeLetter==='a'?'<span style="display:inline-block;width:12px;height:12px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
+      <tr class="${gradeLetter==='b'?'cur':''}"><td class="gb">b</td><td class="td-l">기초 상단 일부 노출 (1~30%)</td><td>${gradeLetter==='b'?'<span style="display:inline-block;width:12px;height:12px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
+      <tr class="${gradeLetter==='c'?'cur':''}"><td class="gc">c</td><td class="td-l">기초 깊이내 (31~70%)</td><td>${gradeLetter==='c'?'<span style="display:inline-block;width:12px;height:12px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
+      <tr class="${gradeLetter==='d'?'cur':''}"><td class="gd">d</td><td class="td-l">기초 하단 일부 노출 (71~100%)</td><td>${gradeLetter==='d'?'<span style="display:inline-block;width:12px;height:12px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
+      <tr class="${gradeLetter==='e'?'cur':''}"><td class="ge">e</td><td class="td-l">기초 하단보다 아래 (100% 초과)</td><td>${gradeLetter==='e'?'<span style="display:inline-block;width:12px;height:12px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
     </table>
   </div>
 </div>
@@ -1120,39 +1142,7 @@ async function exportToPDF(){
 </div>
 
 `;
-  // Hide app, show only PDF container for html2canvas
-  const appEl=document.querySelector('.app');
-  if(appEl) appEl.style.display='none';
-  window.scrollTo(0,0);
-  document.body.appendChild(container);
-  const fname=(bridgeName!=='—'?bridgeName:'Bridge')+'_'+(pierNo!=='—'?pierNo:'Pier')+'_ScourReport_'+printDate+'.pdf';
-  const opt={
-    margin:0,
-    filename:fname,
-    image:{type:'jpeg',quality:0.98},
-    html2canvas:{scale:2,useCORS:true,logging:false},
-    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
-    pagebreak:{mode:['avoid-all','css','legacy']}
-  };
-  html2pdf().set(opt).from(container).toPdf().output('blob').then(async(blob)=>{
-    document.body.removeChild(container);
-    if(appEl) appEl.style.display='';
-    try{
-      const handle=await window.showSaveFilePicker({
-        suggestedName:fname,
-        types:[{description:'PDF 파일',accept:{'application/pdf':['.pdf']}}]
-      });
-      const w=await handle.createWritable();
-      await w.write(blob);
-      await w.close();
-    }catch(e){
-      if(e.name==='AbortError')return;
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement('a');
-      a.href=url;a.download=fname;a.click();
-      URL.revokeObjectURL(url);
-    }
-  });
+  return container.innerHTML;
 }
 
 function n(id){ return parseFloat(document.getElementById(id).value)||0; }
@@ -1486,7 +1476,7 @@ function calc(){
     const cur=document.getElementById('gr-'+gr+'-cur');
     if(row&&cur){
       row.style.background=gr===finalGrade?`rgba(${gr==='a'?'30,200,122':gr==='b'?'192,176,0':gr==='c'?'255,144,48':gr==='d'?'255,78,78':'154,24,24'},.07)`:'';
-      cur.textContent=gr===finalGrade?'◀ 현재':'—';
+      cur.innerHTML=gr===finalGrade?'<span style="display:inline-block;width:12px;height:12px;background:var(--ac);border-radius:50%;"></span>':'—';
       cur.style.color=gradeColors[gr];
     }
   });
@@ -1713,6 +1703,138 @@ function updateTabName(){
   const tabEl=document.querySelector('#sheetTabs .sheet-tab.active .tab-name');
   if(tabEl)tabEl.textContent=pn;
 }
+
+/* ══ PDF MODAL ══ */
+function showPdfModal(){
+  const overlay=document.getElementById('pdf-modal-overlay');
+  const hasMultiple=tabs.length>1;
+  document.getElementById('pdf-opt-all-wrap').style.display=hasMultiple?'':'none';
+  if(!hasMultiple) document.getElementById('pdf-opt-current').checked=true;
+  overlay.classList.add('show');
+}
+function hidePdfModal(){ document.getElementById('pdf-modal-overlay').classList.remove('show'); }
+async function confirmPdfExport(){
+  hidePdfModal();
+  const mode=document.querySelector('input[name="pdf-scope"]:checked').value;
+  if(mode==='current'){
+    await generatePdfForTab(activeTab);
+  } else {
+    // 모든 탭을 순차적으로 하나의 PDF로 내보내기
+    tabs[activeTab].data=getFormData();
+    await generatePdfAllTabs();
+  }
+}
+
+async function generatePdfAllTabs(){
+  const origActive=activeTab;
+  const allHtml=[];
+  for(let i=0;i<tabs.length;i++){
+    setFormData(tabs[i].data);
+    await new Promise(r=>setTimeout(r,100)); // let SVG update
+    allHtml.push(await buildPdfHtml());
+  }
+  // restore original tab
+  activeTab=origActive;
+  setFormData(tabs[origActive].data);
+  renderTabs();
+
+  const bridgeName=gv('bridgeName')||'Bridge';
+  const now=new Date();
+  const printDate=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const fname=bridgeName+'_AllPiers_ScourReport_'+printDate+'.pdf';
+
+  const container=document.createElement('div');
+  container.id='pdf-temp';
+  container.style.cssText='width:210mm;padding:0;background:#fff;font-family:"Malgun Gothic","맑은 고딕","Times New Roman",serif;font-size:9.5pt;color:#111;line-height:1.3;';
+  container.innerHTML=allHtml.map((h,i)=>(i>0?'<div style="page-break-before:always;"></div>':'')+'<div style="padding:12mm 15mm 10mm 15mm;">'+h+'</div>').join('');
+
+  const appEl=document.querySelector('.app');
+  if(appEl) appEl.style.display='none';
+  window.scrollTo(0,0);
+  document.body.appendChild(container);
+  const opt={
+    margin:0,filename:fname,
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2,useCORS:true,logging:false},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['avoid-all','css','legacy']}
+  };
+  html2pdf().set(opt).from(container).toPdf().output('blob').then(async(blob)=>{
+    document.body.removeChild(container);
+    if(appEl) appEl.style.display='';
+    try{
+      const handle=await window.showSaveFilePicker({suggestedName:fname,types:[{description:'PDF 파일',accept:{'application/pdf':['.pdf']}}]});
+      const w=await handle.createWritable(); await w.write(blob); await w.close();
+    }catch(e){
+      if(e.name==='AbortError')return;
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fname;a.click();URL.revokeObjectURL(url);
+    }
+  });
+}
+
+async function generatePdfForTab(tabIdx){
+  const origActive=activeTab;
+  if(tabIdx!==origActive){
+    tabs[origActive].data=getFormData();
+    setFormData(tabs[tabIdx].data);
+    await new Promise(r=>setTimeout(r,100));
+  }
+  const html=await buildPdfHtml();
+  // restore
+  if(tabIdx!==origActive){
+    activeTab=origActive;
+    setFormData(tabs[origActive].data);
+    renderTabs();
+  }
+
+  const bridgeName=gv('bridgeName')||'Bridge';
+  const pierNo=gv('pierNo')||'Pier';
+  const now=new Date();
+  const printDate=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const fname=(bridgeName!=='—'?bridgeName:'Bridge')+'_'+(pierNo!=='—'?pierNo:'Pier')+'_ScourReport_'+printDate+'.pdf';
+
+  const container=document.createElement('div');
+  container.id='pdf-temp';
+  container.style.cssText='width:210mm;padding:12mm 15mm 10mm 15mm;background:#fff;font-family:"Malgun Gothic","맑은 고딕","Times New Roman",serif;font-size:9.5pt;color:#111;line-height:1.3;';
+  container.innerHTML=html;
+
+  const appEl=document.querySelector('.app');
+  if(appEl) appEl.style.display='none';
+  window.scrollTo(0,0);
+  document.body.appendChild(container);
+  const opt={
+    margin:0,filename:fname,
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2,useCORS:true,logging:false},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['avoid-all','css','legacy']}
+  };
+  html2pdf().set(opt).from(container).toPdf().output('blob').then(async(blob)=>{
+    document.body.removeChild(container);
+    if(appEl) appEl.style.display='';
+    try{
+      const handle=await window.showSaveFilePicker({suggestedName:fname,types:[{description:'PDF 파일',accept:{'application/pdf':['.pdf']}}]});
+      const w=await handle.createWritable(); await w.write(blob); await w.close();
+    }catch(e){
+      if(e.name==='AbortError')return;
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fname;a.click();URL.revokeObjectURL(url);
+    }
+  });
+}
 </script>
+
+<!-- PDF 내보내기 모달 -->
+<div class="pdf-modal-overlay" id="pdf-modal-overlay" onclick="if(event.target===this)hidePdfModal()">
+  <div class="pdf-modal">
+    <h3>PDF 내보내기</h3>
+    <label><input type="radio" name="pdf-scope" value="current" id="pdf-opt-current" checked> 현재 탭만 내보내기</label>
+    <label id="pdf-opt-all-wrap"><input type="radio" name="pdf-scope" value="all"> 모든 교각 탭 내보내기</label>
+    <div class="pdf-modal-btns">
+      <button class="btn-cancel" onclick="hidePdfModal()">취소</button>
+      <button class="btn-export" onclick="confirmPdfExport()">내보내기</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
