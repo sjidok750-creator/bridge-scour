@@ -883,6 +883,7 @@ async function buildPdfHtml(){
   const rK2  = gv('K2_o');
   const rFr  = tv('r-Fr');
   const rBp  = tv('r-bp');
+  const rBpN = rBp.replace(/\s*m\s*\(.*\)/, '').trim(); // 숫자만: "3.000"
 
   const EL0v  = tv('r-EL0');  const EL1av = tv('r-EL1a');
   const EL1v  = tv('r-EL1');  const EL2v  = tv('r-EL2');
@@ -1082,8 +1083,8 @@ async function buildPdfHtml(){
       </div>
       <div class="fc-body">
         <div class="fc-eq">d<sub>s</sub>/y = 2·K₁·K₂·K₃·K₄·(b'/y)<sup>0.65</sup>·Fr<sup>0.43</sup></div>
-        <div class="fc-sub">d<sub>s</sub>/${yVal} = 2×${k1v}×${rK2}×${k3v}×${K4Val}×(${rBp}/${yVal})<sup>0.65</sup>×${rFr}<sup>0.43</sup></div>
-        <div class="fc-note">K₁=${k1v}(${k1t}), K₃=${k3v}(${k3t})</div>
+        <div class="fc-sub">d<sub>s</sub>/${yVal} = 2×${k1v}×${rK2}×${k3v}×${K4Val}×(${rBpN}/${yVal})<sup>0.65</sup>×${rFr}<sup>0.43</sup></div>
+        <div class="fc-note">K₁=${k1v}, K₂=${rK2}, K₃=${k3v}, K₄=${K4Val}</div>
       </div>
     </div>
     <!-- ② Neill -->
@@ -1118,7 +1119,7 @@ async function buildPdfHtml(){
       </div>
       <div class="fc-body">
         <div class="fc-eq">d<sub>s</sub> = 0.32·f·b'<sup>0.62</sup>·y<sup>0.46</sup>·Fr<sup>0.20</sup>·(b/D<sub>50</sub>)<sup>0.08</sup></div>
-        <div class="fc-sub">d<sub>s</sub> = 0.32×${fv}×${rBp}<sup>0.62</sup>×${yVal}<sup>0.46</sup>×${rFr}<sup>0.20</sup>×(${bVal}/${D50ms})<sup>0.08</sup></div>
+        <div class="fc-sub">d<sub>s</sub> = 0.32×${fv}×${rBpN}<sup>0.62</sup>×${yVal}<sup>0.46</sup>×${rFr}<sup>0.20</sup>×(${bVal}/${D50ms})<sup>0.08</sup></div>
         <div class="fc-note">f=${fv} (${ft})</div>
       </div>
     </div>
