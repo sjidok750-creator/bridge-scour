@@ -949,8 +949,9 @@ async function buildPdfHtml(){
   // Fraction helper: renders top/bottom as stacked fraction
   const F=(t,b)=>`<span class="fr"><span>${t}</span><span>${b}</span></span>`;
 
-  // Clean trailing zeros: 5.000 → 5.0, 2.678 → 2.678, keeps at least 1 decimal
-  const fmtC=v=>{if(!v||v==='—')return v;const s=String(v).replace(/ m$/,'');const n=parseFloat(s);if(isNaN(n))return v;const fixed=n.toFixed(3);const cleaned=fixed.replace(/0+$/,'').replace(/\.$/,'.0');return cleaned;};
+  // Clean trailing zeros: 5.000 → 5.0, 2.678 → 2.678, 4.840 → 4.84
+  // 뒷자리가 전부 0이면 소숫점 1자리만, 아니면 의미있는 자리까지
+  const fmtC=v=>{if(!v||v==='—')return v;const s=String(v).replace(/ m$/,'');const n=parseFloat(s);if(isNaN(n))return v;if(n===Math.floor(n))return n.toFixed(1);const fixed=n.toFixed(3);return fixed.replace(/0+$/,'');};
 
   // Excluded tag
   const exTag=name=>maxName===name?' <span style="color:#cc2222;font-size:9pt;margin-left:10pt;">(최댓값 — 제외)</span>':'';
@@ -1001,8 +1002,8 @@ async function buildPdfHtml(){
   #pdf-temp .fc-note{font-size:7pt;color:#888;margin-top:0;}
 
   /* ── PROT TAG ── */
-  #pdf-temp .prot-tag{display:inline-flex;align-items:center;gap:4pt;font-size:8.5pt;color:#555;margin:2pt 0 3pt 0;}
-  #pdf-temp .prot-dot{display:inline-block;width:8pt;height:8pt;border-radius:50%;}
+  #pdf-temp .prot-tag{display:flex;align-items:center;gap:4pt;font-size:8.5pt;color:#555;margin:1pt 0 0 0;padding:1pt 0;}
+  #pdf-temp .prot-dot{display:inline-block;width:7pt;height:7pt;border-radius:50%;flex-shrink:0;}
   #pdf-temp .prot-dot.ps{background:#0d7a3e;} #pdf-temp .prot-dot.pm{background:#cc7000;} #pdf-temp .prot-dot.ph{background:#cc2222;}
 
   /* ── SUMMARY BOX ── */
@@ -1013,23 +1014,23 @@ async function buildPdfHtml(){
 
   /* ── EVAL SECTION ── */
   #pdf-temp .eval-row{display:flex;gap:0;margin-top:2pt;border:0.7pt solid #8a9ab0;}
-  #pdf-temp .eval-diag{flex:1;padding:4pt;border-right:0.7pt solid #8a9ab0;text-align:center;min-height:180pt;}
-  #pdf-temp .eval-diag img{width:100%;height:auto;max-height:200pt;object-fit:contain;}
+  #pdf-temp .eval-diag{flex:1.1;padding:5pt;border-right:0.7pt solid #8a9ab0;text-align:center;min-height:210pt;}
+  #pdf-temp .eval-diag img{width:100%;height:auto;max-height:230pt;object-fit:contain;}
   #pdf-temp .eval-right{flex:1;display:flex;flex-direction:column;}
   #pdf-temp .eval-right .gr-tbl{width:100%;flex:1;}
-  #pdf-temp .eval-right .gr-tbl th{background:#e8eef6;border:0.7pt solid #8a9ab0;padding:2pt 3pt;font-size:8pt;text-align:center;font-weight:700;color:#1a3a6a;}
-  #pdf-temp .eval-right .gr-tbl td{border:0.7pt solid #8a9ab0;padding:4pt 4pt;font-size:9.5pt;}
-  #pdf-temp .eval-right .gr-tbl td:first-child{text-align:center;font-weight:800;font-size:10pt;width:28pt;}
-  #pdf-temp .eval-right .gr-tbl td:last-child{text-align:center;width:30pt;}
-  #pdf-temp .eval-right .gr-tbl .td-l{text-align:left;font-size:9pt;}
+  #pdf-temp .eval-right .gr-tbl th{background:#e8eef6;border:0.7pt solid #8a9ab0;padding:3pt 3pt;font-size:8.5pt;text-align:center;font-weight:700;color:#1a3a6a;}
+  #pdf-temp .eval-right .gr-tbl td{border:0.7pt solid #8a9ab0;padding:6pt 5pt;font-size:10pt;}
+  #pdf-temp .eval-right .gr-tbl td:first-child{text-align:center;font-weight:800;font-size:11pt;width:30pt;}
+  #pdf-temp .eval-right .gr-tbl td:last-child{text-align:center;width:32pt;}
+  #pdf-temp .eval-right .gr-tbl .td-l{text-align:left;font-size:9.5pt;}
   #pdf-temp .eval-right .gr-tbl .cur-row{background:#e8f0ff;}
   #pdf-temp .ga{color:#0d7a3e;} #pdf-temp .gb{color:#7a6d00;}
   #pdf-temp .gc{color:#cc7000;} #pdf-temp .gd{color:#cc2222;} #pdf-temp .ge{color:#801010;}
 
   /* ── RESULT BADGE ── */
-  #pdf-temp .result-badge{display:flex;align-items:center;justify-content:center;gap:10pt;padding:8pt 10pt;background:${gradeC}11;border-top:0.7pt solid #8a9ab0;}
-  #pdf-temp .rb-grade{font-size:26pt;font-weight:800;color:${gradeC};line-height:1;}
-  #pdf-temp .rb-info{font-size:9.5pt;color:#333;line-height:1.5;}
+  #pdf-temp .result-badge{display:flex;align-items:center;justify-content:center;gap:12pt;padding:10pt 12pt;background:${gradeC}11;border-top:0.7pt solid #8a9ab0;}
+  #pdf-temp .rb-grade{font-size:30pt;font-weight:800;color:${gradeC};line-height:1;}
+  #pdf-temp .rb-info{font-size:10pt;color:#333;line-height:1.6;}
   #pdf-temp .rb-info strong{color:${gradeC};}
 
   /* ── FOOTER ── */
