@@ -894,7 +894,7 @@ async function buildPdfHtml(){
   const rK2  = gv('K2_o');
   const rFr  = tv('r-Fr');
   const rBp  = tv('r-bp');
-  const rBpN = fmtC(rBp.replace(/\s*m\s*\(.*\)/, '').trim()); // 숫자만, 트림: "3.0"
+  const rBpRaw = rBp.replace(/\s*m\s*\(.*\)/, '').trim();
 
   const EL0v  = tv('r-EL0');  const EL1av = tv('r-EL1a');
   const EL1v  = tv('r-EL1');  const EL2v  = tv('r-EL2');
@@ -964,6 +964,7 @@ async function buildPdfHtml(){
   // Clean trailing zeros: 5.000 → 5.0, 2.678 → 2.678, 4.840 → 4.84
   // 뒷자리가 전부 0이면 소숫점 1자리만, 아니면 의미있는 자리까지
   const fmtC=v=>{if(!v||v==='—')return v;const s=String(v).replace(/ m$/,'');const n=parseFloat(s);if(isNaN(n))return v;if(n===Math.floor(n))return n.toFixed(1);const fixed=n.toFixed(3);return fixed.replace(/0+$/,'');};
+  const rBpN=fmtC(rBpRaw);
 
   // Excluded tag
   const exTag=name=>maxName===name?' <span style="color:#cc2222;font-size:9pt;margin-left:10pt;">(최댓값 — 제외)</span>':'';
