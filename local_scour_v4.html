@@ -976,9 +976,9 @@ async function buildPdfHtml(){
   #pdf-temp .fr>span:last-child{padding:1px 3px 0 3px;font-size:inherit;}
 
   /* ── HEADER ── */
-  #pdf-temp .hdr{border-bottom:2.5pt solid #1a3a6a;padding-bottom:4pt;margin-bottom:5pt;display:flex;align-items:baseline;justify-content:space-between;}
-  #pdf-temp .hdr-title{font-size:14pt;font-weight:800;color:#1a3a6a;letter-spacing:1px;}
-  #pdf-temp .hdr-sub{font-size:10pt;color:#333;font-weight:600;}
+  #pdf-temp .hdr{border-bottom:2.5pt solid #1a3a6a;padding-bottom:5pt;margin-bottom:5pt;text-align:center;}
+  #pdf-temp .hdr-title{font-size:21pt;font-weight:400;color:#E07850;letter-spacing:2px;font-family:'JetBrains Mono',monospace;display:block;}
+  #pdf-temp .hdr-sub{font-size:12pt;color:#1a3a6a;font-weight:600;display:block;margin-top:2pt;}
   #pdf-temp .hdr-meta{display:none;}
 
   /* ── SECTION TITLES ── */
@@ -1041,7 +1041,7 @@ async function buildPdfHtml(){
 <!-- ═══ HEADER ═══ -->
 <div class="hdr">
   <span class="hdr-title">Evaluating Scour at Bridges</span>
-  <span class="hdr-sub">${bridgeName} — ${pierNo}</span>
+  <span class="hdr-sub">[ ${bridgeName} &nbsp;—&nbsp; ${pierNo} ]</span>
 </div>
 
 <!-- ═══ 1. 입력사항 ═══ -->
