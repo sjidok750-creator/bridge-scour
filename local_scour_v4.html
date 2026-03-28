@@ -132,10 +132,9 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 
 /* D50 tooltip */
 .d50-tip-wrap{position:relative;}
-.d50-tip{position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);width:260px;padding:10px 12px;background:rgba(18,22,30,.96);border:1px solid rgba(79,144,255,.25);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.45),0 0 0 1px rgba(79,144,255,.08);font-size:10px;line-height:1.55;color:rgba(255,255,255,.82);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;transform:translateY(-50%) translateX(6px);z-index:900;font-family:'JetBrains Mono',monospace;}
-.d50-tip-wrap:hover .d50-tip{opacity:1;pointer-events:auto;transform:translateY(-50%) translateX(0);}
-.d50-tip::before{content:'';position:absolute;right:100%;top:50%;transform:translateY(-50%);border:6px solid transparent;border-right-color:rgba(79,144,255,.25);}
-.d50-tip::after{content:'';position:absolute;right:100%;top:50%;transform:translateY(-50%);border:5px solid transparent;border-right-color:rgba(18,22,30,.96);margin-right:-1px;}
+.d50-tip{position:absolute;bottom:calc(100% + 8px);left:0;width:240px;padding:10px 12px;background:rgba(18,22,30,.97);border:1px solid rgba(79,144,255,.25);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.5),0 0 0 1px rgba(79,144,255,.08);font-size:10px;line-height:1.55;color:rgba(255,255,255,.82);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;transform:translateY(4px);z-index:900;font-family:'JetBrains Mono',monospace;}
+.d50-tip-wrap:hover .d50-tip{opacity:1;pointer-events:auto;transform:translateY(0);}
+.d50-tip::after{content:'';position:absolute;top:100%;left:20px;border:6px solid transparent;border-top-color:rgba(79,144,255,.25);}
 .d50-tip .tip-hd{font-size:10px;font-weight:700;color:var(--ac);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
 .d50-tip .tip-hd::before{content:'ℹ';display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;background:rgba(79,144,255,.18);border-radius:50%;font-size:9px;color:var(--ac);}
 .d50-tip .tip-row{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05);}
@@ -518,7 +517,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
     <div class="sec-hd sh-cyan" onclick="toggleAcc(5)"><span class="sec-num">05</span>하상재료<span class="sec-en">Bed Material</span><span class="acc-arr">▶</span></div>
     <div class="acc-bd" id="acc-bd-5"><div class="acc-inner">
       <div class="ipg">
-        <div class="f d50-tip-wrap"><label>D₅₀ <span class="un">mm</span></label><input type="number" id="D50" value="1.0" step="0.1" min="0.001" oninput="calc()">
+        <div class="f d50-tip-wrap"><label>D₅₀ <span class="un">mm</span></label><input type="number" id="D50" value="1.0" step="any" min="0.001" oninput="calc()">
           <div class="d50-tip">
             <div class="tip-hd">D₅₀ 최소값 기준</div>
             <div class="tip-row"><span class="tip-src">HEC-18 (FHWA)</span><br>D₅₀ &lt; 2mm → <span class="tip-val">K₄ = 1.0</span> 적용</div>
