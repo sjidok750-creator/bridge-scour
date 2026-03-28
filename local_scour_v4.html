@@ -1010,7 +1010,7 @@ async function buildPdfHtml(){
   /* ── SUMMARY BOX ── */
   #pdf-temp .sum{margin:4pt 0;padding:4pt 0;border-top:1.5pt solid #1a3a6a;border-bottom:1.5pt solid #1a3a6a;display:flex;align-items:center;justify-content:center;gap:12pt;}
   #pdf-temp .sum-label{font-size:10pt;font-weight:700;color:#1a3a6a;}
-  #pdf-temp .sum-val{font-size:16pt;font-weight:800;color:#1a3a6a;font-family:'Times New Roman',serif;}
+  #pdf-temp .sum-val{font-size:16pt;font-weight:800;color:#E07850;font-family:'Times New Roman',serif;}
   #pdf-temp .sum-note{font-size:8pt;color:#888;}
 
   /* ── EVAL SECTION ── */
@@ -1783,7 +1783,10 @@ async function generatePdfAllTabs(){
     jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
     pagebreak:{mode:['avoid-all','css','legacy']}
   };
-  html2pdf().set(opt).from(container).toPdf().output('blob').then(async(blob)=>{
+  html2pdf().set(opt).from(container).toPdf().get('pdf').then(pdf=>{
+    const totalPages=pdf.internal.getNumberOfPages();
+    if(totalPages>1){for(let i=1;i<=totalPages;i++){pdf.setPage(i);pdf.setFontSize(8);pdf.setTextColor(150);pdf.text(i+' / '+totalPages,pdf.internal.pageSize.getWidth()/2,pdf.internal.pageSize.getHeight()-5,{align:'center'});}}
+  }).output('blob').then(async(blob)=>{
     document.body.removeChild(container);
     if(appEl) appEl.style.display='';
     try{
@@ -1833,7 +1836,10 @@ async function generatePdfForTab(tabIdx){
     jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
     pagebreak:{mode:['avoid-all','css','legacy']}
   };
-  html2pdf().set(opt).from(container).toPdf().output('blob').then(async(blob)=>{
+  html2pdf().set(opt).from(container).toPdf().get('pdf').then(pdf=>{
+    const totalPages=pdf.internal.getNumberOfPages();
+    if(totalPages>1){for(let i=1;i<=totalPages;i++){pdf.setPage(i);pdf.setFontSize(8);pdf.setTextColor(150);pdf.text(i+' / '+totalPages,pdf.internal.pageSize.getWidth()/2,pdf.internal.pageSize.getHeight()-5,{align:'center'});}}
+  }).output('blob').then(async(blob)=>{
     document.body.removeChild(container);
     if(appEl) appEl.style.display='';
     try{
