@@ -1086,6 +1086,7 @@ async function buildPdfHtml(){
 <div class="prot-tag">
   <span class="prot-dot ${prot==='s'?'ps':prot==='m'?'pm':'ph'}"></span>
   <span>세굴보호공: <b>${prot==='s'?'상 (기능 완전)':prot==='m'?'중 (부분 기능)':'하 (기능 상실)'}</b>${prot!=='m'?(' → 등급 '+(prot==='s'?'상향':'하향')+' 적용'):' → 등급 유지'}</span>
+  <span style="font-size:7.5pt;color:#888;margin-left:8pt;">(<span style="color:#0d7a3e;">상→상향</span> <span style="color:#cc7000;">중→유지</span> <span style="color:#cc2222;">하→하향</span> ※b~d등급만 적용)</span>
 </div>
 
 <!-- ═══ 2. 세굴심 산정 (2단 편집) ═══ -->
