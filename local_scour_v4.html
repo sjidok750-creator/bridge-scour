@@ -265,9 +265,9 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .dvdr{border:none;border-top:1px solid var(--bd);margin:3px 0;}
 .grid2{display:flex;gap:8px;align-items:stretch;}
 .grid2>.card{flex:1;min-width:0;display:flex;flex-direction:column;}
-.grid2>.card .card-b{flex:1;overflow-y:auto;}
+.grid2>.card .card-b{flex:1 1 auto;overflow-y:auto;}
 .grid2>.card:first-child{flex-shrink:0;}
-.grid2>.card:first-child .card-b{flex:0;}
+.grid2>.card:first-child .card-b{flex:0 0 auto;}
 
 /* ══ RESPONSIVE ══ */
 
@@ -665,7 +665,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
     <!-- 삽도 표시 영역 -->
     <div class="rp-bot-r">
       <span id="diag-title" style="display:none;"></span>
-      <div class="diag-wrap">
+      <div class="diag-wrap" oncontextmenu="event.preventDefault();saveDiagPNG();" title="우클릭: PNG 저장" style="cursor:crosshair;">
 
         <!-- 직접기초 SVG -->
         <!-- 직접기초 SVG -->
@@ -1128,6 +1128,37 @@ function setV(id,val,d=3){ const e=document.getElementById(id); if(e) e.value=fm
 function setT(id,txt){ const e=document.getElementById(id); if(e) e.textContent=txt; }
 function setH(id,html){ const e=document.getElementById(id); if(e) e.innerHTML=html; }
 function setA(id,attrs){ const e=document.getElementById(id); if(!e)return; Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v)); }
+
+function saveDiagPNG(){
+  const svg=document.querySelector('.diag-wrap svg:not([style*="display:none"])');
+  if(!svg) return;
+  const s=new XMLSerializer().serializeToString(svg);
+  const vb=svg.getAttribute('viewBox')||'0 0 480 255';
+  const [,,w,h]=vb.split(/\s+/).map(Number);
+  const scale=3;
+  const canvas=document.createElement('canvas');
+  canvas.width=w*scale; canvas.height=h*scale;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#1E2A3A'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  const img=new Image();
+  const blob=new Blob([s],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  img.onload=()=>{
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    URL.revokeObjectURL(url);
+    canvas.toBlob(b=>{
+      const bn=gv('bridgeName')||'Bridge';
+      const pn=gv('pierNo')||'Pier';
+      const fname=bn+'_'+pn+'_삽도.png';
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(b);
+      a.download=fname;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    },'image/png');
+  };
+  img.src=url;
+}
 
 function toggleAcc(n){
   const bd=document.getElementById('acc-bd-'+n);
