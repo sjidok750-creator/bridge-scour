@@ -971,9 +971,9 @@ async function buildPdfHtml(){
 <style>
   #pdf-temp *{box-sizing:border-box;margin:0;padding:0;}
   #pdf-temp table{border-collapse:collapse;width:100%;}
-  #pdf-temp .fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 1px;line-height:1;}
-  #pdf-temp .fr>span:first-child{border-bottom:1px solid #000;padding:0 2px 0 2px;font-size:8.5pt;}
-  #pdf-temp .fr>span:last-child{padding:0 2px;font-size:8.5pt;}
+  #pdf-temp .fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;line-height:1;}
+  #pdf-temp .fr>span:first-child{border-bottom:1px solid #000;padding:0 3px 1px 3px;font-size:inherit;}
+  #pdf-temp .fr>span:last-child{padding:1px 3px 0 3px;font-size:inherit;}
 
   /* ── HEADER ── */
   #pdf-temp .hdr{border-bottom:2.5pt solid #1a3a6a;padding-bottom:4pt;margin-bottom:5pt;display:flex;align-items:baseline;justify-content:space-between;}
@@ -993,7 +993,7 @@ async function buildPdfHtml(){
   #pdf-temp .cols2>.col{flex:1;min-width:0;display:flex;flex-direction:column;gap:3pt;}
 
   /* ── FORMULA CARDS ── */
-  #pdf-temp .fc{border:0.7pt solid #c0cad8;border-radius:3pt;padding:6pt 8pt;background:#fafcff;flex:1;display:flex;flex-direction:column;min-height:72pt;}
+  #pdf-temp .fc{border:0.7pt solid #c0cad8;border-radius:3pt;padding:6pt 8pt;background:#fafcff;flex:1;display:flex;flex-direction:column;min-height:78pt;}
   #pdf-temp .fc-hd{font-size:9.5pt;font-weight:700;color:#1a3a6a;margin-bottom:3pt;display:flex;justify-content:space-between;align-items:center;border-bottom:0.5pt solid #dde4ed;padding-bottom:2pt;}
   #pdf-temp .fc-hd .fc-res{font-size:12pt;font-weight:800;color:#222;}
   #pdf-temp .fc-hd .fc-res.excluded{text-decoration:line-through;color:#aaa;font-size:10pt;}
@@ -1083,7 +1083,7 @@ async function buildPdfHtml(){
       </div>
       <div class="fc-body">
         <div class="fc-eq">d<sub>s</sub>/y = 2·K₁·K₂·K₃·K₄·(b'/y)<sup>0.65</sup>·Fr<sup>0.43</sup></div>
-        <div class="fc-sub">d<sub>s</sub>/${yVal} = 2×${k1v}×${rK2}×${k3v}×${K4Val}×(${rBpN}/${yVal})<sup>0.65</sup>×${rFr}<sup>0.43</sup></div>
+        <div class="fc-sub">${F('d<sub>s</sub>',yVal)} = 2×${k1v}×${rK2}×${k3v}×${K4Val}×(${F(rBpN,yVal)})<sup>0.65</sup>×${rFr}<sup>0.43</sup></div>
         <div class="fc-note">K₁=${k1v}, K₂=${rK2}, K₃=${k3v}, K₄=${K4Val}</div>
       </div>
     </div>
@@ -1095,7 +1095,7 @@ async function buildPdfHtml(){
       </div>
       <div class="fc-body">
         <div class="fc-eq">d<sub>s</sub>/b = 1.5·(y/b)<sup>0.3</sup></div>
-        <div class="fc-sub">d<sub>s</sub>/${bVal} = 1.5×(${yVal}/${bVal})<sup>0.3</sup></div>
+        <div class="fc-sub">${F('d<sub>s</sub>',bVal)} = 1.5×(${F(yVal,bVal)})<sup>0.3</sup></div>
       </div>
     </div>
   </div>
@@ -1108,7 +1108,7 @@ async function buildPdfHtml(){
       </div>
       <div class="fc-body">
         <div class="fc-eq">d<sub>s</sub>/y = 1.1·(b/y)<sup>0.5</sup></div>
-        <div class="fc-sub">d<sub>s</sub>/${yVal} = 1.1×(${bVal}/${yVal})<sup>0.5</sup></div>
+        <div class="fc-sub">${F('d<sub>s</sub>',yVal)} = 1.1×(${F(bVal,yVal)})<sup>0.5</sup></div>
       </div>
     </div>
     <!-- ④ Froehlich -->
@@ -1119,7 +1119,7 @@ async function buildPdfHtml(){
       </div>
       <div class="fc-body">
         <div class="fc-eq">d<sub>s</sub> = 0.32·f·b'<sup>0.62</sup>·y<sup>0.46</sup>·Fr<sup>0.20</sup>·(b/D<sub>50</sub>)<sup>0.08</sup></div>
-        <div class="fc-sub">d<sub>s</sub> = 0.32×${fv}×${rBpN}<sup>0.62</sup>×${yVal}<sup>0.46</sup>×${rFr}<sup>0.20</sup>×(${bVal}/${D50ms})<sup>0.08</sup></div>
+        <div class="fc-sub">d<sub>s</sub> = 0.32×${fv}×${rBpN}<sup>0.62</sup>×${yVal}<sup>0.46</sup>×${rFr}<sup>0.20</sup>×(${F(bVal,D50ms)})<sup>0.08</sup></div>
         <div class="fc-note">f=${fv} (${ft})</div>
       </div>
     </div>
