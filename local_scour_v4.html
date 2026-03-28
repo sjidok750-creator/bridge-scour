@@ -949,6 +949,9 @@ async function buildPdfHtml(){
   // Fraction helper: renders top/bottom as stacked fraction
   const F=(t,b)=>`<span class="fr"><span>${t}</span><span>${b}</span></span>`;
 
+  // Clean trailing zeros: 5.000 → 5.0, 2.678 → 2.678, keeps at least 1 decimal
+  const fmtC=v=>{if(!v||v==='—')return v;const s=String(v).replace(/ m$/,'');const n=parseFloat(s);if(isNaN(n))return v;const fixed=n.toFixed(3);const cleaned=fixed.replace(/0+$/,'').replace(/\.$/,'.0');return cleaned;};
+
   // Excluded tag
   const exTag=name=>maxName===name?' <span style="color:#cc2222;font-size:9pt;margin-left:10pt;">(최댓값 — 제외)</span>':'';
 
@@ -980,20 +983,21 @@ async function buildPdfHtml(){
   #pdf-temp .sec{font-size:10pt;font-weight:800;color:#fff;background:#1a3a6a;padding:1.5pt 8pt;margin:5pt 0 2pt 0;display:inline-block;letter-spacing:0.5px;}
 
   /* ── TABLES ── */
-  #pdf-temp .dtbl th{background:#e8eef6;border:0.7pt solid #8a9ab0;padding:2pt 4pt;font-size:8pt;text-align:center;font-weight:700;color:#1a3a6a;}
-  #pdf-temp .dtbl td{border:0.7pt solid #8a9ab0;padding:1.5pt 4pt;font-size:9pt;text-align:center;font-weight:600;color:#222;}
+  #pdf-temp .dtbl th{background:#e8eef6;border:0.7pt solid #8a9ab0;padding:4pt 4pt;font-size:8pt;text-align:center;font-weight:700;color:#1a3a6a;}
+  #pdf-temp .dtbl td{border:0.7pt solid #8a9ab0;padding:4pt 4pt;font-size:9.5pt;text-align:center;font-weight:600;color:#222;}
 
   /* ── TWO-COLUMN ── */
-  #pdf-temp .cols2{display:flex;gap:8pt;}
-  #pdf-temp .cols2>.col{flex:1;min-width:0;}
+  #pdf-temp .cols2{display:flex;gap:8pt;align-items:stretch;}
+  #pdf-temp .cols2>.col{flex:1;min-width:0;display:flex;flex-direction:column;gap:3pt;}
 
   /* ── FORMULA CARDS ── */
-  #pdf-temp .fc{border:0.7pt solid #c0cad8;border-radius:3pt;padding:4pt 6pt;margin-bottom:3pt;background:#fafcff;}
+  #pdf-temp .fc{border:0.7pt solid #c0cad8;border-radius:3pt;padding:4pt 6pt;background:#fafcff;flex:1;display:flex;flex-direction:column;}
   #pdf-temp .fc-hd{font-size:9pt;font-weight:700;color:#1a3a6a;margin-bottom:2pt;display:flex;justify-content:space-between;align-items:center;border-bottom:0.5pt solid #dde4ed;padding-bottom:1.5pt;}
   #pdf-temp .fc-hd .fc-res{font-size:11pt;font-weight:800;color:#222;}
   #pdf-temp .fc-hd .fc-res.excluded{text-decoration:line-through;color:#aaa;font-size:9.5pt;}
-  #pdf-temp .fc-eq{font-family:'Times New Roman',serif;font-size:9pt;color:#444;line-height:1.7;margin-bottom:1pt;}
-  #pdf-temp .fc-sub{font-family:'Times New Roman',serif;font-size:8.5pt;color:#666;line-height:1.6;}
+  #pdf-temp .fc-body{flex:1;}
+  #pdf-temp .fc-eq{font-family:'Times New Roman',serif;font-size:9pt;color:#444;line-height:1.7;margin-bottom:1pt;padding-left:14pt;}
+  #pdf-temp .fc-sub{font-family:'Times New Roman',serif;font-size:8.5pt;color:#666;line-height:1.6;padding-left:14pt;}
   #pdf-temp .fc-note{font-size:7.5pt;color:#888;margin-top:1pt;}
 
   /* ── SUMMARY BOX ── */
@@ -1024,7 +1028,7 @@ async function buildPdfHtml(){
   #pdf-temp .rb-info strong{color:${gradeC};}
 
   /* ── FOOTER ── */
-  #pdf-temp .ft{font-size:7pt;color:#999;border-top:0.5pt solid #ccc;margin-top:4pt;padding-top:2pt;text-align:center;letter-spacing:0.3px;}
+  #pdf-temp .ft{font-size:7.5pt;color:#888;border-top:0.5pt solid #ccc;margin-top:4pt;padding-top:2pt;display:flex;justify-content:space-between;letter-spacing:0.3px;}
 </style>
 
 <!-- ═══ HEADER ═══ -->
@@ -1038,11 +1042,11 @@ async function buildPdfHtml(){
 <table class="dtbl">
   <tr>
     <th>기초형식</th><th>수심 y (m)</th><th>유속 V (m/s)</th><th>Fr</th>
-    <th>교각폭 b (m)</th><th>교고 L (m)</th><th>흐름사각 θ</th><th>투영폭 b' (m)</th><th>D₅₀ (mm)</th><th>작성일</th>
+    <th>교각폭 b (m)</th><th>교고 L (m)</th><th>흐름사각 θ</th><th>투영폭 b' (m)</th><th>D₅₀ (mm)</th>
   </tr>
   <tr>
     <td>${ftypeVal}</td><td>${yVal}</td><td>${VVal}</td><td>${rFr}</td>
-    <td>${bVal}</td><td>${LVal}</td><td>${thVal}°</td><td>${rBp}</td><td>${D50Val}</td><td>${printDate}</td>
+    <td>${bVal}</td><td>${LVal}</td><td>${thVal}°</td><td>${rBp}</td><td>${D50Val}</td>
   </tr>
 </table>
 <table class="dtbl" style="margin-top:-0.7pt;">
@@ -1064,27 +1068,31 @@ async function buildPdfHtml(){
     <div class="fc">
       <div class="fc-hd">
         <span>① C.S.U. (HEC-18)</span>
-        <span class="fc-res ${maxName==='CSU'?'excluded':''}">${csuV}${exMark('CSU')}</span>
+        <span class="fc-res ${maxName==='CSU'?'excluded':''}">${fmtC(csuV)} m${exMark('CSU')}</span>
       </div>
-      <div class="fc-eq">
-        ${F('d<sub>s</sub>','y')} = 2·K₁·K₂·K₃·K₄·(${F("b'","y")})<sup>0.65</sup>·Fr<sup>0.43</sup>
+      <div class="fc-body">
+        <div class="fc-eq">
+          ${F('d<sub>s</sub>','y')} = 2·K₁·K₂·K₃·K₄·(${F("b'","y")})<sup>0.65</sup>·Fr<sup>0.43</sup>
+        </div>
+        <div class="fc-sub">
+          ${F('d<sub>s</sub>',yVal)} = 2×${k1v}×${rK2}×${k3v}×${K4Val}×(${F(rBp,yVal)})<sup>0.65</sup>×${rFr}<sup>0.43</sup>
+        </div>
+        <div class="fc-note">K₁=${k1v}(${k1t}) K₃=${k3v}(${k3t})</div>
       </div>
-      <div class="fc-sub">
-        = 2×${k1v}×${rK2}×${k3v}×${K4Val}×(${F(rBp,yVal)})<sup>0.65</sup>×${rFr}<sup>0.43</sup>
-      </div>
-      <div class="fc-note">K₁=${k1v}(${k1t}) K₃=${k3v}(${k3t})</div>
     </div>
     <!-- ② Neill -->
     <div class="fc">
       <div class="fc-hd">
         <span>② Neill</span>
-        <span class="fc-res ${maxName==='Neill'?'excluded':''}">${neilV}${exMark('Neill')}</span>
+        <span class="fc-res ${maxName==='Neill'?'excluded':''}">${fmtC(neilV)} m${exMark('Neill')}</span>
       </div>
-      <div class="fc-eq">
-        ${F('d<sub>s</sub>','b')} = 1.5·(${F('y','b')})<sup>0.3</sup>
-      </div>
-      <div class="fc-sub">
-        = 1.5×(${F(yVal,bVal)})<sup>0.3</sup>
+      <div class="fc-body">
+        <div class="fc-eq">
+          ${F('d<sub>s</sub>','b')} = 1.5·(${F('y','b')})<sup>0.3</sup>
+        </div>
+        <div class="fc-sub">
+          ${F('d<sub>s</sub>',bVal)} = 1.5×(${F(yVal,bVal)})<sup>0.3</sup>
+        </div>
       </div>
     </div>
   </div>
@@ -1093,28 +1101,32 @@ async function buildPdfHtml(){
     <div class="fc">
       <div class="fc-hd">
         <span>③ Laursen</span>
-        <span class="fc-res ${maxName==='Laursen'?'excluded':''}">${lauV}${exMark('Laursen')}</span>
+        <span class="fc-res ${maxName==='Laursen'?'excluded':''}">${fmtC(lauV)} m${exMark('Laursen')}</span>
       </div>
-      <div class="fc-eq">
-        ${F('d<sub>s</sub>','y')} = 1.1·(${F('b','y')})<sup>0.5</sup>
-      </div>
-      <div class="fc-sub">
-        = 1.1×(${F(bVal,yVal)})<sup>0.5</sup>
+      <div class="fc-body">
+        <div class="fc-eq">
+          ${F('d<sub>s</sub>','y')} = 1.1·(${F('b','y')})<sup>0.5</sup>
+        </div>
+        <div class="fc-sub">
+          ${F('d<sub>s</sub>',yVal)} = 1.1×(${F(bVal,yVal)})<sup>0.5</sup>
+        </div>
       </div>
     </div>
     <!-- ④ Froehlich -->
     <div class="fc">
       <div class="fc-hd">
         <span>④ Froehlich</span>
-        <span class="fc-res ${maxName==='Froehlich'?'excluded':''}">${froeV}${exMark('Froehlich')}</span>
+        <span class="fc-res ${maxName==='Froehlich'?'excluded':''}">${fmtC(froeV)} m${exMark('Froehlich')}</span>
       </div>
-      <div class="fc-eq">
-        d<sub>s</sub> = 0.32·f·b'<sup>0.62</sup>·y<sup>0.46</sup>·Fr<sup>0.20</sup>·(${F('b','D<sub>50</sub>')})<sup>0.08</sup>
+      <div class="fc-body">
+        <div class="fc-eq">
+          d<sub>s</sub> = 0.32·f·b'<sup>0.62</sup>·y<sup>0.46</sup>·Fr<sup>0.20</sup>·(${F('b','D<sub>50</sub>')})<sup>0.08</sup>
+        </div>
+        <div class="fc-sub">
+          d<sub>s</sub> = 0.32×${fv}×${rBp}<sup>0.62</sup>×${yVal}<sup>0.46</sup>×${rFr}<sup>0.20</sup>×(${F(bVal,D50ms)})<sup>0.08</sup>
+        </div>
+        <div class="fc-note">f=${fv} (${ft})</div>
       </div>
-      <div class="fc-sub">
-        = 0.32×${fv}×${rBp}<sup>0.62</sup>×${yVal}<sup>0.46</sup>×${rFr}<sup>0.20</sup>×(${F(bVal,D50ms)})<sup>0.08</sup>
-      </div>
-      <div class="fc-note">f=${fv} (${ft})</div>
     </div>
   </div>
 </div>
@@ -1122,7 +1134,7 @@ async function buildPdfHtml(){
 <!-- ═══ 적용 세굴심 ═══ -->
 <div class="sum">
   <span class="sum-label">적용 세굴심 d<sub>s</sub></span>
-  <span class="sum-val">${finV}</span>
+  <span class="sum-val">${fmtC(finV)}</span>
   <span class="sum-note">(3개 평균, 최댓값 제외)</span>
 </div>
 
@@ -1155,7 +1167,8 @@ async function buildPdfHtml(){
 
 <!-- ═══ FOOTER ═══ -->
 <div class="ft">
-  Evaluating Scour at Bridges v4.0 &nbsp;|&nbsp; ${printDate} &nbsp;|&nbsp; ${bridgeName} &nbsp;|&nbsp; ${pierNo}
+  <span>작성일: ${printDate}</span>
+  <span>Evaluating Scour at Bridges v4.0 &nbsp;|&nbsp; ${bridgeName} &nbsp;|&nbsp; ${pierNo}</span>
 </div>
 
 `;
