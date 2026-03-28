@@ -992,14 +992,14 @@ async function buildPdfHtml(){
   #pdf-temp .cols2>.col{flex:1;min-width:0;display:flex;flex-direction:column;gap:3pt;}
 
   /* ── FORMULA CARDS ── */
-  #pdf-temp .fc{border:0.7pt solid #c0cad8;border-radius:3pt;padding:4pt 6pt;background:#fafcff;flex:1;display:flex;flex-direction:column;}
-  #pdf-temp .fc-hd{font-size:9pt;font-weight:700;color:#1a3a6a;margin-bottom:2pt;display:flex;justify-content:space-between;align-items:center;border-bottom:0.5pt solid #dde4ed;padding-bottom:1.5pt;}
-  #pdf-temp .fc-hd .fc-res{font-size:11pt;font-weight:800;color:#222;}
-  #pdf-temp .fc-hd .fc-res.excluded{text-decoration:line-through;color:#aaa;font-size:9.5pt;}
+  #pdf-temp .fc{border:0.7pt solid #c0cad8;border-radius:3pt;padding:6pt 8pt;background:#fafcff;flex:1;display:flex;flex-direction:column;min-height:72pt;}
+  #pdf-temp .fc-hd{font-size:9.5pt;font-weight:700;color:#1a3a6a;margin-bottom:3pt;display:flex;justify-content:space-between;align-items:center;border-bottom:0.5pt solid #dde4ed;padding-bottom:2pt;}
+  #pdf-temp .fc-hd .fc-res{font-size:12pt;font-weight:800;color:#222;}
+  #pdf-temp .fc-hd .fc-res.excluded{text-decoration:line-through;color:#aaa;font-size:10pt;}
   #pdf-temp .fc-body{flex:1;}
-  #pdf-temp .fc-eq{font-family:'Times New Roman',serif;font-size:9pt;color:#333;line-height:2;margin-bottom:0;}
-  #pdf-temp .fc-sub{font-family:'Times New Roman',serif;font-size:8pt;color:#555;line-height:2;}
-  #pdf-temp .fc-note{font-size:7pt;color:#888;margin-top:0;}
+  #pdf-temp .fc-eq{font-family:'Times New Roman',serif;font-size:10pt;color:#333;line-height:2.2;margin-bottom:1pt;}
+  #pdf-temp .fc-sub{font-family:'Times New Roman',serif;font-size:9pt;color:#555;line-height:2.2;}
+  #pdf-temp .fc-note{font-size:7.5pt;color:#777;margin-top:1pt;}
 
   /* ── PROT TAG ── */
   #pdf-temp .prot-tag{display:flex;align-items:center;gap:4pt;font-size:8.5pt;color:#555;margin:1pt 0 0 0;padding:1pt 0;}
@@ -1128,7 +1128,7 @@ async function buildPdfHtml(){
 <!-- ═══ 적용 세굴심 ═══ -->
 <div class="sum">
   <span class="sum-label">적용 세굴심 d<sub>s</sub></span>
-  <span class="sum-val">${fmtC(finV)}</span>
+  <span class="sum-val">${fmtC(finV)} <span style="font-size:12pt;">m</span></span>
   <span class="sum-note">(3개 평균, 최댓값 제외)</span>
 </div>
 
