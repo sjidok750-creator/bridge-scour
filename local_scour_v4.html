@@ -1004,13 +1004,13 @@ async function buildPdfHtml(){
   #pdf-temp .cols2>.col{flex:1;min-width:0;display:flex;flex-direction:column;gap:3pt;}
 
   /* ── FORMULA CARDS ── */
-  #pdf-temp .fc{border:0.7pt solid #c0cad8;border-radius:3pt;padding:6pt 8pt;background:#fafcff;flex:1;display:flex;flex-direction:column;min-height:78pt;}
+  #pdf-temp .fc{border:0.7pt solid #c0cad8;border-radius:3pt;padding:6pt 8pt;background:#fafcff;flex:1;display:flex;flex-direction:column;min-height:90pt;}
   #pdf-temp .fc-hd{font-size:9.5pt;font-weight:700;color:#1a3a6a;margin-bottom:3pt;display:flex;justify-content:space-between;align-items:center;border-bottom:0.5pt solid #dde4ed;padding-bottom:2pt;}
   #pdf-temp .fc-hd .fc-res{font-size:12pt;font-weight:800;color:#222;}
   #pdf-temp .fc-hd .fc-res.excluded{text-decoration:line-through;color:#aaa;font-size:10pt;}
   #pdf-temp .fc-body{flex:1;}
-  #pdf-temp .fc-eq{font-family:'Times New Roman',serif;font-size:10pt;color:#333;line-height:2.2;margin-bottom:1pt;}
-  #pdf-temp .fc-sub{font-family:'Times New Roman',serif;font-size:9pt;color:#555;line-height:2.2;}
+  #pdf-temp .fc-eq{font-family:'Times New Roman',serif;font-size:9.5pt;color:#333;line-height:2.2;margin-bottom:1pt;}
+  #pdf-temp .fc-sub{font-family:'Times New Roman',serif;font-size:8.5pt;color:#555;line-height:2.2;word-break:break-all;}
   #pdf-temp .fc-note{font-size:7.5pt;color:#777;margin-top:1pt;}
 
   /* ── PROT TAG ── */
@@ -1026,24 +1026,30 @@ async function buildPdfHtml(){
 
   /* ── EVAL SECTION ── */
   #pdf-temp .eval-row{display:flex;gap:0;margin-top:2pt;border:0.7pt solid #8a9ab0;}
-  #pdf-temp .eval-diag{flex:1.1;padding:5pt;border-right:0.7pt solid #8a9ab0;text-align:center;min-height:210pt;}
-  #pdf-temp .eval-diag img{width:100%;height:auto;max-height:230pt;object-fit:contain;}
+  #pdf-temp .eval-diag{flex:1.1;padding:4pt 5pt 0 5pt;border-right:0.7pt solid #8a9ab0;text-align:center;}
+  #pdf-temp .eval-diag img{width:100%;height:auto;max-height:170pt;object-fit:contain;}
   #pdf-temp .eval-right{flex:1;display:flex;flex-direction:column;}
   #pdf-temp .eval-right .gr-tbl{width:100%;flex:1;}
-  #pdf-temp .eval-right .gr-tbl th{background:#e8eef6;border:0.7pt solid #8a9ab0;padding:3pt 3pt;font-size:8.5pt;text-align:center;font-weight:700;color:#1a3a6a;}
-  #pdf-temp .eval-right .gr-tbl td{border:0.7pt solid #8a9ab0;padding:6pt 5pt;font-size:10pt;}
-  #pdf-temp .eval-right .gr-tbl td:first-child{text-align:center;font-weight:800;font-size:11pt;width:30pt;}
-  #pdf-temp .eval-right .gr-tbl td:last-child{text-align:center;width:32pt;}
-  #pdf-temp .eval-right .gr-tbl .td-l{text-align:left;font-size:9.5pt;}
+  #pdf-temp .eval-right .gr-tbl th{background:#e8eef6;border:0.7pt solid #8a9ab0;padding:2pt 3pt;font-size:8pt;text-align:center;font-weight:700;color:#1a3a6a;}
+  #pdf-temp .eval-right .gr-tbl td{border:0.7pt solid #8a9ab0;padding:3pt 4pt;font-size:9pt;}
+  #pdf-temp .eval-right .gr-tbl td:first-child{text-align:center;font-weight:800;font-size:10pt;width:28pt;}
+  #pdf-temp .eval-right .gr-tbl td:last-child{text-align:center;width:28pt;}
+  #pdf-temp .eval-right .gr-tbl .td-l{text-align:left;font-size:8.5pt;}
   #pdf-temp .eval-right .gr-tbl .cur-row{background:#e8f0ff;}
   #pdf-temp .ga{color:#0d7a3e;} #pdf-temp .gb{color:#7a6d00;}
   #pdf-temp .gc{color:#cc7000;} #pdf-temp .gd{color:#cc2222;} #pdf-temp .ge{color:#801010;}
 
   /* ── RESULT BADGE ── */
-  #pdf-temp .result-badge{display:flex;align-items:center;justify-content:center;gap:12pt;padding:10pt 12pt;background:${gradeC}11;border-top:0.7pt solid #8a9ab0;}
-  #pdf-temp .rb-grade{font-size:30pt;font-weight:800;color:${gradeC};line-height:1;}
-  #pdf-temp .rb-info{font-size:10pt;color:#333;line-height:1.6;}
+  #pdf-temp .result-badge{display:flex;align-items:center;justify-content:center;gap:10pt;padding:6pt 10pt;background:${gradeC}11;border-top:0.7pt solid #8a9ab0;}
+  #pdf-temp .rb-grade{font-size:24pt;font-weight:800;color:${gradeC};line-height:1;}
+  #pdf-temp .rb-info{font-size:9pt;color:#333;line-height:1.5;}
   #pdf-temp .rb-info strong{color:${gradeC};}
+
+  /* ── REF TABLE ── */
+  #pdf-temp .ref-tbl{margin-top:4pt;}
+  #pdf-temp .ref-tbl th{background:#e8eef6;border:0.7pt solid #8a9ab0;padding:2pt 5pt;font-size:7.5pt;text-align:center;font-weight:700;color:#1a3a6a;}
+  #pdf-temp .ref-tbl td{border:0.7pt solid #8a9ab0;padding:2pt 5pt;font-size:7.5pt;color:#333;}
+  #pdf-temp .ref-tbl td:first-child{text-align:center;font-weight:700;width:80pt;}
 
   /* ── FOOTER ── */
   #pdf-temp .ft{font-size:7.5pt;color:#888;border-top:0.5pt solid #ccc;margin-top:4pt;padding-top:2pt;display:flex;justify-content:space-between;letter-spacing:0.3px;}
@@ -1169,6 +1175,16 @@ async function buildPdfHtml(){
     </div>
   </div>
 </div>
+
+<!-- ═══ 4. 참고문헌 ═══ -->
+<span class="sec">4. 참고문헌</span>
+<table class="ref-tbl">
+  <tr><th>공식</th><th>원 출처</th><th>최신 수록 기준</th></tr>
+  <tr><td>CSU (HEC-18)</td><td>Richardson et al. (1975, 1990)</td><td>FHWA HEC-18, 5th Ed. (2012)</td></tr>
+  <tr><td>Neill</td><td>Neill, C.R. (1964) River Bed Scour</td><td>하천설계기준·해설 (2019)</td></tr>
+  <tr><td>Laursen</td><td>Laursen, E.M. (1962) ASCE Trans. Vol.127</td><td>FHWA HEC-18, 5th Ed. (2012)</td></tr>
+  <tr><td>Froehlich</td><td>Froehlich, D.C. (1988) ASCE Hyd. Conf.</td><td>FHWA HEC-18, 5th Ed. (2012)</td></tr>
+</table>
 
 <!-- ═══ FOOTER ═══ -->
 <div class="ft">
