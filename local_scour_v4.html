@@ -290,6 +290,21 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .ref-list li::before{content:counter(ref-counter)'.  ';counter-increment:ref-counter;color:rgba(79,144,255,.6);font-family:'JetBrains Mono',monospace;font-weight:600;font-size:9px;}
 .ref-list{counter-reset:ref-counter;}
 .ref-list span.ref-main{color:var(--mt);}
+/* PDF 팝업 모달 */
+#pdf-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.78);z-index:9999;align-items:center;justify-content:center;}
+#pdf-modal.open{display:flex;}
+.pdf-modal-box{background:#1A2633;width:88%;height:88%;border-radius:8px;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,.6);overflow:hidden;}
+.pdf-modal-hd{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#263848;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;}
+.pdf-modal-title{color:#c9d6e3;font-size:12px;font-family:'JetBrains Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pdf-modal-close{background:#c0392b;color:#fff;border:none;border-radius:4px;padding:4px 12px;cursor:pointer;font-size:12px;flex-shrink:0;margin-left:8px;}
+.pdf-modal-close:hover{background:#e74c3c;}
+#pdf-frame{flex:1;border:none;background:#fff;}
+/* 레퍼런스 링크 버튼 */
+.ref-btn{display:inline-block;margin-left:5px;padding:1px 6px;font-size:9px;border-radius:3px;cursor:pointer;text-decoration:none;font-family:'JetBrains Mono',monospace;vertical-align:middle;line-height:1.6;}
+.ref-btn-pdf{background:rgba(79,144,255,.18);color:#6aabff;border:1px solid rgba(79,144,255,.3);}
+.ref-btn-pdf:hover{background:rgba(79,144,255,.32);}
+.ref-btn-web{background:rgba(80,200,120,.13);color:#5dd491;border:1px solid rgba(80,200,120,.25);}
+.ref-btn-web:hover{background:rgba(80,200,120,.28);}
 
 .dvdr{border:none;border-top:1px solid var(--bd);margin:3px 0;}
 .grid2{display:flex;gap:8px;align-items:stretch;}
@@ -846,20 +861,41 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
   <div class="rp-ref">
     <div class="ref-title">
       <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#4F90FF" stroke-width="1"/><text x="5" y="7.5" text-anchor="middle" fill="#4F90FF" font-size="6" font-family="JetBrains Mono">R</text></svg>
-      적용 기준 및 참고문헌 (References)
+      References
     </div>
     <ol class="ref-list">
-      <li><span class="ref-main">FHWA (2012). <i>Evaluating Scour at Bridges</i>, 5th Ed. (HEC-18), Publication No. FHWA-HIF-12-003. U.S. Department of Transportation, Federal Highway Administration.</span></li>
-      <li><span class="ref-main">국토안전관리원 (2026). <i>시설물의 안전 및 유지관리 실시 세부지침</i> (안전점검·진단편 / 성능평가편), 2026. 1. 23. 개정.</span></li>
-      <li><span class="ref-main">국토교통부 (2018). <i>KDS 51 90 10 : 2018 하천교량</i>, 국가건설기준센터.</span></li>
-      <li><span class="ref-main">국토교통부 (2019). <i>하천설계기준·해설</i> (KDS 51 00 00), 국가건설기준센터.</span></li>
+      <li><span class="ref-main">FHWA (2012). <i>Evaluating Scour at Bridges</i>, 5th Ed. (HEC-18), Publication No. FHWA-HIF-12-003.</span><button class="ref-btn ref-btn-pdf" onclick="openPdf('FHWA.pdf','FHWA HEC-18 (2012) — Evaluating Scour at Bridges, 5th Ed.')">PDF</button></li>
+      <li><span class="ref-main">국토안전관리원 (2026). <i>시설물의 안전 및 유지관리 실시 세부지침</i> (안전점검·진단편 / 성능평가편), 2026. 1. 23. 개정.</span><button class="ref-btn ref-btn-pdf" onclick="openPdf('교량세부지침.pdf','시설물 안전 및 유지관리 실시 세부지침 (국토안전관리원 2026)')">PDF</button></li>
+      <li><span class="ref-main">국토교통부 (2018). <i>KDS 51 90 10 : 2018 하천교량</i>, 국가건설기준센터.</span><button class="ref-btn ref-btn-pdf" onclick="openPdf('하천설계기준.pdf','KDS 51 90 10 : 2018 하천교량 (국토교통부)')">PDF</button></li>
+      <li><span class="ref-main">국토교통부 (2019). <i>하천설계기준·해설</i> (KDS 51 00 00), 국가건설기준센터.</span><a class="ref-btn ref-btn-web" href="https://www.kcsc.re.kr/Standards/KdsView?StdIds=KDS+51+00+00" target="_blank" rel="noopener">KDS 51 00 00</a></li>
     </ol>
   </div>
 
 </div><!-- /rp -->
 </div><!-- /app -->
 
+<!-- PDF 팝업 모달 -->
+<div id="pdf-modal" onclick="if(event.target===this)closePdf()">
+  <div class="pdf-modal-box">
+    <div class="pdf-modal-hd">
+      <span class="pdf-modal-title" id="pdf-modal-title"></span>
+      <button class="pdf-modal-close" onclick="closePdf()">✕ 닫기</button>
+    </div>
+    <iframe id="pdf-frame" src=""></iframe>
+  </div>
+</div>
+
 <script>
+function openPdf(path, title){
+  document.getElementById('pdf-modal-title').textContent = title;
+  document.getElementById('pdf-frame').src = path;
+  document.getElementById('pdf-modal').classList.add('open');
+}
+function closePdf(){
+  document.getElementById('pdf-modal').classList.remove('open');
+  document.getElementById('pdf-frame').src = '';
+}
+
 const g = 9.81;
 let prot = 's';
 let foundMode = 'el';
@@ -1183,7 +1219,7 @@ async function buildPdfHtml(){
 <span class="sec">4. References</span>
 <table class="ref-tbl">
   <tr><th>#</th><th>Reference</th></tr>
-  <tr><td>[1]</td><td>FHWA (2012). <i>Evaluating Scour at Bridges</i>, 5th Ed. (HEC-18), Publication No. FHWA-HIF-12-003. U.S. Department of Transportation, Federal Highway Administration.</td></tr>
+  <tr><td>[1]</td><td>FHWA (2012). <i>Evaluating Scour at Bridges</i>, 5th Ed. (HEC-18), Publication No. FHWA-HIF-12-003.</td></tr>
   <tr><td>[2]</td><td>국토안전관리원 (2026). <i>시설물의 안전 및 유지관리 실시 세부지침</i> (안전점검·진단편 / 성능평가편), 2026. 1. 23. 개정.</td></tr>
   <tr><td>[3]</td><td>국토교통부 (2018). <i>KDS 51 90 10 : 2018 하천교량</i>, 국가건설기준센터.</td></tr>
   <tr><td>[4]</td><td>국토교통부 (2019). <i>하천설계기준·해설</i> (KDS 51 00 00), 국가건설기준센터.</td></tr>
