@@ -2036,43 +2036,51 @@ async function generatePdfForTab(tabIdx){
 
 <div id="theta-float-tip" class="float-tip">
   <div class="tip-hd">흐름사각도 (θ) &amp; 투영폭 (b')</div>
-  <svg viewBox="0 0 260 150" width="260" height="150" style="display:block;margin:0 auto 6px;">
-    <defs><marker id="ah" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><polygon points="0,0 6,2.5 0,5" fill="rgba(79,144,255,.6)"/></marker></defs>
-    <!-- flow arrows (left side) -->
-    <line x1="5" y1="30" x2="42" y2="30" stroke="rgba(79,144,255,.4)" stroke-width="1" marker-end="url(#ah)"/>
-    <line x1="5" y1="55" x2="42" y2="55" stroke="rgba(79,144,255,.4)" stroke-width="1" marker-end="url(#ah)"/>
-    <line x1="5" y1="80" x2="42" y2="80" stroke="rgba(79,144,255,.4)" stroke-width="1" marker-end="url(#ah)"/>
-    <line x1="5" y1="105" x2="42" y2="105" stroke="rgba(79,144,255,.4)" stroke-width="1" marker-end="url(#ah)"/>
-    <line x1="5" y1="130" x2="42" y2="130" stroke="rgba(79,144,255,.4)" stroke-width="1" marker-end="url(#ah)"/>
-    <text x="8" y="145" font-size="8" fill="rgba(79,144,255,.7)">Flow →</text>
-    <!-- pier: long axis(L) nearly horizontal, rotated 25° from flow -->
-    <!-- θ=0: L parallel to flow. Here θ=25°: pier rotated 25° from horizontal -->
-    <g transform="translate(120,75) rotate(25)">
-      <rect x="-55" y="-10" width="110" height="20" rx="3" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/>
-      <!-- L along long axis (horizontal in local coords) -->
-      <line x1="-55" y1="14" x2="55" y2="14" stroke="rgba(255,255,255,.25)" stroke-width="0.6"/>
-      <text x="0" y="26" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.6)">L (교각 장축)</text>
-      <!-- b along short axis -->
-      <text x="60" y="4" font-size="8" fill="rgba(255,255,255,.6)">b</text>
-    </g>
-    <!-- flow direction reference line through center (horizontal dashed) -->
-    <line x1="60" y1="75" x2="185" y2="75" stroke="rgba(79,144,255,.35)" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="160" y="72" font-size="7" fill="rgba(79,144,255,.5)">흐름방향</text>
-    <!-- pier long axis extended line (dashed, at 25° from horizontal) -->
-    <line x1="62" y1="102" x2="178" y2="48" stroke="rgba(255,255,255,.18)" stroke-width="0.8" stroke-dasharray="3,3"/>
-    <!-- θ arc: angle between flow (horizontal) and pier long axis -->
-    <path d="M 155,75 A 35,35 0 0,1 148,59" fill="none" stroke="#E07850" stroke-width="1.8"/>
-    <text x="155" y="63" font-size="11" fill="#E07850" font-weight="800">θ</text>
-    <!-- b' vertical bracket (perpendicular to flow) on right side -->
-    <!-- pier rotated 25°: rect corners in world coords -->
-    <!-- top: y≈75-55*sin25-10*cos25=75-23.2-9.1=42.7, bottom: 75+23.2+9.1=107.3 -->
-    <line x1="210" y1="43" x2="210" y2="107" stroke="#4fc08d" stroke-width="1.8"/>
-    <line x1="206" y1="43" x2="214" y2="43" stroke="#4fc08d" stroke-width="1.2"/>
-    <line x1="206" y1="107" x2="214" y2="107" stroke="#4fc08d" stroke-width="1.2"/>
-    <text x="219" y="80" font-size="9" fill="#4fc08d" font-weight="700" writing-mode="tb">b'</text>
-    <!-- dashed horizontal projection lines from pier extremes -->
-    <line x1="165" y1="43" x2="210" y2="43" stroke="rgba(255,255,255,.15)" stroke-width="0.8" stroke-dasharray="3,3"/>
-    <line x1="165" y1="107" x2="210" y2="107" stroke="rgba(255,255,255,.15)" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <svg viewBox="0 0 278 158" width="260" height="148" style="display:block;margin:0 auto 6px;">
+    <defs>
+      <marker id="ah" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><polygon points="0,0 6,2.5 0,5" fill="rgba(79,144,255,.65)"/></marker>
+    </defs>
+    <!-- Flow arrows: 3 arrows at 15° above horizontal (dx=70,dy=-19) -->
+    <line x1="8" y1="48" x2="78" y2="29" stroke="rgba(79,144,255,.55)" stroke-width="1.3" marker-end="url(#ah)"/>
+    <line x1="8" y1="70" x2="78" y2="51" stroke="rgba(79,144,255,.55)" stroke-width="1.3" marker-end="url(#ah)"/>
+    <line x1="8" y1="92" x2="78" y2="73" stroke="rgba(79,144,255,.55)" stroke-width="1.3" marker-end="url(#ah)"/>
+    <text x="8" y="22" font-size="10" font-weight="700" fill="rgba(79,144,255,.75)" font-family="JetBrains Mono">Flow</text>
+    <!-- Horizontal reference dashed line at y=70 -->
+    <line x1="8" y1="70" x2="95" y2="70" stroke="rgba(79,144,255,.28)" stroke-width="0.9" stroke-dasharray="4,3"/>
+    <!-- θ arc: center(8,70), radius 22, 0°→−15° (counterclockwise) -->
+    <path d="M 30,70 A 22,22 0 0,0 29,64" fill="none" stroke="#E08840" stroke-width="1.6"/>
+    <text x="35" y="73" font-size="12" fill="#E08840" font-weight="800" font-family="JetBrains Mono" font-style="italic">θ</text>
+    <!-- Pier section (plan view): center(160,80), b=40 vertical, L=30 horizontal -->
+    <rect x="145" y="60" width="30" height="40" rx="1" fill="rgba(60,110,200,.32)" stroke="rgba(100,160,255,.72)" stroke-width="1.4"/>
+    <text x="160" y="79" text-anchor="middle" font-size="7.5" fill="rgba(185,215,255,.85)" font-family="JetBrains Mono" font-weight="600">Pier</text>
+    <text x="160" y="90" text-anchor="middle" font-size="7.5" fill="rgba(185,215,255,.85)" font-family="JetBrains Mono" font-weight="600">section</text>
+    <!-- b bracket (left of pier, vertical) -->
+    <line x1="134" y1="60" x2="134" y2="100" stroke="rgba(155,190,230,.6)" stroke-width="1"/>
+    <line x1="131" y1="60"  x2="137" y2="60"  stroke="rgba(155,190,230,.6)" stroke-width="1"/>
+    <line x1="131" y1="100" x2="137" y2="100" stroke="rgba(155,190,230,.6)" stroke-width="1"/>
+    <text x="127" y="84" text-anchor="end" font-size="13" fill="rgba(170,210,255,.9)" font-family="JetBrains Mono" font-style="italic" font-weight="700">b</text>
+    <!-- L bracket (below pier, horizontal) -->
+    <line x1="145" y1="110" x2="175" y2="110" stroke="rgba(155,190,230,.6)" stroke-width="1"/>
+    <line x1="145" y1="107" x2="145" y2="113" stroke="rgba(155,190,230,.6)" stroke-width="1"/>
+    <line x1="175" y1="107" x2="175" y2="113" stroke="rgba(155,190,230,.6)" stroke-width="1"/>
+    <text x="160" y="122" text-anchor="middle" font-size="13" fill="rgba(170,210,255,.9)" font-family="JetBrains Mono" font-style="italic" font-weight="700">L</text>
+    <!-- b' bracket (perpendicular to flow direction, upper-right) -->
+    <!-- b'=30·sin15°+40·cos15°=46.4px. Center 55px downstream from pier center. -->
+    <!-- bracket: (207,43)→(219,89), direction=(0.259,0.966)≡perp-to-flow -->
+    <line x1="207" y1="43" x2="219" y2="89" stroke="rgba(155,190,230,.72)" stroke-width="1.5"/>
+    <!-- ticks perpendicular to b' (= along flow dir (0.966,−0.259), ±5px) -->
+    <line x1="202" y1="44" x2="212" y2="42" stroke="rgba(155,190,230,.65)" stroke-width="1"/>
+    <line x1="214" y1="90" x2="224" y2="88" stroke="rgba(155,190,230,.65)" stroke-width="1"/>
+    <!-- circles at projection endpoints -->
+    <circle cx="207" cy="43" r="3" fill="none" stroke="rgba(155,190,230,.72)" stroke-width="1.2"/>
+    <circle cx="219" cy="89" r="3" fill="none" stroke="rgba(155,190,230,.72)" stroke-width="1.2"/>
+    <!-- dashed projection lines from pier corners along flow direction -->
+    <!-- TL(145,60)→(207,43): Δ=(62,−17)≈64×flow-dir ✓ -->
+    <line x1="145" y1="60" x2="207" y2="43" stroke="rgba(79,144,255,.18)" stroke-width="0.9" stroke-dasharray="3,2.5"/>
+    <!-- BR(175,100)→(219,89): Δ=(44,−11)≈45×flow-dir ✓ -->
+    <line x1="175" y1="100" x2="219" y2="89" stroke="rgba(79,144,255,.18)" stroke-width="0.9" stroke-dasharray="3,2.5"/>
+    <!-- b' label -->
+    <text x="227" y="72" font-size="13" fill="rgba(170,210,255,.92)" font-family="JetBrains Mono" font-style="italic" font-weight="700">b'</text>
   </svg>
   <div class="tip-row" style="text-align:center;"><span class="tip-val">b' = b·cosθ + L·sinθ</span></div>
   <div class="tip-row"><span class="tip-src">HEC-18 (FHWA)</span><br>K₂ = (cosθ + L/b·sinθ)<sup style="font-size:7px;">0.65</sup></div>
