@@ -26,7 +26,8 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
   height:48px;flex-shrink:0;position:relative;
 }
 .title-bar h1{font-size:17px;font-weight:400;color:#5AA0FF;letter-spacing:1.5px;display:inline;font-family:'JetBrains Mono',monospace;}
-.title-ver{position:absolute;right:140px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fin);background:rgba(154,122,255,.12);border:1px solid rgba(154,122,255,.3);padding:2px 8px;border-radius:10px;}
+.excel-btn{position:absolute;right:122px;top:50%;transform:translateY(-50%);background:rgba(80,200,120,.13);border:1px solid rgba(80,200,120,.4);color:#5dd491;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.3px;text-decoration:none;display:inline-flex;align-items:center;}
+.excel-btn:hover{background:rgba(80,200,120,.28);border-color:#5dd491;}
 .doc-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(79,144,255,.15);border:1px solid rgba(79,144,255,.5);color:var(--ac);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.3px;}
 .doc-btn:hover{background:rgba(79,144,255,.3);border-color:var(--ac);}
 
@@ -344,8 +345,8 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
   .title-bar{height:auto;padding:8px 10px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;}
   .title-bar h1{font-size:15px;}
   .title-bar .sub{font-size:10px;margin-left:6px;}
-  .title-ver{position:static;transform:none;margin-left:8px;}
-  .doc-btn{position:static;transform:none;margin-left:auto;}
+  .excel-btn{position:static;transform:none;margin-left:auto;}
+  .doc-btn{position:static;transform:none;}
   .app{height:auto;}
   .stat-row{grid-template-columns:repeat(2,1fr);}
   .stat-v{font-size:18px;}
@@ -388,7 +389,10 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 <!-- ══ TITLE ══ -->
 <div class="title-bar">
   <h1>Evaluating Scour at Bridges</h1>
-  <div class="title-ver">v4.0</div>
+  <a class="excel-btn" href="교량 국부세굴평가.xlsx" download="교량 국부세굴평가.xlsx" title="Download Excel">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="12" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="5" x2="13" y2="5" stroke="currentColor" stroke-width=".8"/><line x1="1" y1="9" x2="13" y2="9" stroke="currentColor" stroke-width=".8"/><line x1="5" y1="1" x2="5" y2="13" stroke="currentColor" stroke-width=".8"/><path d="M2.5 6.5l1.2 2 1.2-2" stroke="#5dd491" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Excel Pro
+  </a>
   <button class="doc-btn" onclick="showPdfModal()" title="Save as PDF">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="9" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 4h5M3 6.5h5M3 9h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M8 9.5l1.5 2.5L11 9.5" stroke="#4F90FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Save as PDF
