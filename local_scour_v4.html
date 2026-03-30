@@ -26,9 +26,10 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
   height:48px;flex-shrink:0;position:relative;
 }
 .title-bar h1{font-size:17px;font-weight:400;color:#5AA0FF;letter-spacing:1.5px;display:inline;font-family:'JetBrains Mono',monospace;}
-.excel-btn{position:absolute;right:122px;top:50%;transform:translateY(-50%);background:rgba(80,200,120,.13);border:1px solid rgba(80,200,120,.4);color:#5dd491;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.3px;text-decoration:none;display:inline-flex;align-items:center;}
+.hdr-btns{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;gap:6px;align-items:center;}
+.excel-btn{background:rgba(80,200,120,.13);border:1px solid rgba(80,200,120,.4);color:#5dd491;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.3px;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap;}
 .excel-btn:hover{background:rgba(80,200,120,.28);border-color:#5dd491;}
-.doc-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(79,144,255,.15);border:1px solid rgba(79,144,255,.5);color:var(--ac);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.3px;}
+.doc-btn{background:rgba(79,144,255,.15);border:1px solid rgba(79,144,255,.5);color:var(--ac);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.3px;white-space:nowrap;}
 .doc-btn:hover{background:rgba(79,144,255,.3);border-color:var(--ac);}
 
 /* ── SHEET TABS ── */
@@ -56,18 +57,44 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .inp{flex:1;overflow-y:auto;padding-bottom:16px;}
 
 /* ── INPUT SECTIONS ── */
-.sec-hd{font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.8px;font-weight:600;font-family:'JetBrains Mono',monospace;padding:8px 12px;margin:0;border-top:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.035);border-left:none;cursor:pointer;user-select:none;transition:all .15s;}
+.sec-hd{font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.8px;font-weight:600;font-family:'JetBrains Mono',monospace;padding:7px 12px;margin:0;border-top:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.03);border-left:3px solid transparent;cursor:pointer;user-select:none;transition:background .15s,color .15s;}
 .sec-hd:first-child{border-top:none;}
 .sec-hd:hover{background:rgba(255,255,255,.06);color:var(--tx);}
-.sec-hd.open{color:var(--tx);background:rgba(79,144,255,.08);border-bottom:none;}
-.sec-hd .sec-num{font-size:10px;font-weight:700;color:var(--ac);font-family:'JetBrains Mono',monospace;opacity:.7;min-width:14px;}
-.sec-hd.open .sec-num{opacity:1;}
+.sec-hd.open{color:var(--tx);border-bottom:none;}
+.sec-hd .sec-num{font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;min-width:14px;padding:1px 5px;border-radius:3px;background:rgba(255,255,255,.06);}
+.sec-hd.open .sec-num{background:rgba(255,255,255,.12);}
 .sec-hd .acc-arr{margin-left:auto;font-size:8px;color:var(--dm);transition:transform .25s,color .15s;}
-.sec-hd.open .acc-arr{transform:rotate(90deg);color:var(--ac);}
+.sec-hd.open .acc-arr{transform:rotate(90deg);}
 .acc-bd{max-height:0;overflow:hidden;transition:max-height .3s ease;}
 .acc-bd.show{max-height:800px;}
 .acc-inner{padding:8px 10px 10px;margin:0;background:rgba(0,0,0,.12);border-bottom:1px solid rgba(255,255,255,.04);}
-.sec-hd.sh-green,.sec-hd.sh-blue,.sec-hd.sh-yellow,.sec-hd.sh-cyan,.sec-hd.sh-csu,.sec-hd.sh-red,.sec-hd.sh-purple{border-left:none;background:rgba(255,255,255,.035);}
+/* 섹션별 컬러 */
+.sec-hd.sh-green{border-left-color:#5dd491;background:rgba(80,200,120,.07);color:#9de8bc;}
+.sec-hd.sh-green .sec-num{color:#5dd491;}
+.sec-hd.sh-green.open{background:rgba(80,200,120,.13);}
+.sec-hd.sh-green.open .acc-arr{color:#5dd491;}
+.sec-hd.sh-yellow{border-left-color:#f5c842;background:rgba(245,200,66,.07);color:#f9dd85;}
+.sec-hd.sh-yellow .sec-num{color:#f5c842;}
+.sec-hd.sh-yellow.open{background:rgba(245,200,66,.13);}
+.sec-hd.sh-yellow.open .acc-arr{color:#f5c842;}
+.sec-hd.sh-red{border-left-color:#ff7c7c;background:rgba(255,124,124,.07);color:#ffaaaa;}
+.sec-hd.sh-red .sec-num{color:#ff7c7c;}
+.sec-hd.sh-red.open{background:rgba(255,124,124,.13);}
+.sec-hd.sh-red.open .acc-arr{color:#ff7c7c;}
+.sec-hd.sh-blue{border-left-color:#4F90FF;background:rgba(79,144,255,.07);color:#8ab4ff;}
+.sec-hd.sh-blue .sec-num{color:#4F90FF;}
+.sec-hd.sh-blue.open{background:rgba(79,144,255,.13);}
+.sec-hd.sh-blue.open .acc-arr{color:#4F90FF;}
+.sec-hd.sh-cyan{border-left-color:#4ec9d0;background:rgba(78,201,208,.07);color:#8de0e5;}
+.sec-hd.sh-cyan .sec-num{color:#4ec9d0;}
+.sec-hd.sh-cyan.open{background:rgba(78,201,208,.13);}
+.sec-hd.sh-cyan.open .acc-arr{color:#4ec9d0;}
+.sec-hd.sh-purple{border-left-color:#9a7aff;background:rgba(154,122,255,.07);color:#c4aeff;}
+.sec-hd.sh-purple .sec-num{color:#9a7aff;}
+.sec-hd.sh-purple.open{background:rgba(154,122,255,.13);}
+.sec-hd.sh-purple.open .acc-arr{color:#9a7aff;}
+.sec-hd.sh-csu{border-left-color:var(--csu);background:rgba(79,144,255,.07);color:#8ab4ff;}
+.sec-hd.sh-csu .sec-num{color:var(--csu);}
 .sec-dot{display:none;}
 .sec-en{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:9px;color:var(--dm);opacity:.6;margin-left:auto;margin-right:8px;text-transform:none;letter-spacing:0;}
 .ipg{padding:4px 0;display:grid;grid-template-columns:1fr 1fr;gap:5px;}
@@ -345,8 +372,8 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
   .title-bar{height:auto;padding:8px 10px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;}
   .title-bar h1{font-size:15px;}
   .title-bar .sub{font-size:10px;margin-left:6px;}
-  .excel-btn{position:static;transform:none;margin-left:auto;}
-  .doc-btn{position:static;transform:none;}
+  .hdr-btns{position:static;transform:none;margin-left:auto;}
+  .excel-btn,.doc-btn{padding:3px 8px;font-size:10px;}
   .app{height:auto;}
   .stat-row{grid-template-columns:repeat(2,1fr);}
   .stat-v{font-size:18px;}
@@ -389,14 +416,16 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 <!-- ══ TITLE ══ -->
 <div class="title-bar">
   <h1>Evaluating Scour at Bridges</h1>
-  <a class="excel-btn" href="교량 국부세굴평가.xlsx" download="교량 국부세굴평가.xlsx" title="Download Excel">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="12" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="5" x2="13" y2="5" stroke="currentColor" stroke-width=".8"/><line x1="1" y1="9" x2="13" y2="9" stroke="currentColor" stroke-width=".8"/><line x1="5" y1="1" x2="5" y2="13" stroke="currentColor" stroke-width=".8"/><path d="M2.5 6.5l1.2 2 1.2-2" stroke="#5dd491" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Excel Pro
-  </a>
-  <button class="doc-btn" onclick="showPdfModal()" title="Save as PDF">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="9" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 4h5M3 6.5h5M3 9h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M8 9.5l1.5 2.5L11 9.5" stroke="#4F90FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Save as PDF
-  </button>
+  <div class="hdr-btns">
+    <a class="excel-btn" href="교량 국부세굴평가.xlsx" download="교량 국부세굴평가.xlsx" title="Download Excel">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="12" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="5" x2="13" y2="5" stroke="currentColor" stroke-width=".8"/><line x1="1" y1="9" x2="13" y2="9" stroke="currentColor" stroke-width=".8"/><line x1="5" y1="1" x2="5" y2="13" stroke="currentColor" stroke-width=".8"/><path d="M2.5 6.5l1.2 2 1.2-2" stroke="#5dd491" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Excel Pro
+    </a>
+    <button class="doc-btn" onclick="showPdfModal()" title="Save as PDF">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="9" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 4h5M3 6.5h5M3 9h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M8 9.5l1.5 2.5L11 9.5" stroke="#4F90FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Save as PDF
+    </button>
+  </div>
 </div>
 
 <!-- ══ SHEET TABS ══ -->
@@ -629,7 +658,6 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
           <div class="ri"><span class="rl">지반고/말뚝선단 (EL.2)</span><span class="rv" id="r-EL2">—</span></div>
           <div class="ri"><span class="rl">YS = h₁ = EL.0−EL.1</span><span class="rv wn" id="r-YS">—</span></div>
           <div class="ri"><span class="rl">세굴선 고도 (EL.0−ds)</span><span class="rv fin" id="r-sel">—</span></div>
-          <div class="ri"><span class="rl">기초 내 침투율 (%)</span><span class="rv fin" id="r-pct">—</span></div>
         </div>
       </div>
     </div>
