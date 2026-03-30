@@ -195,8 +195,8 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .s-lau::before{background:var(--lau);}
 .s-froe::before{background:var(--froe);}
 .s-fin::before{background:var(--fin);}
-.stat-lb{font-size:10px;color:var(--dm);margin-bottom:3px;letter-spacing:.3px;}
-.stat-v{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;}
+.stat-lb{font-size:clamp(9px,.7vw,11px);color:var(--dm);margin-bottom:3px;letter-spacing:.3px;}
+.stat-v{font-family:'JetBrains Mono',monospace;font-size:clamp(16px,1.5vw,24px);font-weight:700;}
 .sv-csu{color:var(--csu);}.sv-neil{color:var(--neil);}.sv-lau{color:var(--lau);}.sv-froe{color:var(--froe);}.sv-fin{color:var(--fin);}
 .stat-u{font-size:10px;color:var(--dm);}
 .stat-tag{display:inline-block;font-size:9px;padding:1px 5px;border-radius:2px;margin-top:2px;font-family:'JetBrains Mono',monospace;font-weight:600;letter-spacing:.3px;}
@@ -216,32 +216,32 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .card{background:rgba(0,0,0,.08);border:1px solid rgba(255,255,255,.04);border-radius:5px;overflow:hidden;margin-bottom:0;}
 .card-hd{padding:5px 10px;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.02);}
 .card-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0;}
-.card-hd h3{font-size:11px;font-weight:600;flex:1;font-family:'JetBrains Mono',monospace;letter-spacing:.3px;color:var(--mt);}
+.card-hd h3{font-size:clamp(11px,.85vw,13px);font-weight:600;flex:1;font-family:'JetBrains Mono',monospace;letter-spacing:.3px;color:var(--mt);}
 .card-b{padding:6px 10px;}
 
 /* 공식 비교표 */
 .ftbl{width:100%;border-collapse:collapse;}
-.ftbl th{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);padding:4px 8px;font-size:10px;color:var(--dm);font-weight:500;text-align:center;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;text-transform:uppercase;}
-.ftbl td{border:1px solid rgba(255,255,255,.03);padding:4px 8px;font-size:11px;vertical-align:middle;}
+.ftbl th{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);padding:clamp(3px,.35vw,6px) clamp(6px,.6vw,10px);font-size:clamp(9px,.7vw,11px);color:var(--dm);font-weight:500;text-align:center;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;text-transform:uppercase;}
+.ftbl td{border:1px solid rgba(255,255,255,.03);padding:clamp(3px,.35vw,6px) clamp(6px,.6vw,10px);font-size:clamp(10px,.85vw,13px);vertical-align:middle;}
 .ftbl .csu-row td{background:rgba(79,144,255,.02);}
 .ftbl .neil-row td{background:rgba(30,200,122,.02);}
 .ftbl .lau-row td{background:rgba(255,176,58,.02);}
 .ftbl .froe-row td{background:rgba(255,112,128,.02);}
 .ftbl .max-row td{background:rgba(255,78,78,.025);}
 .ftbl .fin-row td{background:rgba(154,122,255,.025);}
-.fv{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;text-align:right;}
+.fv{font-family:'JetBrains Mono',monospace;font-size:clamp(13px,1.1vw,17px);font-weight:700;text-align:right;}
 .fv.csu{color:var(--csu);}.fv.neil{color:var(--neil);}.fv.lau{color:var(--lau);}.fv.froe{color:var(--froe);}
 .fv.is-max{text-decoration:line-through;opacity:.5;}
-.fv.fin-v{color:var(--fin);font-size:16px;}
+.fv.fin-v{color:var(--fin);font-size:clamp(15px,1.35vw,21px);}
 .fv.max-v{color:var(--ng);}
-.fn{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dm);letter-spacing:.2px;}
+.fn{font-family:'JetBrains Mono',monospace;font-size:clamp(9px,.75vw,11px);color:var(--dm);letter-spacing:.2px;}
 
 /* 수리 결과 행 */
-.ri{display:flex;align-items:baseline;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+.ri{display:flex;align-items:baseline;padding:clamp(2px,.28vw,4px) 0;border-bottom:1px solid rgba(255,255,255,.03);}
 .ri:last-child{border-bottom:none;}
-.rl{flex:1;font-size:11px;color:var(--dm);letter-spacing:.2px;}
-.rf{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(90,122,170,.3);text-align:center;width:80px;letter-spacing:.3px;}
-.rv{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;text-align:right;min-width:70px;}
+.rl{flex:1;font-size:clamp(10px,.8vw,13px);color:var(--dm);letter-spacing:.2px;}
+.rf{font-family:'JetBrains Mono',monospace;font-size:clamp(7px,.6vw,9px);color:rgba(90,122,170,.3);text-align:center;width:80px;letter-spacing:.3px;}
+.rv{font-family:'JetBrains Mono',monospace;font-size:clamp(11px,.95vw,14px);font-weight:600;text-align:right;min-width:70px;}
 .rv.ac{color:var(--ac);}.rv.ok{color:var(--ok);}.rv.ng{color:var(--ng);}.rv.wn{color:var(--wn);}.rv.fin{color:var(--fin);}
 
 /* 수식 */
@@ -273,9 +273,9 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .gbadge-sm.gd{color:var(--gd);border-color:var(--gd);background:rgba(255,85,85,.08);}
 .gbadge-sm.ge{color:var(--ge);border-color:var(--ge);background:rgba(176,32,32,.08);}
 .fs-body{flex:1;}
-.fs-lb{font-size:10px;color:var(--dm);margin-bottom:1px;font-family:'JetBrains Mono',monospace;letter-spacing:.3px;}
-.fs-val{font-size:11px;font-weight:500;line-height:1.5;color:var(--tx);}
-.fs-sub{font-size:9px;color:var(--dm);margin-top:1px;line-height:1.3;letter-spacing:.2px;}
+.fs-lb{font-size:clamp(9px,.72vw,11px);color:var(--dm);margin-bottom:1px;font-family:'JetBrains Mono',monospace;letter-spacing:.3px;}
+.fs-val{font-size:clamp(11px,.88vw,13px);font-weight:500;line-height:1.5;color:var(--tx);}
+.fs-sub{font-size:clamp(9px,.68vw,11px);color:var(--dm);margin-top:1px;line-height:1.3;letter-spacing:.2px;}
 .fs-final-inline{display:flex;align-items:center;gap:6px;flex:1;}
 .fs-final-label{font-size:11px;font-weight:600;color:var(--fin);font-family:'JetBrains Mono',monospace;letter-spacing:.3px;}
 .fs-final-grade{font-size:14px;font-weight:700;color:var(--fin);font-family:'JetBrains Mono',monospace;}
@@ -295,8 +295,8 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .final-box.fc{border-color:rgba(255,160,64,.3);background:rgba(255,144,48,.04);}
 .final-box.fd{border-color:rgba(255,85,85,.3);background:rgba(255,78,78,.04);}
 .final-box.fe{border-color:rgba(176,32,32,.3);background:rgba(154,24,24,.04);}
-.final-title{font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:3px;letter-spacing:.3px;}
-.final-desc{font-size:11px;color:var(--dm);line-height:1.6;}
+.final-title{font-size:clamp(13px,1.05vw,16px);font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:3px;letter-spacing:.3px;}
+.final-desc{font-size:clamp(10px,.82vw,13px);color:var(--dm);line-height:1.6;}
 .stage2-box{border-radius:4px;padding:8px 12px;border:1px solid;font-size:11px;line-height:1.6;margin-top:6px;}
 .stage2-box.need{border-color:rgba(255,176,58,.3);background:rgba(255,176,58,.04);color:var(--wn);}
 .stage2-box.skip{border-color:rgba(255,255,255,.04);background:rgba(255,255,255,.01);color:var(--dm);}
@@ -310,6 +310,21 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 /* SVG 단면도 */
 .diag-wrap{background:rgba(0,0,0,.1);border:1px solid rgba(255,255,255,.04);border-radius:4px;padding:2px;height:100%;display:flex;align-items:stretch;}
 .diag-wrap svg{width:100%;height:100%;display:block;}
+
+/* 대형 화면 여유 간격 */
+@media(min-width:1600px){
+  .rp-top{padding:14px 20px;}
+  .rp-bot-l{padding:10px 14px;}
+  .ri{padding:4px 0;}
+  .stat-row{gap:10px;margin-bottom:14px;}
+  .stat{padding:10px 12px;}
+  .flow-step{padding:10px 12px;}
+  .flow-step-sm{padding:7px 10px;}
+  .card-b{padding:8px 12px;}
+  .gbadge{width:36px;height:36px;font-size:20px;}
+  .gbadge-sm{width:30px;height:30px;font-size:16px;}
+  .final-box{padding:12px 16px;gap:14px;}
+}
 
 /* 레퍼런스 */
 .ref-title{font-size:10px;color:var(--dm);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;padding-bottom:3px;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;}
@@ -626,7 +641,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
     <div class="grid2">
       <!-- 세굴심 비교표 -->
       <div class="card">
-        <div class="card-hd"><div class="card-dot" style="background:var(--fin)"></div><h3>세굴심 산정 비교표 — 그림 1.35</h3></div>
+        <div class="card-hd"><div class="card-dot" style="background:var(--fin)"></div><h3>세굴심 산정 비교표</h3></div>
         <div class="card-b" style="padding:0;">
           <table class="ftbl">
             <thead><tr><th style="width:22%">공식</th><th style="width:44%">적용식</th><th style="width:34%">ds (m)</th></tr></thead>
@@ -806,6 +821,22 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
           <text x="454" y="0" fill="#9A1818" font-size="13" font-family="JetBrains Mono" font-weight="700" id="f-gle">e</text>
           <line x1="434" y1="80" x2="450" y2="80" stroke="#ff6e4a" stroke-width="2" id="f-ptr"/>
           <text x="453" y="0" fill="#ff6e4a" font-size="12" font-family="JetBrains Mono" font-weight="700" id="f-ptrl">ds</text>
+          <!-- ── 치수 기호 y · b' · L ── -->
+          <!-- y : 수심 (W.L y=14 ↔ EL.0 y=46, 항상 고정) -->
+          <line x1="143" y1="15" x2="143" y2="45" stroke="rgba(79,144,255,.4)" stroke-width="1.2"/>
+          <line x1="139" y1="15" x2="147" y2="15" stroke="rgba(79,144,255,.45)" stroke-width="1"/>
+          <line x1="139" y1="45" x2="147" y2="45" stroke="rgba(79,144,255,.45)" stroke-width="1"/>
+          <text x="133" y="32" text-anchor="end" fill="rgba(100,165,255,.92)" font-size="13" font-family="JetBrains Mono" font-style="italic" font-weight="700">y</text>
+          <!-- b' : 유효 교각폭 (수심 구간 내 정면폭 표시) -->
+          <line x1="170" y1="16" x2="170" y2="44" stroke="rgba(138,170,208,.18)" stroke-width="0.8" stroke-dasharray="3 2"/>
+          <line x1="202" y1="16" x2="202" y2="44" stroke="rgba(138,170,208,.18)" stroke-width="0.8" stroke-dasharray="3 2"/>
+          <line x1="171" y1="29" x2="201" y2="29" stroke="rgba(138,170,208,.55)" stroke-width="1"/>
+          <line x1="171" y1="26" x2="171" y2="32" stroke="rgba(138,170,208,.55)" stroke-width="1"/>
+          <line x1="201" y1="26" x2="201" y2="32" stroke="rgba(138,170,208,.55)" stroke-width="1"/>
+          <text x="186" y="25" text-anchor="middle" fill="rgba(170,200,240,.88)" font-size="10" font-family="JetBrains Mono" font-style="italic" font-weight="700">b'</text>
+          <!-- L : 교각길이 (흐름방향 깊이, 원근 표시) -->
+          <line x1="202" y1="14" x2="212" y2="6" stroke="rgba(138,170,208,.32)" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+          <text x="214" y="11" fill="rgba(170,200,240,.72)" font-size="10" font-family="JetBrains Mono" font-style="italic" font-weight="700">L</text>
           <!-- 범례 -->
           <line x1="25" y1="248" x2="42" y2="248" stroke="#5A7AAA" stroke-width="2" stroke-dasharray="5 3"/>
           <text x="45" y="252" fill="#5A7AAA" font-size="10" font-family="JetBrains Mono">하상</text>
@@ -873,6 +904,19 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
           <text x="454" y="0" fill="#9A1818" font-size="13" font-family="JetBrains Mono" font-weight="700" id="p-gle">e</text>
           <line x1="434" y1="80" x2="450" y2="80" stroke="#ff6e4a" stroke-width="2" id="p-ptr"/>
           <text x="453" y="0" fill="#ff6e4a" font-size="12" font-family="JetBrains Mono" font-weight="700" id="p-ptrl">ds</text>
+          <!-- ── 치수 기호 y · b' · L ── -->
+          <line x1="143" y1="15" x2="143" y2="45" stroke="rgba(79,144,255,.4)" stroke-width="1.2"/>
+          <line x1="139" y1="15" x2="147" y2="15" stroke="rgba(79,144,255,.45)" stroke-width="1"/>
+          <line x1="139" y1="45" x2="147" y2="45" stroke="rgba(79,144,255,.45)" stroke-width="1"/>
+          <text x="133" y="32" text-anchor="end" fill="rgba(100,165,255,.92)" font-size="13" font-family="JetBrains Mono" font-style="italic" font-weight="700">y</text>
+          <line x1="175" y1="16" x2="175" y2="44" stroke="rgba(138,170,208,.18)" stroke-width="0.8" stroke-dasharray="3 2"/>
+          <line x1="199" y1="16" x2="199" y2="44" stroke="rgba(138,170,208,.18)" stroke-width="0.8" stroke-dasharray="3 2"/>
+          <line x1="177" y1="29" x2="197" y2="29" stroke="rgba(138,170,208,.55)" stroke-width="1"/>
+          <line x1="177" y1="26" x2="177" y2="32" stroke="rgba(138,170,208,.55)" stroke-width="1"/>
+          <line x1="197" y1="26" x2="197" y2="32" stroke="rgba(138,170,208,.55)" stroke-width="1"/>
+          <text x="187" y="25" text-anchor="middle" fill="rgba(170,200,240,.88)" font-size="10" font-family="JetBrains Mono" font-style="italic" font-weight="700">b'</text>
+          <line x1="199" y1="14" x2="209" y2="6" stroke="rgba(138,170,208,.32)" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+          <text x="211" y="11" fill="rgba(170,200,240,.72)" font-size="10" font-family="JetBrains Mono" font-style="italic" font-weight="700">L</text>
           <!-- 범례 -->
           <line x1="25" y1="248" x2="42" y2="248" stroke="#5A7AAA" stroke-width="2" stroke-dasharray="5 3"/>
           <text x="45" y="252" fill="#5A7AAA" font-size="10" font-family="JetBrains Mono">하상</text>
