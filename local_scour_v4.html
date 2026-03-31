@@ -31,6 +31,53 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
 .excel-btn:hover{background:rgba(80,200,120,.28);border-color:#5dd491;}
 .doc-btn{background:rgba(79,144,255,.15);border:1px solid rgba(79,144,255,.5);color:var(--ac);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.3px;white-space:nowrap;}
 .doc-btn:hover{background:rgba(79,144,255,.3);border-color:var(--ac);}
+.file-btn{background:rgba(168,136,255,.13);border:1px solid rgba(168,136,255,.4);color:#c4aeff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s;letter-spacing:.3px;white-space:nowrap;position:relative;}
+.file-btn:hover{background:rgba(168,136,255,.28);border-color:#c4aeff;}
+.file-btn.active{background:rgba(168,136,255,.28);border-color:#c4aeff;}
+
+/* ── FILE DROPDOWN ── */
+.file-dropdown{position:absolute;top:calc(100% + 6px);right:0;min-width:220px;background:#1A2535;border:1px solid rgba(168,136,255,.3);border-radius:7px;box-shadow:0 8px 32px rgba(0,0,0,.55),0 0 0 1px rgba(168,136,255,.08);z-index:8888;overflow:hidden;display:none;}
+.file-dropdown.show{display:block;}
+.file-dd-header{padding:8px 12px 6px;font-size:9px;color:var(--dm);text-transform:uppercase;letter-spacing:.8px;font-family:'JetBrains Mono',monospace;border-bottom:1px solid rgba(255,255,255,.05);}
+.file-dd-item{display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;transition:background .13s;font-size:12px;color:var(--tx);border-bottom:1px solid rgba(255,255,255,.03);}
+.file-dd-item:last-child{border-bottom:none;}
+.file-dd-item:hover{background:rgba(168,136,255,.1);}
+.file-dd-item .dd-icon{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.file-dd-item .dd-icon.save-icon{background:rgba(34,217,122,.12);border:1px solid rgba(34,217,122,.25);}
+.file-dd-item .dd-icon.load-icon{background:rgba(168,136,255,.12);border:1px solid rgba(168,136,255,.25);}
+.file-dd-item .dd-text{flex:1;line-height:1;}
+.file-dd-item .dd-label{font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace;color:var(--tx);}
+.file-dd-item .dd-sub{font-size:10px;color:var(--dm);margin-top:2px;}
+.file-dd-sep{height:1px;background:rgba(255,255,255,.05);margin:2px 0;}
+
+/* ── FILE SAVE MODAL ── */
+.file-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9998;align-items:center;justify-content:center;}
+.file-modal-overlay.show{display:flex;}
+.file-modal{background:#1A2535;border:1px solid rgba(168,136,255,.3);border-radius:9px;padding:22px 24px 18px;min-width:340px;max-width:420px;box-shadow:0 12px 40px rgba(0,0,0,.5);}
+.file-modal-hd{display:flex;align-items:center;gap:9px;margin-bottom:16px;}
+.file-modal-hd .fm-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.file-modal-hd .fm-icon.save{background:rgba(34,217,122,.12);border:1px solid rgba(34,217,122,.25);}
+.file-modal-hd .fm-icon.load{background:rgba(168,136,255,.12);border:1px solid rgba(168,136,255,.25);}
+.file-modal h3{font-size:14px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-weight:600;letter-spacing:.3px;}
+.file-modal-sub{font-size:11px;color:var(--dm);margin-bottom:14px;line-height:1.6;padding:8px 10px;background:rgba(255,255,255,.02);border-radius:4px;border-left:2px solid rgba(168,136,255,.3);}
+.file-modal .fm-field{margin-bottom:12px;}
+.file-modal .fm-field label{font-size:10px;color:var(--dm);display:block;margin-bottom:5px;letter-spacing:.3px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.file-modal .fm-field input{width:100%;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:4px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 10px;outline:none;transition:border-color .15s;}
+.file-modal .fm-field input:focus{border-color:rgba(168,136,255,.45);}
+.file-modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+.file-modal-btns button{padding:6px 18px;border-radius:5px;font-size:12px;font-family:'JetBrains Mono',monospace;cursor:pointer;border:1px solid;transition:all .15s;font-weight:600;}
+.fm-btn-cancel{background:transparent;border-color:var(--bd2)!important;color:var(--mt);}
+.fm-btn-cancel:hover{background:rgba(255,255,255,.05);}
+.fm-btn-save{background:rgba(34,217,122,.15);border-color:rgba(34,217,122,.5)!important;color:#22D97A;}
+.fm-btn-save:hover{background:rgba(34,217,122,.28);}
+.fm-btn-load{background:rgba(168,136,255,.15);border-color:rgba(168,136,255,.5)!important;color:#c4aeff;}
+.fm-btn-load:hover{background:rgba(168,136,255,.28);}
+
+/* 토스트 알림 */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1A2535;border:1px solid rgba(168,136,255,.35);border-radius:7px;padding:10px 18px;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--tx);opacity:0;transition:all .25s;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,.45);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.ok{border-color:rgba(34,217,122,.4);color:#22D97A;}
+.toast.ng{border-color:rgba(255,85,85,.4);color:var(--ng);}
 
 /* ── SHEET TABS ── */
 .sheet-tabs{display:flex;align-items:stretch;background:var(--hdr);border-bottom:1px solid var(--bd);height:28px;flex-shrink:0;padding:0 8px;gap:0;overflow-x:auto;}
@@ -389,7 +436,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
   .title-bar h1{font-size:15px;}
   .title-bar .sub{font-size:10px;margin-left:6px;}
   .hdr-btns{position:static;transform:none;margin-left:auto;}
-  .excel-btn,.doc-btn{padding:3px 8px;font-size:10px;}
+  .excel-btn,.doc-btn,.file-btn{padding:3px 8px;font-size:10px;}
   .app{height:auto;}
   .stat-row{grid-template-columns:repeat(2,1fr);}
   .stat-v{font-size:18px;}
@@ -437,6 +484,33 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="12" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="5" x2="13" y2="5" stroke="currentColor" stroke-width=".8"/><line x1="1" y1="9" x2="13" y2="9" stroke="currentColor" stroke-width=".8"/><line x1="5" y1="1" x2="5" y2="13" stroke="currentColor" stroke-width=".8"/><path d="M2.5 6.5l1.2 2 1.2-2" stroke="#5dd491" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Excel Pro
     </a>
+    <button class="file-btn" id="file-btn" onclick="toggleFileDropdown(event)" title="파일 저장 / 불러오기">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="12" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M4 1v4h6V1" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 8h9M2.5 10.5h6" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><rect x="5" y="1.5" width="2" height="2.5" rx=".5" fill="currentColor" opacity=".6"/></svg>
+      File
+      <svg width="8" height="8" viewBox="0 0 8 8" fill="none" style="vertical-align:middle;margin-left:3px;opacity:.7;"><path d="M1.5 3l2.5 2.5L6.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="file-dropdown" id="file-dropdown">
+        <div class="file-dd-header">File</div>
+        <div class="file-dd-item" onclick="showSaveModal()">
+          <div class="dd-icon save-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h8l3 3v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="#22D97A" stroke-width="1.3"/><path d="M5 2v4h6V2" stroke="#22D97A" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><rect x="6" y="2.5" width="2" height="2.5" rx=".4" fill="#22D97A" opacity=".5"/><path d="M4 10h8M4 12.5h5" stroke="#22D97A" stroke-width="1" stroke-linecap="round" opacity=".6"/></svg>
+          </div>
+          <div class="dd-text">
+            <div class="dd-label">저장</div>
+            <div class="dd-sub">현재 작업을 .scour 파일로 저장</div>
+          </div>
+        </div>
+        <div class="file-dd-item" onclick="triggerLoadFile()">
+          <div class="dd-icon load-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4.5C2 3.67 2.67 3 3.5 3h3.09l1.5 2H12.5c.83 0 1.5.67 1.5 1.5v6c0 .83-.67 1.5-1.5 1.5h-9C2.67 14 2 13.33 2 12.5v-8z" stroke="#c4aeff" stroke-width="1.3"/><path d="M8 7v4M6 9.5l2 2 2-2" stroke="#c4aeff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="dd-text">
+            <div class="dd-label">불러오기</div>
+            <div class="dd-sub">.scour 파일에서 작업 복원</div>
+          </div>
+        </div>
+      </div>
+    </button>
+    <input type="file" id="file-load-input" accept=".scour,.json" style="display:none" onchange="handleLoadFile(event)">
     <button class="doc-btn" onclick="showPdfModal()" title="Save as PDF">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><rect x="1" y="1" width="9" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 4h5M3 6.5h5M3 9h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M8 9.5l1.5 2.5L11 9.5" stroke="#4F90FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Save as PDF
@@ -1890,6 +1964,94 @@ function updateTabName(){
   if(tabEl)tabEl.textContent=pn;
 }
 
+/* ══ FILE DROPDOWN ══ */
+function toggleFileDropdown(e){
+  e.stopPropagation();
+  const btn=document.getElementById('file-btn');
+  const dd=document.getElementById('file-dropdown');
+  const isOpen=dd.classList.contains('show');
+  closeFileDropdown();
+  if(!isOpen){dd.classList.add('show');btn.classList.add('active');}
+}
+function closeFileDropdown(){
+  document.getElementById('file-dropdown').classList.remove('show');
+  document.getElementById('file-btn').classList.remove('active');
+}
+document.addEventListener('click',function(e){
+  if(!document.getElementById('file-btn').contains(e.target)) closeFileDropdown();
+});
+
+/* ══ FILE SAVE / LOAD ══ */
+function showSaveModal(){
+  closeFileDropdown();
+  tabs[activeTab].data=getFormData();
+  const bridge=document.getElementById('bridgeName').value||'세굴평가';
+  const now=new Date();
+  const dateStr=`${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
+  document.getElementById('save-filename').value=bridge+'_'+dateStr;
+  document.getElementById('file-save-modal').classList.add('show');
+  setTimeout(()=>document.getElementById('save-filename').select(),80);
+}
+function hideFileModal(id){
+  document.getElementById(id).classList.remove('show');
+}
+function confirmSaveFile(){
+  tabs[activeTab].data=getFormData();
+  let fname=(document.getElementById('save-filename').value||'세굴평가').trim();
+  if(!fname) fname='세굴평가';
+  if(!fname.endsWith('.scour')) fname+='.scour';
+  const payload={version:'4',savedAt:new Date().toISOString(),tabs:tabs.map(t=>({...t})),activeTab};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  try{
+    window.showSaveFilePicker({suggestedName:fname,types:[{description:'Scour 작업파일',accept:{'application/json':['.scour']}}]}).then(async handle=>{
+      const w=await handle.createWritable();await w.write(blob);await w.close();
+      hideFileModal('file-save-modal');showToast('저장 완료: '+fname,'ok');
+    }).catch(e=>{if(e.name!=='AbortError'){fallbackSave(blob,fname);}});
+  }catch(e){fallbackSave(blob,fname);}
+}
+function fallbackSave(blob,fname){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=fname;a.click();URL.revokeObjectURL(url);
+  hideFileModal('file-save-modal');
+  showToast('저장 완료: '+fname,'ok');
+}
+function triggerLoadFile(){
+  closeFileDropdown();
+  document.getElementById('file-load-input').value='';
+  document.getElementById('file-load-input').click();
+}
+function handleLoadFile(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(!data.tabs||!Array.isArray(data.tabs)) throw new Error('유효하지 않은 파일 형식');
+      tabs=data.tabs;
+      tabCounter=Math.max(...tabs.map(t=>t.id||0))+1;
+      activeTab=Math.min(data.activeTab||0, tabs.length-1);
+      setFormData(tabs[activeTab].data);
+      renderTabs();
+      showToast('불러오기 완료: '+file.name,'ok');
+    }catch(err){
+      showToast('파일 오류: 올바른 .scour 파일이 아닙니다','ng');
+    }
+  };
+  reader.readAsText(file,'utf-8');
+}
+
+/* ══ TOAST ══ */
+let _toastTimer=null;
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast '+(type||'');
+  t.classList.add('show');
+  if(_toastTimer) clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
 /* ══ PDF MODAL ══ */
 function showPdfModal(){
   const overlay=document.getElementById('pdf-modal-overlay');
@@ -2014,6 +2176,31 @@ async function generatePdfForTab(tabIdx){
   });
 }
 </script>
+
+<!-- 파일 저장 모달 -->
+<div class="file-modal-overlay" id="file-save-modal" onclick="if(event.target===this)hideFileModal('file-save-modal')">
+  <div class="file-modal">
+    <div class="file-modal-hd">
+      <div class="fm-icon save"><svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3 2h8l3 3v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="#22D97A" stroke-width="1.3"/><path d="M5 2v4h6V2" stroke="#22D97A" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><rect x="6" y="2.5" width="2" height="2.5" rx=".4" fill="#22D97A" opacity=".5"/></svg></div>
+      <h3>파일 저장</h3>
+    </div>
+    <div class="file-modal-sub">모든 탭의 입력값과 설정이 <strong style="color:#c4aeff">.scour</strong> 파일로 저장됩니다.<br>나중에 불러오기로 작업을 이어갈 수 있습니다.</div>
+    <div class="fm-field">
+      <label>파일명</label>
+      <input type="text" id="save-filename" placeholder="예: 한강교_세굴평가">
+    </div>
+    <div class="file-modal-btns">
+      <button class="fm-btn-cancel" onclick="hideFileModal('file-save-modal')">취소</button>
+      <button class="fm-btn-save" onclick="confirmSaveFile()">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:4px;"><path d="M2.5 12.5l2-5 8-8-2 2-8 8-2 3z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        저장
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 토스트 알림 -->
+<div class="toast" id="toast"></div>
 
 <!-- PDF 내보내기 모달 -->
 <div class="pdf-modal-overlay" id="pdf-modal-overlay" onclick="if(event.target===this)hidePdfModal()">
