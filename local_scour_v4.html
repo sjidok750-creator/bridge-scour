@@ -814,7 +814,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
         <!-- 우: 등급 기준표 (높이 맞춤) -->
         <div style="flex:1;min-width:0;align-self:stretch;border:1px solid rgba(255,255,255,.04);border-radius:4px;overflow:hidden;">
           <table class="gr-tbl" style="width:100%;height:100%;">
-            <thead><tr><th>등급</th><th>지반 및 세굴 상태</th><th>현재</th></tr></thead>
+            <thead><tr><th>등급</th><th>지반 및 세굴 상태</th><th>기본</th></tr></thead>
             <tbody>
               <tr id="gr-a"><td style="text-align:center;color:var(--ga);font-weight:700;font-family:'JetBrains Mono',monospace;">a</td><td>기초 상부 (0%)</td><td style="text-align:center;" id="gr-a-cur">—</td></tr>
               <tr id="gr-b"><td style="text-align:center;color:var(--gb);font-weight:700;font-family:'JetBrains Mono',monospace;">b</td><td>상단 노출 (1~30%)</td><td style="text-align:center;" id="gr-b-cur">—</td></tr>
@@ -822,6 +822,18 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'Noto San
               <tr id="gr-d"><td style="text-align:center;color:var(--gd);font-weight:700;font-family:'JetBrains Mono',monospace;">d</td><td>하단 노출 (71~100%)</td><td style="text-align:center;" id="gr-d-cur">—</td></tr>
               <tr id="gr-e"><td style="text-align:center;color:var(--ge);font-weight:700;font-family:'JetBrains Mono',monospace;">e</td><td>기초 하부 (100%↑)</td><td style="text-align:center;" id="gr-e-cur">—</td></tr>
             </tbody>
+            <tfoot>
+              <tr style="border-top:2px solid rgba(255,255,255,.12);">
+                <td style="text-align:center;font-size:11px;white-space:nowrap;color:rgba(255,255,255,.72);">보호공</td>
+                <td id="gr-prot-opts" style="font-size:12px;"></td>
+                <td id="gr-prot-eff" style="text-align:center;font-size:11px;white-space:nowrap;">—</td>
+              </tr>
+              <tr id="gr-final-row">
+                <td id="gr-final-g" style="text-align:center;font-weight:800;font-family:'JetBrains Mono',monospace;font-size:18px;">—</td>
+                <td style="font-weight:700;">최종등급 (보호공 보정 후)</td>
+                <td id="gr-final-cur" style="text-align:center;">—</td>
+              </tr>
+            </tfoot>
           </table>
         </div><!-- /우 -->
 
@@ -1068,6 +1080,7 @@ function closePdf(){
 
 const g = 9.81;
 let prot = 's';
+let curBaseGrade = 'a';
 let foundMode = 'el';
 
 const gv=id=>{ const e=document.getElementById(id); return e?e.value||e.textContent||'—':'—'; };
@@ -1368,12 +1381,14 @@ async function buildPdfHtml(){
   </div>
   <div class="eval-right">
     <table class="gr-tbl">
-      <tr><th>등급</th><th>지반 및 세굴 상태</th><th>현재</th></tr>
-      <tr class="${gradeLetter==='a'?'cur-row':''}"><td class="ga">a</td><td class="td-l">기초상단보다 위 (0%)</td><td>${gradeLetter==='a'?'<span style="display:inline-block;width:10px;height:10px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
-      <tr class="${gradeLetter==='b'?'cur-row':''}"><td class="gb">b</td><td class="td-l">기초 상단 일부 노출 (1~30%)</td><td>${gradeLetter==='b'?'<span style="display:inline-block;width:10px;height:10px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
-      <tr class="${gradeLetter==='c'?'cur-row':''}"><td class="gc">c</td><td class="td-l">기초 깊이내 (31~70%)</td><td>${gradeLetter==='c'?'<span style="display:inline-block;width:10px;height:10px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
-      <tr class="${gradeLetter==='d'?'cur-row':''}"><td class="gd">d</td><td class="td-l">기초 하단 일부 노출 (71~100%)</td><td>${gradeLetter==='d'?'<span style="display:inline-block;width:10px;height:10px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
-      <tr class="${gradeLetter==='e'?'cur-row':''}"><td class="ge">e</td><td class="td-l">기초 하단보다 아래 (100% 초과)</td><td>${gradeLetter==='e'?'<span style="display:inline-block;width:10px;height:10px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
+      <tr><th>등급</th><th>지반 및 세굴 상태</th><th>기본</th></tr>
+      <tr class="${curBaseGrade==='a'?'cur-row':''}"><td class="ga">a</td><td class="td-l">기초상단보다 위 (0%)</td><td>${curBaseGrade==='a'?'<span style="display:inline-block;width:10px;height:10px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
+      <tr class="${curBaseGrade==='b'?'cur-row':''}"><td class="gb">b</td><td class="td-l">기초 상단 일부 노출 (1~30%)</td><td>${curBaseGrade==='b'?'<span style="display:inline-block;width:10px;height:10px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
+      <tr class="${curBaseGrade==='c'?'cur-row':''}"><td class="gc">c</td><td class="td-l">기초 깊이내 (31~70%)</td><td>${curBaseGrade==='c'?'<span style="display:inline-block;width:10px;height:10px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
+      <tr class="${curBaseGrade==='d'?'cur-row':''}"><td class="gd">d</td><td class="td-l">기초 하단 일부 노출 (71~100%)</td><td>${curBaseGrade==='d'?'<span style="display:inline-block;width:10px;height:10px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
+      <tr class="${curBaseGrade==='e'?'cur-row':''}"><td class="ge">e</td><td class="td-l">기초 하단보다 아래 (100% 초과)</td><td>${curBaseGrade==='e'?'<span style="display:inline-block;width:10px;height:10px;background:#1a5aaa;border-radius:50%;"></span>':'—'}</td></tr>
+      <tr style="border-top:1.5pt solid #1a3a6a;"><td style="font-size:7pt;font-weight:700;white-space:nowrap;padding:1pt 2pt;">보호공</td><td class="td-l" style="font-size:7pt;padding:1pt 3pt;white-space:nowrap;">${[['s','상'],['m','중'],['h','하']].map(([k,t])=>k===prot?`<b style="background:#1a5aaa;color:#fff;padding:0 3pt;margin-right:2pt;font-size:7pt;">${t}</b>`:`<span style="color:#999;margin-right:2pt;padding:0 3pt;font-size:7pt;">${t}</span>`).join('')}<span style="font-size:6.5pt;color:#555;">${(curBaseGrade==='a'||curBaseGrade==='e')?'보정 없음':prot==='s'?'한 등급 상향':prot==='h'?'한 등급 하향':'유지'}</span></td><td style="padding:1pt;">—</td></tr>
+      <tr class="cur-row"><td style="font-size:9pt;padding:1pt 2pt;">${gradeLetter.toUpperCase()}</td><td class="td-l" style="font-size:7.5pt;padding:1pt 3pt;white-space:nowrap;"><b>최종등급 (보호공 보정 후)</b></td><td style="padding:1pt;"><span style="display:inline-block;width:8px;height:8px;background:#1a5aaa;border-radius:50%;"></span></td></tr>
     </table>
     <div class="result-badge">
       <span class="rb-grade">${gradeLetter.toUpperCase()}</span>
@@ -1735,11 +1750,27 @@ function calc(){
     const row=document.getElementById('gr-'+gr);
     const cur=document.getElementById('gr-'+gr+'-cur');
     if(row&&cur){
-      row.style.background=gr===finalGrade?`rgba(${gr==='a'?'30,200,122':gr==='b'?'192,176,0':gr==='c'?'255,144,48':gr==='d'?'255,78,78':'154,24,24'},.07)`:'';
-      cur.innerHTML=gr===finalGrade?'<span style="display:inline-block;width:12px;height:12px;background:var(--ac);border-radius:50%;"></span>':'—';
+      row.style.background=gr===baseGrade?`rgba(${gr==='a'?'30,200,122':gr==='b'?'192,176,0':gr==='c'?'255,144,48':gr==='d'?'255,78,78':'154,24,24'},.07)`:'';
+      cur.innerHTML=gr===baseGrade?'<span style="display:inline-block;width:12px;height:12px;background:var(--ac);border-radius:50%;"></span>':'—';
       cur.style.color=gradeColors[gr];
     }
   });
+  curBaseGrade=baseGrade;
+  // 보호공 상·중·하 표시 및 최종등급
+  const protApplies=!preAny && baseGrade!=='a' && baseGrade!=='e';
+  const protEffTxt=!protApplies?'보정 없음':prot==='s'?'▲ 한 등급 상향':prot==='h'?'▼ 한 등급 하향':'● 유지';
+  const protOpts=document.getElementById('gr-prot-opts');
+  if(protOpts){
+    protOpts.innerHTML=[['s','상','#1ec87a'],['m','중','#ff9030'],['h','하','#ff4e4e']].map(([k,t,c])=>
+      `<span style="display:inline-block;min-width:34px;text-align:center;margin-right:6px;padding:2px 8px;border-radius:4px;font-weight:700;border:1px solid ${k===prot?c:'rgba(255,255,255,.12)'};background:${k===prot?c:'transparent'};color:${k===prot?'#10161f':'rgba(255,255,255,.45)'};">${t}</span>`).join('');
+  }
+  setT('gr-prot-eff',protEffTxt);
+  const fg=document.getElementById('gr-final-g');
+  if(fg){ fg.textContent=finalGrade.toUpperCase(); fg.style.color=gradeColors[finalGrade]; }
+  const fc=document.getElementById('gr-final-cur');
+  if(fc){ fc.innerHTML=`<span style="display:inline-block;width:12px;height:12px;background:var(--ac);border-radius:50%;"></span>`; }
+  const frow=document.getElementById('gr-final-row');
+  if(frow){ frow.style.background='rgba(154,122,255,.08)'; }
 
   setT('fb1v',preAny?'즉시 a':'검토');
   setT('fb2v',fmt(ds,3)+'m');
@@ -1778,7 +1809,7 @@ function updateSvgF(EL0,EL1a,EL1,EL2,ds,scourEL,fndH,grade,gHex){
   setA('f-sf-r',{y:bedY,height:Math.max(scourY-bedY,0)});
   setA('f-sl-l',{y1:scourY,y2:scourY,stroke:gHex});
   setA('f-sl-r',{y1:scourY,y2:scourY,stroke:gHex});
-  setA('f-lSL',{y:scourY+3,fill:gHex}); setT('f-lSL',`세굴선 ds=${ds.toFixed(2)}m`);
+  setA('f-lSL',{y:(scourY-bedY<18?scourY+12:scourY-3),fill:gHex}); setT('f-lSL',`세굴선 EL.${scourEL.toFixed(2)}`);
   setA('f-ds-arr',{y1:bedY+2,y2:Math.max(scourY-2,bedY+4)});
   setA('f-lDs',{y:(bedY+scourY)/2+3}); setT('f-lDs',`ds=${ds.toFixed(2)}m`);
   setA('f-fnd',{y:EL1aY,height:capH}); setA('f-fnd-h',{y:EL1aY+1,height:capH-1});
@@ -1825,7 +1856,7 @@ function updateSvgP(EL0,EL1a,EL1,EL2,ds,scourEL,capH_m,pileH_m,grade,gHex){
   setA('p-sf-r',{y:bedY,height:Math.max(scourY-bedY,0)});
   setA('p-sl-l',{y1:scourY,y2:scourY,stroke:gHex});
   setA('p-sl-r',{y1:scourY,y2:scourY,stroke:gHex});
-  setA('p-lSL',{y:scourY+3,fill:gHex}); setT('p-lSL',`세굴선 ds=${ds.toFixed(2)}m`);
+  setA('p-lSL',{y:(scourY-bedY<18?scourY+12:scourY-3),fill:gHex}); setT('p-lSL',`세굴선 EL.${scourEL.toFixed(2)}`);
   setA('p-ds-arr',{y1:bedY+2,y2:Math.max(scourY-2,bedY+4)});
   setA('p-lDs',{y:(bedY+scourY)/2+3}); setT('p-lDs',`ds=${ds.toFixed(2)}m`);
   setA('p-cap',{y:EL1aY,height:capH}); setA('p-cap-h',{y:EL1aY+1,height:capH-1});
