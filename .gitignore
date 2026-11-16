@@ -1,0 +1,5 @@
+# 과업 자료 — 공개 레포에 올리지 않음
+*.scour
+
+# Claude Code 개인 설정
+.claude/settings.local.json
